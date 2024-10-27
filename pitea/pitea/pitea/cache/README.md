@@ -1,3 +1,3 @@
-Directorio con el contenido de imagenes y audios generados
+# Directorio con el contenido de imagenes y audios generados
 
-Cada directorio contieene dos direcorios , uno para archivos limpios , sin nada oculto por nuestra parte y el otro contendores que contiene infomracion oculta puesta por nosotros
+Cada directorio contiene dos directorios, uno para archivos limpios, sin nada oculto por nuestra parte y el otro contenedores que contiene informacion oculta puesta por nosotros
