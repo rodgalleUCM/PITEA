@@ -13,7 +13,7 @@ Crear entorno
 
 Añadir biblotecas 
 
-```uv add```
+```uv add nombre_libreria```
 
 Ejecutar 
 
