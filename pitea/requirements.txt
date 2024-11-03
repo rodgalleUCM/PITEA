@@ -1,0 +1,2 @@
+click==8.1.7
+pycryptodome==3.21.0

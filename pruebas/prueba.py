@@ -209,10 +209,10 @@ def flujo_completo():
     # Ocultar la imagen con el archivo cifrado dentro de un archivo de audio WAV
     ocultar_datos_en_audio(audio_entrada, imagen_con_datos, audio_con_imagen)
 
-    # Ejemplo de uso con SSTV
-    imagen_a_sstv('imagen.png', 'sstv_audio.wav')
-    reproducir_audio('sstv_audio.wav')
-    sstv_a_imagen('sstv_audio.wav', 'sstv_imagen.png')
+    # # Ejemplo de uso con SSTV
+    # imagen_a_sstv('imagen.png', 'sstv_audio.wav')
+    # reproducir_audio('sstv_audio.wav')
+    # sstv_a_imagen('sstv_audio.wav', 'sstv_imagen.png')
 
     tamano_imagen = os.path.getsize(imagen_con_datos)   
     # Extraer la imagen de un archivo de audio
@@ -231,5 +231,6 @@ def flujo_completo():
 
     print('[+] Proceso completado con éxito!')
 
-# Llamar al flujo completo
-flujo_completo()
+if __name__ == "__main__":
+    # Llamar al flujo completo
+    flujo_completo()
