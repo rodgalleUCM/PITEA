@@ -11,27 +11,6 @@ python3 script_ejecucion.py ocultar \
   --contraseña "qwqwqw" \
   --formato-salida wav
 
-
-## UV 
-Uv es un gestor de paquetes de python moderno
-
-[Documentacion uv](https://github.com/astral-sh/uv)
-
-Basico :
-
-Crear entorno 
-
-```uv init```
-
-Añadir biblotecas 
-
-```uv add nombre_libreria```
-
-Ejecutar 
-
-```uv run nombre_archivo.py```
-
-
 ## Arbol de directorio provisional de pitea
 ```TFG-PITEA/
 ├── README.md
