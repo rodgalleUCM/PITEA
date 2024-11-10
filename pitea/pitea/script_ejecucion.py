@@ -16,6 +16,12 @@ import pitea.constantes as constantes
     help="Modo de cifrado a utilizar (ej. aes, rsa).",
 )
 @click.option(
+    "--modo-cifrado-imagen",
+    type=click.Choice(["lsb", "2"]),
+    required=True,
+    help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
+)
+@click.option(
     "--modo-cifrado-audio",
     type=click.Choice(["1", "2", "sstv"]),
     required=True,
@@ -54,7 +60,7 @@ import pitea.constantes as constantes
     help="Formato de salida del audio (ej. wav, mp4).",
 )
 def main(
-    accion, modo_cifrado, modo_cifrado_audio, input, output, contraseña, formato_salida, verbose
+    accion, modo_cifrado,modo_cifrado_imagen, modo_cifrado_audio, input, output, contraseña, formato_salida, verbose
 ):
     """
     Ejecuta la acción de ocultación o desocultación usando los archivos especificados.
@@ -98,6 +104,7 @@ def main(
     # Mostramos parámetros para depuración
     if constantes.VERBOSE :
         click.echo(f"Modo de cifrado: {modo_cifrado}")
+        click.echo(f"Modo de cifrado de imagen: {modo_cifrado_imagen}")
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
         click.echo(f"Contraseña: {contraseña}")
         click.echo(f"Formato de salida: {formato_salida}")
@@ -114,9 +121,9 @@ def main(
         print(SEPARADOR)
 
     if accion == "ocultar" :
-        flujo_de_trabajo_ocultar(modo_cifrado, modo_cifrado_audio, archivos_entrada, archivos_salida, contraseña, formato_salida)
+        flujo_de_trabajo_ocultar(modo_cifrado,modo_cifrado_imagen,modo_cifrado_audio, archivos_entrada, archivos_salida, contraseña, formato_salida)
     else :
-        flujo_de_trabajo_desocultar(modo_cifrado, modo_cifrado_audio, archivos_entrada, archivos_salida, contraseña, formato_salida)
+        flujo_de_trabajo_desocultar(modo_cifrado, modo_cifrado_imagen,modo_cifrado_audio, archivos_entrada, archivos_salida, contraseña, formato_salida)
 
 
 if __name__ == "__main__":

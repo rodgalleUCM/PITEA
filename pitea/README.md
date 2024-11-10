@@ -3,13 +3,15 @@
 ## EJEMPLO DE LLAMADA
 python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
+  --modo-cifrado-imagen "lsb" \
   --modo-cifrado-audio 1 \
   -i "archivos_prueba/prueba.txt \
      archivos_prueba/imagen.png \
      archivos_prueba/audio.wav" \
-  -o /home/alberto/salida/audio_salida.wav \
+  -o ./audio_salida.wav \
   --contraseña "qwqwqw" \
-  --formato-salida wav
+  --formato-salida wav \
+  -v
 
 ## Arbol de directorio provisional de pitea
 ```TFG-PITEA/

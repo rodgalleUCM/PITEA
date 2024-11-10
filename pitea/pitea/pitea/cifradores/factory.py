@@ -1,6 +1,6 @@
 from pitea.cifradores.Cifrador_AES import Cifrador_AES
-
-class CifradorFactory() :
+from pitea.AbstractFactory import AbstractFactory
+class CifradorFactory(AbstractFactory) :
     """
     Fábrica para obtener el constructor de Cifrador adecuado basado en el tipo de archivo.
 
