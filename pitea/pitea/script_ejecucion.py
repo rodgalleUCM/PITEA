@@ -1,6 +1,7 @@
 import click
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 from pitea.mensajes import *
+import pitea.constantes as constantes
 
 
 
@@ -19,6 +20,12 @@ from pitea.mensajes import *
     type=click.Choice(["1", "2", "sstv"]),
     required=True,
     help="Modo de cifrado específico para audio (ej. sstv).",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    help="Modo verbose , muestra mensajes del flujoy.",
 )
 @click.option(
     "-i",
@@ -47,11 +54,16 @@ from pitea.mensajes import *
     help="Formato de salida del audio (ej. wav, mp4).",
 )
 def main(
-    accion, modo_cifrado, modo_cifrado_audio, input, output, contraseña, formato_salida
+    accion, modo_cifrado, modo_cifrado_audio, input, output, contraseña, formato_salida, verbose
 ):
     """
     Ejecuta la acción de ocultación o desocultación usando los archivos especificados.
     """
+
+    #activo el modo verbose o no
+    if verbose :
+        constantes.VERBOSE = True
+
 
     # Divido los distintos rutas de entrada y salida ya que lo recibo como una única cadena
     archivos_entrada = input.split()
@@ -84,21 +96,22 @@ def main(
     archivo_salida_imagen = archivos_salida[1] if len(archivos_salida) == 2 else None
 
     # Mostramos parámetros para depuración
-    click.echo(f"Modo de cifrado: {modo_cifrado}")
-    click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
-    click.echo(f"Contraseña: {contraseña}")
-    click.echo(f"Formato de salida: {formato_salida}")
+    if constantes.VERBOSE :
+        click.echo(f"Modo de cifrado: {modo_cifrado}")
+        click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
+        click.echo(f"Contraseña: {contraseña}")
+        click.echo(f"Formato de salida: {formato_salida}")
 
-    click.echo(f"Archivo de entrada de texto: {archivo_entrada_texto}")
-    click.echo(f"Archivo de entrada de imagen: {archivo_entrada_imagen}")
-    if archivo_entrada_audio:
-        click.echo(f"Archivo de entrada de audio: {archivo_entrada_audio}")
+        click.echo(f"Archivo de entrada de texto: {archivo_entrada_texto}")
+        click.echo(f"Archivo de entrada de imagen: {archivo_entrada_imagen}")
+        if archivo_entrada_audio:
+            click.echo(f"Archivo de entrada de audio: {archivo_entrada_audio}")
 
-    click.echo(f"Archivo de salida de audio: {archivo_salida_audio}")
-    if archivo_salida_imagen:
-        click.echo(f"Archivo de salida de imagen: {archivo_salida_imagen}")
+        click.echo(f"Archivo de salida de audio: {archivo_salida_audio}")
+        if archivo_salida_imagen:
+            click.echo(f"Archivo de salida de imagen: {archivo_salida_imagen}")
 
-    print(SEPARADOR)
+        print(SEPARADOR)
 
     if accion == "ocultar" :
         flujo_de_trabajo_ocultar(modo_cifrado, modo_cifrado_audio, archivos_entrada, archivos_salida, contraseña, formato_salida)

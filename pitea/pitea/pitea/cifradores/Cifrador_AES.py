@@ -3,6 +3,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 from pitea.constantes import RUTA_DATOS_CIFRADO, SEMILLA
+from pitea.mensajes import print
 
 class Cifrador_AES(Cifrador):
 
