@@ -49,39 +49,38 @@ def ocultar_datos_en_imagen(imagen_entrada, archivo_datos, imagen_salida):
     # Convertir los datos a binario
     datos_binarios = ''.join(format(byte, '08b') for byte in datos)
 
-
     # Añadir una cabecera con el tamaño de los datos (32 bits)
-    tamano_datos = format(len(datos_binarios), '032b')
+    tamano_datos_binarios = format(len(datos_binarios), '032b')
 
-
-    datos_binarios = tamano_datos + datos_binarios  # Cabecera + Datos
+    mensaje = tamano_datos_binarios + datos_binarios  # Cabecera + Datos
 
     imagen = Image.open(imagen_entrada)
     pixeles = imagen.load()
     ancho, alto = imagen.size
 
-    indice_datos = 0
-    total_datos = len(datos_binarios)
+    longitud_mensaje = len(mensaje)
+    print(f'Longitud del mensaje: {longitud_mensaje} bits')
 
     # Comprobar si la imagen tiene suficiente espacio para almacenar los datos
-    if total_datos > ancho * alto * 3:
+    if longitud_mensaje > ancho * alto * 3:
         raise ValueError("La imagen no tiene suficiente espacio para almacenar todos los datos.")
 
+    indice_datos = 0
     for y in range(alto):
         for x in range(ancho):
             pixel = list(pixeles[x, y])
             for canal in range(3):
-                if indice_datos < total_datos:
-                    pixel[canal] = (pixel[canal] & ~1) | int(datos_binarios[indice_datos])  # Limpiar el bit menos significativo y añadir el bit de los datos
+                if indice_datos < longitud_mensaje:
+                    pixel[canal] = (pixel[canal] & ~1) | int(mensaje[indice_datos])  # Limpiar el bit menos significativo y añadir el bit de los datos
                     indice_datos += 1
             pixeles[x, y] = tuple(pixel)
-            if indice_datos >= total_datos:
+            if indice_datos >= longitud_mensaje:
                 break
-        if indice_datos >= total_datos:
+        if indice_datos >= longitud_mensaje:
             break
-
-    imagen.save(imagen_salida, format="PNG", compress_level=5) 
-    print(f'Datos ocultos en la imagen: {imagen_salida}')
+    
+    #cuanto ocupa la imagen ahora
+    imagen.save(imagen_salida, format="PNG", compress_level=0) 
 
 # Función para extraer datos ocultos de una imagen
 def extraer_datos_de_imagen(imagen_entrada, archivo_salida):
@@ -127,14 +126,12 @@ def extraer_datos_de_imagen(imagen_entrada, archivo_salida):
             if len(datos_binarios) >= tamano_datos+32:
                 break
     # Convertir los datos binarios en bytes
-    datos_binarios = datos_binarios[32:] 
+    datos_binarios = datos_binarios[32:] # Eliminar la cabecera
     datos_extraidos = int(datos_binarios, 2).to_bytes(tamano_datos// 8, byteorder='big')
     
     # Guardar los datos extraídos en un archivo
     with open(archivo_salida, 'wb') as archivo_img:
         archivo_img.write(datos_extraidos)
-
-    print(f'Los datos ocultos han sido extraídos y guardados en {archivo_salida}')
 
 # Función para ocultar datos en un archivo de audio
 def ocultar_datos_en_audio(audio_entrada, imagen_entrada, audio_salida):
@@ -155,18 +152,23 @@ def ocultar_datos_en_audio(audio_entrada, imagen_entrada, audio_salida):
     # Verificar que el audio sea de 16 bits
     assert audio.getsampwidth() == 2, "El archivo de audio debe ser de 16 bits"
 
-    # Leer los frames del archivo de audio
+    # Leer los frames del archivo de audio y almacenarlos en un bytearray
     frames = bytearray(list(audio.readframes(audio.getnframes())))
+    print(f'Frames en el archivo de audio: {len(frames)}')
 
+    imagen_size_bits = len(binarios_imagen)
+    print(f'Bits necesarios para ocultar la imagen: {imagen_size_bits}')
+
+    
     # Verificar si el archivo de audio tiene capacidad suficiente para ocultar los datos
-    if len(binarios_imagen) > len(frames) * 8: 
+    if imagen_size_bits > len(frames):
         raise ValueError("La imagen (con la cabecera) es demasiado grande para ser ocultada en este archivo de audio.")
 
     # Ocultar los datos binarios en los bits menos significativos de los frames
     indice_datos = 0
     for i in range(len(frames)):
         if indice_datos < len(binarios_imagen):
-            frames[i] = (frames[i] & 254) | int(binarios_imagen[indice_datos]) # Limpiar el bit menos significativo y añadir el bit de los datos
+            frames[i] = (frames[i] & 254) | int(binarios_imagen[indice_datos]) # Limpiar el bit menos significativo y añadir el bit de los datos 
             indice_datos += 1
 
     # Guardar los frames modificados en un nuevo archivo de audio
@@ -228,11 +230,11 @@ def flujo_completo():
     audio_con_imagen = 'audio_con_imagen.wav'  # El archivo de audio con la imagen oculta
 
     clave = get_random_bytes(16)
-    print(f"Tamaño del archivo de texto original: {obtener_tamano_archivo(archivo_texto)} bytes\n")
+    #print(f"Tamaño del archivo de texto original: {obtener_tamano_archivo(archivo_texto)} bytes\n")
 
     cifrar_archivo(archivo_texto, archivo_cifrado, clave)
-    print(f"Tamaño del archivo de texto cifrado: {obtener_tamano_archivo(archivo_cifrado)} bytes\n")
-
+    #print(f"Tamaño del archivo de texto cifrado: {obtener_tamano_archivo(archivo_cifrado)} bytes\n")
+    
     ocultar_datos_en_imagen(imagen_entrada, archivo_cifrado, imagen_con_datos)
     print(f"Tamaño de la imagen: {obtener_tamano_archivo(imagen_entrada)} bytes")
     print(f"Tamaño de la imagen con datos : {obtener_tamano_archivo(imagen_con_datos)} bytes\n")
@@ -245,17 +247,15 @@ def flujo_completo():
     extraer_datos_de_audio(audio_con_imagen, 'imagen_extraida.png')
     print(f"Tamaño de la imagen extraída: {obtener_tamano_archivo('imagen_extraida.png')} bytes\n")
     
-    print (f'La imagen extraida es igual a la imagen original: {open(imagen_entrada, "rb").read() == open("imagen_extraida.png", "rb").read()}')
-
-    extraer_datos_de_imagen(imagen_con_datos, 'archivo_extraido.txt')
-    print(f"Tamaño del archivo extraído: {obtener_tamano_archivo('archivo_extraido.txt')} bytes\n")
+    extraer_datos_de_imagen('imagen_extraida.png', 'archivo_extraido.txt')
+    #print(f"Tamaño del archivo extraído: {obtener_tamano_archivo('archivo_extraido.txt')} bytes\n")
 
     descifrar_archivo('archivo_extraido.txt', 'archivo_descifrado.txt', clave)
-    print(f"Tamaño del archivo descifrado: {obtener_tamano_archivo('archivo_descifrado.txt')} bytes\n")
+    #print(f"Tamaño del archivo descifrado: {obtener_tamano_archivo('archivo_descifrado.txt')} bytes\n")
 
     original = open(archivo_texto, 'rb').read()
     descifrado = open('archivo_descifrado.txt', 'rb').read()
-    print('El archivo original y el archivo descifrado son iguales:', original == descifrado)
+    print('El archivo original y el archivo descifrado tienen el mismo contenido:', original == descifrado)
     print('[+] Proceso completado con éxito!')
 
 if __name__ == "__main__":
