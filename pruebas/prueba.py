@@ -6,6 +6,110 @@ from PIL import Image
 import wave
 import struct
 
+import cv2
+import subprocess
+import numpy as np
+
+#python prueba.py
+#pysstv --mode MartinM1 imagen_modificada.png salida.wav
+
+# Función para modificar la imagen
+def modificar_imagen(imagen):
+    """
+    Modifica la imagen dividiéndola en 4 partes y luego intercambiando los cuadrantes.
+    """
+    # Obtener las dimensiones de la imagen
+    h, w = imagen.shape[:2]
+    
+    # Dividir la imagen en 4 partes iguales
+    mitad_h = h // 2
+    mitad_w = w // 2
+    
+    # Cuadrantes
+    top_left = imagen[:mitad_h, :mitad_w]  # Parte superior izquierda
+    top_right = imagen[:mitad_h, mitad_w:]  # Parte superior derecha
+    bottom_left = imagen[mitad_h:, :mitad_w]  # Parte inferior izquierda
+    bottom_right = imagen[mitad_h:, mitad_w:]  # Parte inferior derecha
+    
+    # Intercambiar los cuadrantes: top_left <-> bottom_right, top_right <-> bottom_left
+    imagen_modificada = np.vstack((
+        np.hstack((bottom_left, bottom_right)),
+        np.hstack((top_left, top_right))
+    ))
+    
+    return imagen_modificada
+
+# Función para recuperar la imagen original
+def recuperar_imagen(imagen_modificada):
+    """
+    Recupera la imagen original deshaciendo el intercambio de los cuadrantes.
+    """
+    # Obtener las dimensiones de la imagen
+    h, w = imagen_modificada.shape[:2]
+    
+    # Dividir la imagen modificada en 4 partes
+    mitad_h = h // 2
+    mitad_w = w // 2
+    
+    # Cuadrantes de la imagen modificada
+    top_left = imagen_modificada[:mitad_h, mitad_w:]  # Parte superior izquierda
+    top_right = imagen_modificada[:mitad_h, :mitad_w]  # Parte superior derecha
+    bottom_left = imagen_modificada[mitad_h:, mitad_w:]  # Parte inferior izquierda
+    bottom_right = imagen_modificada[mitad_h:, :mitad_w]  # Parte inferior derecha
+    
+    # Revertir el intercambio de los cuadrantes para recuperar la imagen original
+    imagen_recuperada = np.vstack((
+        np.hstack((bottom_right, bottom_left)),
+        np.hstack((top_right, top_left))
+    ))
+    
+    return imagen_recuperada
+
+def generar_audio_con_pysstv(imagen_path, audio_output_path, mode="MartinM1"):
+    # Comando para ejecutar pysstv con el modo y archivo de imagen especificados
+    comando = [
+        "pysstv", "--mode", mode, imagen_path, audio_output_path , "--resize"
+    ]
+    
+    # Ejecutar el comando usando subprocess
+    subprocess.run(comando)
+
+def nuevo_flujo():
+    #Preguntar se quiere modificar la imagen o recuperarla
+    print("¿Qué desea hacer?")
+    print("1. Modificar la imagen")
+    print("2. Recuperar la imagen")
+    opcion = input("Ingrese la opción deseada: ")
+
+    if opcion == "1":
+        # Leer la imagen original
+        imagen = cv2.imread('prueba_ia.webp') 
+        
+        # Modificar la imagen
+        imagen_modificada = modificar_imagen(imagen)
+        
+        # Guardar la imagen modificada
+        cv2.imwrite('imagen_modificada.png', imagen_modificada)
+
+        imagen2 = cv2.imread('imagen_modificada.png')
+
+        #crear el audio 
+        generar_audio_con_pysstv("imagen_modificada.png", "salida.wav")
+        
+        print('[+] Proceso completado con éxito!, Se ha generado el audio con la imagen modificada')
+    elif opcion == "2":
+        imagen2 = cv2.imread('imagen_sstv2.png')
+
+        # Recuperar la imagen original
+        imagen_recuperada = recuperar_imagen(imagen2)
+        
+        # Guardar la imagen recuperada
+        cv2.imwrite('imagen_recuperada.png', imagen_recuperada)
+        
+        print('[+] Proceso completado con éxito!, se ha recuperado la imagen')
+    else: 
+        print("Opción no válida")
+
 # Función para obtener el tamaño del archivo
 def obtener_tamano_archivo(archivo):
     return os.path.getsize(archivo)
@@ -259,4 +363,5 @@ def flujo_completo():
     print('[+] Proceso completado con éxito!')
 
 if __name__ == "__main__":
-    flujo_completo()
+    nuevo_flujo()
+    #flujo_completo()
