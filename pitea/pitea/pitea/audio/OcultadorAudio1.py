@@ -10,6 +10,10 @@ class OcultadorAudio1(OcultadorAudio) :
             datos_imagen = img_file.read()
     
         binarios_imagen = ''.join(format(byte, '08b') for byte in datos_imagen) # Convertir los datos de la imagen a binarios
+
+        # Añadir una cabecera con el tamaño de los datos (32 bits)
+        tamano_datos = format(len(binarios_imagen), '032b')
+        binarios_imagen = tamano_datos + binarios_imagen  # Cabecera + Datos
         
         assert self.audio.getsampwidth() == 2, "El archivo de audio debe ser de 16 bits" # Asegurarse de que el archivo de audio sea de 16 bits
         
@@ -23,8 +27,9 @@ class OcultadorAudio1(OcultadorAudio) :
             if indice_datos < len(binarios_imagen): # Si todavía hay datos para ocultar
                 frames[i] = (frames[i] & 254) | int(binarios_imagen[indice_datos]) # Ocultar el bit menos significativo
                 indice_datos += 1
+
         
-        with wave.open(RUTA_AUDIO_CONTENEDOR, 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
+        with wave.open(RUTA_AUDIO_CONTENEDOR % "wav", 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
             audio_modificado.setparams(self.audio.getparams())  # Copiar los parámetros del archivo de audio original
             audio_modificado.writeframes(frames) # Escribir los frames modificados
 
@@ -47,8 +52,24 @@ class OcultadorAudio1(OcultadorAudio) :
         datos_binarios = ''
         for i in range(len(frames)):
             datos_binarios += str(frames[i] & 1)
+            if len(datos_binarios) >= 32:
+                tamano_datos = int(datos_binarios[:32], 2)  # Leer el tamaño de los datos
+                datos_binarios = datos_binarios[32:]  # Eliminar la cabecera
+                break  # Una vez obtenida la cabecera, podemos detener la lectura
         
-        datos_extraidos = int(datos_binarios[:tamano_imagen * 8], 2).to_bytes(tamano_imagen, byteorder='big')
+        # Verificar que la cabecera tenga el tamaño correcto
+        if tamano_datos == 0:
+            raise ValueError("No se pudo extraer el tamaño de los datos ocultos.")
+        # Extraer los datos de acuerdo al tamaño especificado
+    
+        for i in range(len(frames)):
+            datos_binarios += str(frames[i] & 1)  # Extraer el bit menos significativo
+            if len(datos_binarios) >= tamano_datos+32:
+                break
+
+        datos_binarios = datos_binarios[32:]
+            
+        datos_extraidos = int(datos_binarios, 2).to_bytes(tamano_datos// 8, byteorder='big')
 
         with open(RUTA_IMAGEN_DESOCULTACION % formato, 'wb') as archivo_img:
             archivo_img.write(datos_extraidos)

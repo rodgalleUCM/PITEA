@@ -2,7 +2,7 @@ from pitea.cifradores.Cifrador import Cifrador
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
-from pitea.constantes import RUTA_DATOS_CIFRADO, SEMILLA, RUTA_DATOS_LIMPIOS_DESOCULTACION 
+from pitea.constantes import RUTA_DATOS_CIFRADO, RUTA_DATOS_CIFRADOS_DESOCULTACION, SEMILLA, RUTA_DATOS_LIMPIOS_DESOCULTACION 
 from pitea.mensajes import print
 
 class Cifrador_AES(Cifrador):
@@ -41,10 +41,12 @@ class Cifrador_AES(Cifrador):
         print(f'Archivo cifrado guardado en {RUTA_DATOS_CIFRADO}')
         return iv + datos_cifrados
 
-    def descifrar(self,datos_cifrados_enteros):
+    def descifrar(self):
         tamano_bloque = AES.block_size
-        iv = datos_cifrados_enteros[:tamano_bloque]  
-        datos_cifrados = datos_cifrados_enteros[tamano_bloque+1:]
+
+        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, 'rb') as f:
+            iv = f.read(tamano_bloque)
+            datos_cifrados = f.read()
 
         clave = self.trasformar_contrasenia_a_clave()
     
