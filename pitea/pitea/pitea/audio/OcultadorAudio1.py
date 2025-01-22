@@ -6,7 +6,7 @@ from pitea.mensajes import print
 class OcultadorAudio1(OcultadorAudio) :
        
     def ocultar(self,formato,ruta_salida) :
-        with open(RUTA_IMAGEN_CONTENEDORA %formato, 'rb') as img_file:
+        with open(str(RUTA_IMAGEN_CONTENEDORA) %formato, 'rb') as img_file:
             datos_imagen = img_file.read()
     
         binarios_imagen = ''.join(format(byte, '08b') for byte in datos_imagen) # Convertir los datos de la imagen a binarios
@@ -29,7 +29,7 @@ class OcultadorAudio1(OcultadorAudio) :
                 indice_datos += 1
 
         
-        with wave.open(RUTA_AUDIO_CONTENEDOR % "wav", 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
+        with wave.open(str(RUTA_AUDIO_CONTENEDOR) % "wav", 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
             audio_modificado.setparams(self.audio.getparams())  # Copiar los parámetros del archivo de audio original
             audio_modificado.writeframes(frames) # Escribir los frames modificados
 
@@ -41,7 +41,7 @@ class OcultadorAudio1(OcultadorAudio) :
         
         self.audio.close()
         
-        print(f'La imagen ha sido ocultada en el archivo de audio: {RUTA_AUDIO_CONTENEDOR % self.formato}')
+        print(f'La imagen ha sido ocultada en el archivo de audio: {str(RUTA_AUDIO_CONTENEDOR) % self.formato}')
 
     def desocultar(self) :
         frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))

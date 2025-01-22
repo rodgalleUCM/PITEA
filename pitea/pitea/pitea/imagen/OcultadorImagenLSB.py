@@ -40,9 +40,9 @@ class OcultadorImagenLSB(OcultadorImagen) :
             if indice_datos >= longitud_mensaje:
                 break
 
-        self.imagen.save(RUTA_IMAGEN_CONTENEDORA % self.formato)
+        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % self.formato)
 
-        print(f'Imagen contenedora guardada en {RUTA_IMAGEN_CONTENEDORA % self.formato}')
+        print(f'Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % self.formato}')
 
         return self.imagen , self.formato
     
