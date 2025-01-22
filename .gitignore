@@ -1,3 +1,4 @@
 .vepitea/
 __pycache__
 cache/
+configuracion.toml

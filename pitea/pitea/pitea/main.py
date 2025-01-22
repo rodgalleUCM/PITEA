@@ -1,9 +1,16 @@
 from pitea.mensajes import *
-from pitea.cifradores.factory import CifradorFactory
-from pitea.imagen.factory import OcultadorImagenFactory
-from pitea.audio.factory import OcultadorAudioFactory
+from pitea.pitea.pitea.cifradores.cifradorfactory import CifradorFactory
+from pitea.pitea.pitea.imagen.imagenfactory import OcultadorImagenFactory
+from pitea.pitea.pitea.audio.audiofactory import OcultadorAudioFactory
+from pitea.utils import crear_cache
+import builtins 
 
 def flujo_de_trabajo_ocultar(modo_cifrado,modo_cifrado_imagen, modo_cifrado_audio, input, output, contraseña, formato_salida) :
+
+    print("Creando estructura de la cache")
+    n_cache = crear_cache(constantes.LISTA_DIR_CACHE_OCULTACION)
+    builtins.print(f"Los datos se guardaran en cache_{n_cache}")
+
     # Renombramiento de variables
     archivo_entrada_texto = input[0]
     archivo_entrada_imagen = input[1]
@@ -35,6 +42,10 @@ def flujo_de_trabajo_ocultar(modo_cifrado,modo_cifrado_imagen, modo_cifrado_audi
 
 
 def flujo_de_trabajo_desocultar(modo_cifrado, modo_cifrado_imagen,modo_cifrado_audio, input, output, contraseña, formato_salida) :
+
+    print("Creando estructura de la cache")
+    n_cache = crear_cache(constantes.LISTA_DIR_CACHE_DESOCULTACION)
+    print(f"Los datos se guardaran en cache_{n_cache}")
     # Renombramiento de variables
     archivo_entrada_texto = input[0]
     archivo_entrada_imagen = input[1]
