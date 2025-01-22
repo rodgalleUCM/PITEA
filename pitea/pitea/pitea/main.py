@@ -10,7 +10,6 @@ def flujo_de_trabajo_ocultar(modo_cifrado,modo_cifrado_imagen, modo_cifrado_audi
     archivo_entrada_audio = input[2] if len(input) == 3 else None
 
     archivo_salida_audio = output[0]
-    archivo_salida_imagen = output[1] if len(output) == 2 else None
 
     print(MENSAJE_INICIO_FLUJO % "ocultación")
 
