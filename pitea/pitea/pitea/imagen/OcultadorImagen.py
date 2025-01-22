@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from PIL import Image
+from pitea.constantes import RUTA_IMAGEN_CONTENEDORA , RUTA_DATOS_CIFRADOS_DESOCULTACION,RUTA_DATOS_CIFRADO
 class OcultadorImagen(ABC) :
        
     def __init__(self,ruta_imagen):
@@ -9,8 +10,29 @@ class OcultadorImagen(ABC) :
         self.ancho, self.alto = self.imagen.size
 
     @abstractmethod
-    def ocultar(datos) :
+    def ocultar(self,datos) :
         pass
     @abstractmethod
-    def desocultar() :
+    def desocultar(self) :
         pass
+
+    def ocultar_guardar(self) :
+        with open(RUTA_DATOS_CIFRADO, 'rb') as f:
+            datos = f.read()
+
+        imagen, formato = self.ocultar(datos)
+
+        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % self.formato)
+
+        print(f'Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % self.formato}')
+
+        return imagen, formato
+
+ 
+    def desocultar_guardar(self) :
+        datos_extraidos = self.desocultar()
+        
+        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
+            f.write(datos_extraidos)
+
+        print(f'Datos cifrados guardados en {RUTA_DATOS_CIFRADOS_DESOCULTACION}')

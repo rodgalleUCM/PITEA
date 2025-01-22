@@ -1,13 +1,12 @@
 import wave
 from pitea.audio.OcultadorAudio import OcultadorAudio
-from pitea.constantes import RUTA_IMAGEN_CONTENEDORA,RUTA_AUDIO_CONTENEDOR,RUTA_IMAGEN_DESOCULTACION
+
 from pitea.mensajes import print
 
 class OcultadorAudio1(OcultadorAudio) :
        
-    def ocultar(self,formato,ruta_salida) :
-        with open(str(RUTA_IMAGEN_CONTENEDORA) %formato, 'rb') as img_file:
-            datos_imagen = img_file.read()
+    def ocultar(self,datos_imagen) :
+        
     
         binarios_imagen = ''.join(format(byte, '08b') for byte in datos_imagen) # Convertir los datos de la imagen a binarios
 
@@ -28,18 +27,9 @@ class OcultadorAudio1(OcultadorAudio) :
                 frames[i] = (frames[i] & 254) | int(binarios_imagen[indice_datos]) # Ocultar el bit menos significativo
                 indice_datos += 1
 
-        
-        with wave.open(str(RUTA_AUDIO_CONTENEDOR) % "wav", 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
-            audio_modificado.setparams(self.audio.getparams())  # Copiar los parámetros del archivo de audio original
-            audio_modificado.writeframes(frames) # Escribir los frames modificados
-
-        if ruta_salida :
-            with wave.open(ruta_salida, 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
-                audio_modificado.setparams(self.audio.getparams())  # Copiar los parámetros del archivo de audio original
-                audio_modificado.writeframes(frames) # Escribir los frames modificados
-                print(f'La imagen ha sido ocultada en el archivo de audio: {ruta_salida }')
-        
         self.audio.close()
+
+        return frames
         
         print(f'La imagen ha sido ocultada en el archivo de audio: {str(RUTA_AUDIO_CONTENEDOR) % self.formato}')
 
@@ -47,7 +37,6 @@ class OcultadorAudio1(OcultadorAudio) :
         frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
         tamano_imagen= 0
         self.audio.close()
-        formato = "png"
 
         datos_binarios = ''
         for i in range(len(frames)):
@@ -71,7 +60,5 @@ class OcultadorAudio1(OcultadorAudio) :
             
         datos_extraidos = int(datos_binarios, 2).to_bytes(tamano_datos// 8, byteorder='big')
 
-        with open(RUTA_IMAGEN_DESOCULTACION % formato, 'wb') as archivo_img:
-            archivo_img.write(datos_extraidos)
+        return datos_extraidos
         
-        print(f'La imagen ha sido extraída y guardada en {RUTA_IMAGEN_DESOCULTACION %formato}')

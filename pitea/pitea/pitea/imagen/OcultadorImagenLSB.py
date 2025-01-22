@@ -1,12 +1,9 @@
 import base64
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-from pitea.constantes import RUTA_IMAGEN_CONTENEDORA , RUTA_DATOS_CIFRADOS_DESOCULTACION,RUTA_DATOS_CIFRADO
 from pitea.mensajes import print
 
 class OcultadorImagenLSB(OcultadorImagen) :
-    def ocultar(self) :
-        with open(RUTA_DATOS_CIFRADO, 'rb') as f:
-            datos = f.read()
+    def ocultar(self,datos) :
 
         datos_binarios = ''.join(format(byte, '08b') for byte in datos) # Convertir los datos a binarios del archivo cifrado
         
@@ -39,10 +36,6 @@ class OcultadorImagenLSB(OcultadorImagen) :
                     break
             if indice_datos >= longitud_mensaje:
                 break
-
-        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % self.formato)
-
-        print(f'Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % self.formato}')
 
         return self.imagen , self.formato
     
@@ -86,12 +79,6 @@ class OcultadorImagenLSB(OcultadorImagen) :
         # Convertir los datos binarios en bytes
         datos_binarios = datos_binarios[32:] # Eliminar la cabecera
         datos_extraidos = int(datos_binarios, 2).to_bytes(tamano_datos// 8, byteorder='big')
-
-        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
-            f.write(datos_extraidos)
-
-        print(f'Datos cifrados guardados en {RUTA_DATOS_CIFRADOS_DESOCULTACION}')
-
 
         return datos_extraidos
 

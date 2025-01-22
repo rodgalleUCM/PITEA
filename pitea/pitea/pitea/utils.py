@@ -1,8 +1,10 @@
 
 
 import tomllib
+import click
 import tomli_w
 import pitea.constantes as constantes
+from pathlib import Path
 
 
 def crear_cache(lista) :
@@ -57,3 +59,10 @@ def actualizar_conf(conf,archivo_conf):
     """
     with open(archivo_conf, "wb") as f:
         tomli_w.dump(conf, f)
+
+def comprobar_existencia_archivo(nombre) :
+    ruta = Path(nombre)
+    if not ruta.exists():
+        raise click.UsageError(f"El archivo '{nombre}' no existe.")
+    if not ruta.is_file():
+        raise click.UsageError(f"'{nombre}' no es un archivo válido.")

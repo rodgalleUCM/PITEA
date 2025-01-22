@@ -21,11 +21,8 @@ class Cifrador_AES(Cifrador):
         return clave
 
 
-    def cifrar(self, secreto):
+    def cifrar(self,datos):
         tamano_bloque = AES.block_size
-
-        with open(secreto, 'rb') as f:
-            datos = f.read()
 
         clave = self.trasformar_contrasenia_a_clave()
 
@@ -33,13 +30,10 @@ class Cifrador_AES(Cifrador):
         iv = get_random_bytes(tamano_bloque)  # Generar un vector de inicialización aleatorio
         cifrador = AES.new(clave, AES.MODE_CBC, iv)  # Crear el cifrador
         datos_cifrados = cifrador.encrypt(datos_padded)  # Cifrar los datos
-        
-        # Guardar el IV y los datos cifrados en el archivo de salida
-        with open(RUTA_DATOS_CIFRADO, 'wb') as f:  
-            f.write(iv + datos_cifrados)  # Escribir el IV al inicio del archivo
-        
-        print(f'Archivo cifrado guardado en {RUTA_DATOS_CIFRADO}')
-        return iv + datos_cifrados
+        print(iv)
+        print(datos_cifrados)
+    
+        return iv , datos_cifrados
 
     def descifrar(self):
         tamano_bloque = AES.block_size
@@ -53,13 +47,6 @@ class Cifrador_AES(Cifrador):
         # Crear el descifrador y descifrar los datos
         descifrador = AES.new(clave, AES.MODE_CBC, iv) 
         datos_descifrados = unpad(descifrador.decrypt(datos_cifrados), tamano_bloque)
-
-
-        # Guardar los datos descifrados en el archivo de salida
-        with open(RUTA_DATOS_LIMPIOS_DESOCULTACION , 'wb') as f:
-            f.write(datos_descifrados)
-        
-        print(f'Archivo descifrado guardado en {RUTA_DATOS_LIMPIOS_DESOCULTACION }')
 
         return datos_descifrados
  

@@ -10,7 +10,7 @@ class CifradorFactory(AbstractFactory) :
         Devuelve el constructor de Cifrador correspondiente según el tipo de archivo.
     """
     @staticmethod
-    def get_builder(modo_cifrado,clave):
+    def get_builder(modo_cifrado,clave,ruta):
         """
         Devuelve el constructor de cifrador correspondiente según el modo de cifrado.
 
@@ -30,7 +30,7 @@ class CifradorFactory(AbstractFactory) :
             Si el modo de cifrado es desconocido.
         """
         if modo_cifrado == 'aes':
-            return Cifrador_AES(clave)
+            return Cifrador_AES(clave,ruta)
        
         else:
-            raise ValueError(f"Tipo de archivo desconocido: {modo_cifrado}")
+            raise ValueError(f"Tipo de cifrador desconocido: {modo_cifrado}")

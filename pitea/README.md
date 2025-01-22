@@ -1,6 +1,8 @@
 # TFG-PITEA
 
 ## EJEMPLO DE LLAMADA
+
+```bash
 python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
   --modo-cifrado-imagen "lsb" \
@@ -12,8 +14,21 @@ python3 script_ejecucion.py ocultar \
   --contraseña "qwqwqw" \
   --formato-salida wav \
   -v
+```
+
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen "lsb" \
+  --modo-cifrado-audio 1 \
+  -i archivo_salida.wav \
+  -o datos_desocultos.txt \
+  --contraseña "qwqwqw" \
+  -v
+```
 
 ## Arbol de directorio provisional de pitea
+
 ```TFG-PITEA/
 ├── README.md
 ├── pitea/
