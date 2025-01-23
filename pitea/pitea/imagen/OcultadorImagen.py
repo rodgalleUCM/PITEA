@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from PIL import Image
 from pitea.constantes import RUTA_IMAGEN_CONTENEDORA , RUTA_DATOS_CIFRADOS_DESOCULTACION,RUTA_DATOS_CIFRADO
 class OcultadorImagen(ABC) :
+
+    nombre =""
        
     def __init__(self,ruta_imagen):
         self.formato = ruta_imagen.split(".")[-1]

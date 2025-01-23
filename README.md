@@ -21,7 +21,7 @@ python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
   --modo-cifrado-imagen "lsb" \
   --modo-cifrado-audio 1 \
-  -i archivo_salida.wav \
+  -i audio_salida.wav \
   -o datos_desocultos.txt \
   --contraseña "qwqwqw" \
   -v

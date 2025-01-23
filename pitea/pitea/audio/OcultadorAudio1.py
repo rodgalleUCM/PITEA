@@ -4,6 +4,8 @@ from pitea.audio.OcultadorAudio import OcultadorAudio
 from pitea.mensajes import print
 
 class OcultadorAudio1(OcultadorAudio) :
+
+    nombre = "1"
        
     def ocultar(self,datos_imagen) :
         

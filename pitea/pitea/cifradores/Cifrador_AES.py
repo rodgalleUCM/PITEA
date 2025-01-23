@@ -7,6 +7,8 @@ from pitea.mensajes import print
 
 class Cifrador_AES(Cifrador):
 
+    nombre = "aes"
+
     def trasformar_contrasenia_a_clave(self) :
         contraseña_bytes = self.contraseña.encode()
         # Rellenar o truncar la contraseña a 16 bytes
@@ -30,9 +32,7 @@ class Cifrador_AES(Cifrador):
         iv = get_random_bytes(tamano_bloque)  # Generar un vector de inicialización aleatorio
         cifrador = AES.new(clave, AES.MODE_CBC, iv)  # Crear el cifrador
         datos_cifrados = cifrador.encrypt(datos_padded)  # Cifrar los datos
-        print(iv)
-        print(datos_cifrados)
-    
+
         return iv , datos_cifrados
 
     def descifrar(self):

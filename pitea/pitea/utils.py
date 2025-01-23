@@ -8,18 +8,8 @@ from pathlib import Path
 
 
 def crear_cache(lista) :
-    conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
-
-    retorno = conf["contador_cache"]
-
-    conf["contador_cache"] = int(conf["contador_cache"]) + 1
-
-    actualizar_conf(conf,constantes.ARCHIVO_CONFIG)
-
     for dir in lista :
         dir.mkdir(exist_ok=True, parents=True)
-
-    return retorno 
 
 
 def cargar_configuracion(archivo_conf):

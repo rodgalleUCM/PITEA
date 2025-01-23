@@ -2,6 +2,9 @@ from pathlib import Path
 
 from pitea.utils import cargar_configuracion
 
+from datetime import datetime
+from pitea.utils import actualizar_conf
+
 
 RUTA_PROGRAMA= Path("pitea")
 
@@ -11,7 +14,22 @@ RUTA_CACHE_GENERAL= RUTA_PROGRAMA / "cache"
 
 conf = cargar_configuracion(ARCHIVO_CONFIG)
 
-RUTA_CACHE_ESPECIFICA= RUTA_CACHE_GENERAL / f"cache_{conf["contador_cache"]}" 
+# Obtener la fecha y hora actual
+fecha_hora_actual = datetime.now()
+
+# Formatear la fecha y hora como "DD:MM:YYYY_HH:Minutos"
+formato = fecha_hora_actual.strftime("%d-%m-%Y_%H:%M")
+
+if formato != conf["ult_fecha"] :
+    RUTA_CACHE_ESPECIFICA= RUTA_CACHE_GENERAL / f"cache_{formato}" 
+    conf["ult_fecha"] = formato
+    conf["contador_cache"] = 0
+else :
+    RUTA_CACHE_ESPECIFICA= RUTA_CACHE_GENERAL / f"cache_{formato}_{conf["contador_cache"]}" 
+    conf["contador_cache"]+=1
+
+actualizar_conf(conf,ARCHIVO_CONFIG)
+
 
 RUTA_OCULTACION=RUTA_CACHE_ESPECIFICA / "ocultacion"
 RUTA_OCULTACION_DATOS= RUTA_OCULTACION / "datos"
@@ -42,5 +60,6 @@ SEMILLA = b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10'
 VERBOSE = False
 
 FORMATO_IMAGEN_DESOCULTACION = "png"
+FORMATO_AUDIO_OCULTACION = "wav"
 
 

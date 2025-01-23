@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from pitea.constantes import RUTA_DATOS_CIFRADO, RUTA_DATOS_CIFRADOS_DESOCULTACION, SEMILLA, RUTA_DATOS_LIMPIOS_DESOCULTACION 
-class Cifrador(ABC) :
+class Cifrador(ABC) :   
+
+    nombre=""
        
 
 

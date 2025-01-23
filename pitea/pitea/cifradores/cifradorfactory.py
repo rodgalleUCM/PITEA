@@ -1,6 +1,8 @@
 from pitea.cifradores.Cifrador_AES import Cifrador_AES
 from pitea.AbstractFactory import AbstractFactory
 class CifradorFactory(AbstractFactory) :
+
+    lista_cifradores= [Cifrador_AES]
     """
     Fábrica para obtener el constructor de Cifrador adecuado basado en el tipo de archivo.
 
@@ -29,8 +31,9 @@ class CifradorFactory(AbstractFactory) :
         ValueError
             Si el modo de cifrado es desconocido.
         """
-        if modo_cifrado == 'aes':
-            return Cifrador_AES(clave,ruta)
+        for cifrador in CifradorFactory.lista_cifradores :
+            if cifrador.nombre == modo_cifrado :
+                return cifrador(clave,ruta)
        
         else:
             raise ValueError(f"Tipo de cifrador desconocido: {modo_cifrado}")

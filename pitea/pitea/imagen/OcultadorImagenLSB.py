@@ -3,6 +3,8 @@ from pitea.imagen.OcultadorImagen import OcultadorImagen
 from pitea.mensajes import print
 
 class OcultadorImagenLSB(OcultadorImagen) :
+
+    nombre ="lsb"
     def ocultar(self,datos) :
 
         datos_binarios = ''.join(format(byte, '08b') for byte in datos) # Convertir los datos a binarios del archivo cifrado

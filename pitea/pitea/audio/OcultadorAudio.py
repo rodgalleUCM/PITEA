@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 import wave
 from PIL import Image
-from pitea.constantes import FORMATO_IMAGEN_DESOCULTACION, RUTA_IMAGEN_CONTENEDORA,RUTA_AUDIO_CONTENEDOR,RUTA_IMAGEN_DESOCULTACION
+from pitea.constantes import FORMATO_AUDIO_OCULTACION, FORMATO_IMAGEN_DESOCULTACION, RUTA_IMAGEN_CONTENEDORA,RUTA_AUDIO_CONTENEDOR,RUTA_IMAGEN_DESOCULTACION
 class OcultadorAudio(ABC) :
+
+    nombre= ""
     
     def __init__(self):
         pass
@@ -25,7 +27,7 @@ class OcultadorAudio(ABC) :
 
         frames = self.ocultar(datos_imagen)
 
-        with wave.open(str(RUTA_AUDIO_CONTENEDOR) % formato, 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
+        with wave.open(str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION, 'wb') as audio_modificado: # Guardar los frames modificados en un nuevo archivo de audio
             audio_modificado.setparams(self.audio.getparams())  # Copiar los parámetros del archivo de audio original
             audio_modificado.writeframes(frames) # Escribir los frames modificados
 
