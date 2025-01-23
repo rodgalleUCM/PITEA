@@ -1,6 +1,6 @@
 .vepitea/
 .venpitea/
 __pycache__/
-cache/
+*cache*/
 audio_salida.wav
-datos_descocultos.txt
+datos_desocultos.txt

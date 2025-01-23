@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
-class AbstractFactory(ABC) :
+
+class AbstractFactory(ABC):
     """
     Fábrica para obtener el constructor de ocultadores en imagenes adecuado basado en el tipo de archivo.
 
@@ -9,8 +10,9 @@ class AbstractFactory(ABC) :
     get_builder(modo_cifrado,clave):
         Devuelve el constructor de Cifrador correspondiente según el tipo de archivo.
     """
+
     @staticmethod
-    def get_builder(modo_cifrado,clave):
+    def get_builder(modo_cifrado, clave):
         """
         Devuelve el constructor de cifrador correspondiente según el modo de cifrado.
 
