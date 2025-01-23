@@ -1,5 +1,5 @@
 .vepitea/
-__pycache__
+__pycache__/
 cache/
 configuracion.toml
 audio_salida.wav
