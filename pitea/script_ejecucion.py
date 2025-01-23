@@ -32,7 +32,7 @@ def main():
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["1", "2", "sstv"]
+        ["lsb", "2", "sstv"]
     ),  #! hay un issue donde hay que cambiar el nombre de 1
     default="1",
     help="Modo de cifrado específico para audio (ej. sstv).",
@@ -94,7 +94,7 @@ def ocultar(
     # Compruebo que la cantidad de rutas es la adecuada
     num_entradas_esperadas = (
         3
-        if modo_cifrado_audio in ["1", "2"]
+        if modo_cifrado_audio in ["lsb", "2"]
         else 2  # En sstv el audio se genera solo por lo que no es necesario pasarle uno
     )
 
@@ -172,7 +172,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["1", "2", "sstv"]
+        ["lsb", "2", "sstv"]
     ),  #! hay un issue donde hay que cambiar el nombre de 1
     default="1",
     help="Modo de cifrado específico para audio (ej. sstv).",

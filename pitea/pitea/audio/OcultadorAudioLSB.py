@@ -3,8 +3,8 @@ from pitea.audio.OcultadorAudio import OcultadorAudio
 from pitea.mensajes import print
 
 
-class OcultadorAudio1(OcultadorAudio):
-    nombre = "1"
+class OcultadorAudioLSB(OcultadorAudio):
+    nombre = "lsb"
 
     def ocultar(self, datos_imagen):
         binarios_imagen = "".join(
