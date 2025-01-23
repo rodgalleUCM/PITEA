@@ -1,6 +1,54 @@
 # TFG-PITEA
 
-## Participantes 
+## EJEMPLO DE LLAMADA
 
-- [Alberto Martín Oruña](https://github.com/Alberto12x) (alberm33@ucm.es)
-- [Rodrigo Gallego Marín](https://github.com/rodgalleUCM) (rodgalle@ucm.es)
+```bash
+python3 script_ejecucion.py ocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen "lsb" \
+  --modo-cifrado-audio 1 \
+  -i "archivos_prueba/prueba.txt \
+     archivos_prueba/imagen.png \
+     archivos_prueba/audio.wav" \
+  -o ./audio_salida.wav \
+  --contraseña "qwqwqw" \
+  --formato-salida wav \
+  -v
+```
+
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen "lsb" \
+  --modo-cifrado-audio 1 \
+  -i archivo_salida.wav \
+  -o datos_desocultos.txt \
+  --contraseña "qwqwqw" \
+  -v
+```
+
+## Arbol de directorio provisional de pitea
+
+```TFG-PITEA/
+├── README.md
+├── pitea/
+│   ├── README.md
+│   ├── pitea/
+│   │   ├── audio/
+│   │   │   ├── desocultador.py
+│   │   │   ├── ocultador.py
+│   │   │   └── procesamiento.py
+│   │   ├── cache/
+│   │   │   ├── audio/
+│   │   │   │   ├── contenedroes/
+│   │   │   │   └── limpio/
+│   │   │   ├── imagenes/
+│   │   │   │   ├── contenedores/
+│   │   │   │   └── limpio/
+│   │   ├── imagen/
+│   │   │   ├── desocultador.py
+│   │   │   ├── ocultador.py
+│   │   │   └── procesamiento.py
+│   │   ├── constantes.py
+│   └── script_ejecucion.py
+└── pyproject.toml
