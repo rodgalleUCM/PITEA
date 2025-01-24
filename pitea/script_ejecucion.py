@@ -60,7 +60,9 @@ def main():
     help="Archivos de salida separados por espacio: se requiere 1 o 2 archivos en orden [audio_salida, imagen_salida (opcional)].\nHan de ser escritos entre comillas para que lo identifique python como un unico argumento",
 )
 @click.option(
-    "--contraseña", required=True, help="Contraseña para cifrado o descifrado."
+    "--contraseña", 
+    required=True, 
+    help="Contraseña para cifrado o descifrado."
 )
 @click.option(
     "--formato-salida",
