@@ -18,6 +18,21 @@ class OcultadorAudio(ABC):
         self.audio = wave.open(ruta_audio, mode="rb")
         self.formato = ruta_audio.split(".")[-1]
 
+    def guardar(self,ruta,frames) :
+        with (
+            wave.open(
+                ruta, "wb"
+            ) as audio_modificado
+        ):  # Guardar los frames modificados en un nuevo archivo de audio
+            audio_modificado.setparams(
+                self.audio.getparams()
+            )  # Copiar los parámetros del archivo de audio original
+            audio_modificado.writeframes(frames)  # Escribir los frames modificados
+
+            print(
+                    f"La imagen ha sido ocultada en el archivo de audio: {ruta}"
+                )
+
     @abstractmethod
     def ocultar(self, datos):
         pass
@@ -32,31 +47,12 @@ class OcultadorAudio(ABC):
 
         frames = self.ocultar(datos_imagen)
 
-        with (
-            wave.open(
-                str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION, "wb"
-            ) as audio_modificado
-        ):  # Guardar los frames modificados en un nuevo archivo de audio
-            audio_modificado.setparams(
-                self.audio.getparams()
-            )  # Copiar los parámetros del archivo de audio original
-            audio_modificado.writeframes(frames)  # Escribir los frames modificados
-
-            print(
-                    f"La imagen ha sido ocultada en el archivo de audio: {str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION}"
-                )
+        self.guardar(str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION,frames)
 
         if ruta_salida:
-            with (
-                wave.open(ruta_salida, "wb") as audio_modificado
-            ):  # Guardar los frames modificados en un nuevo archivo de audio
-                audio_modificado.setparams(
-                    self.audio.getparams()
-                )  # Copiar los parámetros del archivo de audio original
-                audio_modificado.writeframes(frames)  # Escribir los frames modificados
-                print(
-                    f"La imagen ha sido ocultada en el archivo de audio: {ruta_salida}"
-                )
+            self.guardar(ruta_salida,frames)
+            
+            
 
     def desocultar_guardar(self):
         datos_extraidos = self.desocultar()
