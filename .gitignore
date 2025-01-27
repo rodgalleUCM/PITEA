@@ -1,5 +1,6 @@
 .vepitea/
 .venpitea/
+venv/
 __pycache__/
 *cache*/
 audio_salida.wav
