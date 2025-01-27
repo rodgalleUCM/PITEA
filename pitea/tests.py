@@ -48,9 +48,9 @@ def run_tests():
             )
             
             # Imprime la salida de la prueba
-            print(f"Comando: {' '.join(test_case['command'])}")
-            print(f"Salida estándar:\n{result.stdout}")
-            print(f"Error estándar:\n{result.stderr}")
+            #print(f"Comando: {' '.join(test_case['command'])}")
+            #print(f"Salida estándar:\n{result.stdout}")
+            #print(f"Error estándar:\n{result.stderr}")
             
             # Validación de resultados
             if result.returncode == 0:
