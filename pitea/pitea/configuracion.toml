@@ -1,2 +1,5 @@
-contador_cache = 2
-ult_fecha = "27-01-2025_09:59"
+contador_cache = 0
+ult_fecha = "27-01-2025_22:11"
+modo_sstv = "MartinM1"
+samples_per_sec = 11025
+bits = 16

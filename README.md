@@ -27,6 +27,19 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+```bash
+python3 script_ejecucion.py ocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen "lsb" \
+  --modo-cifrado-audio "sstv" \
+  -i "archivos_prueba/prueba.txt \
+     archivos_prueba/imagen.png" \  
+  -o ./sstv.wav \
+  --contraseña "qwqwqw" \
+  --formato-salida wav \
+  -v
+```
+
 ## Arbol de directorio provisional de pitea
 
 ```TFG-PITEA/

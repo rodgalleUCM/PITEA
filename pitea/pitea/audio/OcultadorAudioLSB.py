@@ -42,10 +42,6 @@ class OcultadorAudioLSB(OcultadorAudio):
 
         return frames
 
-        print(
-            f"La imagen ha sido ocultada en el archivo de audio: {str(RUTA_AUDIO_CONTENEDOR) % self.formato}"
-        )
-
     def desocultar(self):
         frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
         tamano_imagen = 0

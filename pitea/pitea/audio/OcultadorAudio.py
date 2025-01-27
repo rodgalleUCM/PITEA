@@ -15,8 +15,9 @@ class OcultadorAudio(ABC):
         pass
 
     def __init__(self, ruta_audio):
-        self.audio = wave.open(ruta_audio, mode="rb")
-        self.formato = ruta_audio.split(".")[-1]
+        if ruta_audio:
+            self.audio = wave.open(ruta_audio, mode="rb")
+            self.formato = ruta_audio.split(".")[-1]
 
     def guardar(self,ruta,frames) :
         with (
@@ -41,8 +42,8 @@ class OcultadorAudio(ABC):
     def desocultar():
         pass
 
-    def ocultar_guardar(self, formato, ruta_salida):
-        with open(str(RUTA_IMAGEN_CONTENEDORA) % formato, "rb") as img_file:
+    def ocultar_guardar(self, formato_imagen, ruta_salida):
+        with open(str(RUTA_IMAGEN_CONTENEDORA) % formato_imagen, "rb") as img_file:
             datos_imagen = img_file.read()
 
         frames = self.ocultar(datos_imagen)

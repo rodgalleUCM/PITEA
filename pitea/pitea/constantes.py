@@ -2,6 +2,7 @@ from pathlib import Path
 from pitea.utils import cargar_configuracion
 from datetime import datetime
 from pitea.utils import actualizar_conf
+from pysstv.color import MartinM1, Robot36, ScottieS1
 
 
 RUTA_PROGRAMA = Path("pitea")
@@ -71,3 +72,10 @@ VERBOSE = False
 
 FORMATO_IMAGEN_DESOCULTACION = "png"
 FORMATO_AUDIO_OCULTACION = "wav"
+
+# Diccionario de modos disponibles en sstv, !no he comprobado que funcione con todos , es solo ejemplo
+MODES = {
+    "MartinM1": MartinM1,
+    "Robot36": Robot36,
+    "ScottieS1": ScottieS1,
+}
