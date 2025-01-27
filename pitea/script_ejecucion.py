@@ -109,13 +109,14 @@ def ocultar(
             "Se requiere 1 o 2 archivos de salida en el orden [audio_salida, imagen_salida (opcional)]."
         )
 
-    # Renombramiento de variables y comprobacio  de existencia de archivos
+    # Renombramiento de variables para hacer mas leible el paso a los flujos y comprobacio  de existencia de archivos
     archivo_entrada_texto = Path(archivos_entrada[0])
     comprobar_existencia_archivo(archivo_entrada_texto)
 
     archivo_entrada_imagen = Path(archivos_entrada[1])
     comprobar_existencia_archivo(archivo_entrada_imagen)
 
+    #si se le ha pasado el archivo se procesa si no, no
     if len(archivos_entrada) == 3:
         archivo_entrada_audio = Path(archivos_entrada[2])
         comprobar_existencia_archivo(archivo_entrada_audio)

@@ -8,7 +8,6 @@ from pitea.constantes import (
     RUTA_IMAGEN_DESOCULTACION,
 )
 
-
 class OcultadorAudio(ABC):
     nombre = ""
 
@@ -42,6 +41,10 @@ class OcultadorAudio(ABC):
                 self.audio.getparams()
             )  # Copiar los parámetros del archivo de audio original
             audio_modificado.writeframes(frames)  # Escribir los frames modificados
+
+            print(
+                    f"La imagen ha sido ocultada en el archivo de audio: {str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION}"
+                )
 
         if ruta_salida:
             with (

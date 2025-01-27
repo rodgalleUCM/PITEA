@@ -11,7 +11,7 @@ class OcultadorAudioLSB(OcultadorAudio):
             format(byte, "08b") for byte in datos_imagen
         )  # Convertir los datos de la imagen a binarios
 
-        # Añadir una cabecera con el tamaño de los datos (32 bits)
+        # Añadir una cabecera con el tamaño de los datos tamaño cabecera = (32 bits)
         tamano_datos = format(len(binarios_imagen), "032b")
         binarios_imagen = tamano_datos + binarios_imagen  # Cabecera + Datos
 

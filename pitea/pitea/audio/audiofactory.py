@@ -3,6 +3,7 @@ from pitea.audio.OcultadorAudioLSB import OcultadorAudioLSB
 
 
 class OcultadorAudioFactory(AbstractFactory):
+
     lista_ocultadores = [OcultadorAudioLSB]
 
     @staticmethod
