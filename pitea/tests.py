@@ -12,11 +12,10 @@ TEST_CASES = [
             "python3", SCRIPT_PATH, "ocultar",
             "--modo-cifrado", "aes",
             "--modo-cifrado-imagen", "lsb",
-            "--modo-cifrado-audio", "1",
+            "--modo-cifrado-audio", "lsb",
             "--contraseña", "prueba123",
             "-i", "archivos_prueba/prueba.txt archivos_prueba/imagen.png archivos_prueba/audio.wav",  
             "-o", "archivos_prueba/audio_salida.wav",
-            "--formato-salida", "wav",
         ]
     },
     {
@@ -25,10 +24,22 @@ TEST_CASES = [
             "python3", SCRIPT_PATH, "desocultar",
             "--modo-cifrado", "aes",
             "--modo-cifrado-imagen", "lsb",
-            "--modo-cifrado-audio", "1",
+            "--modo-cifrado-audio", "lsb",
             "--contraseña", "prueba123",
             "-i", "archivos_prueba/audio_salida.wav",
             "-o", "archivos_prueba/datos_desocultos.txt",
+        ]
+    },
+    {
+        "description": "Prueba básica pasar texto a audio SSTV",
+        "command": [
+            "python3", SCRIPT_PATH, "ocultar",
+            "--modo-cifrado", "aes",
+            "--modo-cifrado-imagen", "lsb",
+            "--modo-cifrado-audio", "sstv",
+            "-i", "archivos_prueba/prueba.txt archivos_prueba/imagen.png",
+            "-o", "./sstv.wav",
+            "--contraseña", "qwqwqw",
         ]
     },
     # Agrega más casos de prueba aquí
@@ -57,7 +68,6 @@ def run_tests():
                 print("✅ Prueba completada con éxito.")
             else:
                 print(f"❌ Error en la prueba. Código de salida: {result.returncode}")
-        
         except Exception as e:
             print(f"⚠️ Error al ejecutar la prueba: {e}")
 
