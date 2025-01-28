@@ -56,20 +56,13 @@ def main():
     "-o",
     "--output",
     default="audio_salida",
-    type=str,
+    type=click.Path(),
     help="Archivos de salida separados por espacio: se requiere 1 o 2 archivos en orden [audio_salida, imagen_salida (opcional)].\nHan de ser escritos entre comillas para que lo identifique python como un unico argumento",
 )
 @click.option(
     "--contraseña", 
     required=True, 
     help="Contraseña para cifrado o descifrado."
-)
-@click.option(
-    "--formato-salida",
-    required=True,
-    type=click.Choice(["wav", "mp4"]),
-    default="wav",
-    help="Formato de salida del audio (ej. wav, mp4).",
 )
 def ocultar(
     modo_cifrado,
@@ -78,7 +71,6 @@ def ocultar(
     input,
     output,
     contraseña,
-    formato_salida,
     verbose,
 ):
     """
@@ -133,7 +125,6 @@ def ocultar(
         click.echo(f"Modo de cifrado de imagen: {modo_cifrado_imagen}")
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
         click.echo(f"Contraseña: {contraseña}")
-        click.echo(f"Formato de salida: {formato_salida}")
 
         click.echo(f"Archivo de entrada de texto: {archivo_entrada_texto}")
         click.echo(f"Archivo de entrada de imagen: {archivo_entrada_imagen}")
@@ -151,7 +142,6 @@ def ocultar(
         archivos_entrada,
         archivos_salida,
         contraseña,
-        formato_salida,
     )
 
 
@@ -175,9 +165,9 @@ def ocultar(
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["lsb", "2", "sstv"]
-    ),  #! hay un issue donde hay que cambiar el nombre de 1
-    default="1",
+        ["lsb", "sstv"]
+    ),  
+    default="lsb",
     help="Modo de cifrado específico para audio (ej. sstv).",
 )
 @click.option(

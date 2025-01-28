@@ -12,7 +12,6 @@ def flujo_de_trabajo_ocultar(
     input,
     output,
     contraseña,
-    formato_salida,
 ):
     print("Creando estructura de la cache")
     crear_cache(constantes.LISTA_DIR_CACHE_OCULTACION)

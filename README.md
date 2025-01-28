@@ -12,7 +12,6 @@ python3 script_ejecucion.py ocultar \
      archivos_prueba/audio.wav" \
   -o ./audio_salida.wav \
   --contraseña "qwqwqw" \
-  --formato-salida wav \
   -v
 ```
 
@@ -36,7 +35,6 @@ python3 script_ejecucion.py ocultar \
      archivos_prueba/imagen.png" \  
   -o ./sstv.wav \
   --contraseña "qwqwqw" \
-  --formato-salida wav \
   -v
 ```
 

@@ -39,6 +39,7 @@ RUTA_OCULTACION_AUDIO = RUTA_OCULTACION / "audio"
 
 RUTA_DATOS_CIFRADO = RUTA_OCULTACION_DATOS / "datos_originales_cifrados.txt"
 RUTA_IMAGEN_CONTENEDORA = RUTA_OCULTACION_IMAGEN / "imagen_contenedora.%s"
+RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA = RUTA_OCULTACION_IMAGEN / "imagen_contenedora_redimensionada.%s"
 RUTA_AUDIO_CONTENEDOR = RUTA_OCULTACION_AUDIO / "audio_contenedor.%s"
 
 RUTA_DESOCULTACION = RUTA_CACHE_ESPECIFICA / "desocultacion"
@@ -75,7 +76,7 @@ FORMATO_AUDIO_OCULTACION = "wav"
 
 # Diccionario de modos disponibles en sstv, !no he comprobado que funcione con todos , es solo ejemplo
 MODES = {
-    "MartinM1": MartinM1,
-    "Robot36": Robot36,
-    "ScottieS1": ScottieS1,
+    "MartinM1": (MartinM1,(320, 256)),
+    "Robot36": (Robot36,(320,240)),
+    "ScottieS1": (ScottieS1,(320,256)),
 }

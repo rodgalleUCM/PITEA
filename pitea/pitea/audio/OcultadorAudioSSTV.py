@@ -5,7 +5,7 @@ from PIL import Image
 from pitea.utils import cargar_configuracion
 
 from pitea.mensajes import print
-from pitea.constantes import ARCHIVO_CONFIG, FORMATO_AUDIO_OCULTACION, MODES, RUTA_AUDIO_CONTENEDOR, RUTA_IMAGEN_CONTENEDORA
+from pitea.constantes import ARCHIVO_CONFIG, FORMATO_AUDIO_OCULTACION, MODES, RUTA_AUDIO_CONTENEDOR, RUTA_IMAGEN_CONTENEDORA,RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA
 
 
 class OcultadorAudioSSTV(OcultadorAudio):
@@ -18,13 +18,21 @@ class OcultadorAudioSSTV(OcultadorAudio):
         print(
                 f"La imagen ha sido ocultada en el archivo de audio: {ruta}"
             )
+        
+    def guardar_imagen_redimensionada(self,imagen,ruta) :
+        imagen.save(ruta)
+
+        print(
+                f"Imagen contenedora redimensionada guardada en {ruta}"
+            )
+
 
 
 
     def ocultar(self, datos,modo="MartinM1",image=None,samples_per_sec= None,bits= None):
         
         # Instanciamos el modo SSTV
-        sstv = MODES[modo](image,samples_per_sec,bits)
+        sstv = MODES[modo][0](image,samples_per_sec,bits)
         
         # Generar los frames del audio codificado en SSTV
         return sstv
@@ -42,8 +50,10 @@ class OcultadorAudioSSTV(OcultadorAudio):
         samples_per_sec=conf["samples_per_sec"]
         bits=conf["bits"]
         
-        #Leemos la imagen con Pillow
-        image = Image.open(str(RUTA_IMAGEN_CONTENEDORA) % formato_imagen)
+        #Leemos la imagen con Pillow, Image.Resampling.LANCZOS suaviza la foto al redimensionarla
+        image = Image.open(str(RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(MODES[modo][1], Image.Resampling.LANCZOS)
+
+        self.guardar_imagen_redimensionada(image,str(RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen) 
 
         sstv = self.ocultar(None,modo,image,samples_per_sec,bits)
         
