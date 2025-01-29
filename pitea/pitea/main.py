@@ -1,8 +1,9 @@
-from pitea.mensajes import *
+from pitea.mensajes import MENSAJE_INICIO_FLUJO, print
 from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
-from pitea.utils import crear_cache
+from pitea.constantes import ARCHIVO_CONFIG, LISTA_DIR_CACHE_DESOCULTACION, LISTA_DIR_CACHE_OCULTACION, MODES_SSTV, RUTA_IMAGEN_DESOCULTACION
+from pitea.utils import cargar_configuracion, crear_cache
 
 
 def flujo_de_trabajo_ocultar(
@@ -10,18 +11,14 @@ def flujo_de_trabajo_ocultar(
     modo_cifrado_imagen,
     modo_cifrado_audio,
     input,
+    input_imagen,
+    input_audio,
     output,
     contraseña,
 ):
     print("Creando estructura de la cache")
-    crear_cache(constantes.LISTA_DIR_CACHE_OCULTACION)
+    crear_cache(LISTA_DIR_CACHE_OCULTACION)
 
-    # Renombramiento de variables
-    archivo_entrada_texto = input[0]
-    archivo_entrada_imagen = input[1]
-    archivo_entrada_audio = input[2] if len(input) == 3 else None
-
-    archivo_salida_audio = output[0]
 
     print(MENSAJE_INICIO_FLUJO % "ocultación")
 
@@ -29,23 +26,30 @@ def flujo_de_trabajo_ocultar(
     cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, None)
 
     print("Cifrador creado , cifrando datos ...")
-    datos_cifrados = cifrador.cifrar_guardar(archivo_entrada_texto)
+    cifrador.cifrar_guardar(input)
 
     print("Creando ocultador en imagenes ...")
     ocultador_imagen = OcultadorImagenFactory.get_builder(
-        modo_cifrado_imagen, archivo_entrada_imagen
+        modo_cifrado_imagen, input_imagen
     )
 
     print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
-    imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
+    if modo_cifrado_audio not in ["sstv"] :
+        imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
+    else :
+        conf = cargar_configuracion(ARCHIVO_CONFIG)
+        modo_sstv = conf["modo_sstv"]
+        anchura = MODES_SSTV[modo_sstv][1][0]
+        altura = MODES_SSTV[modo_sstv][1][1]
+        imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)
 
     print("Creando ocultador en audio ...")
     ocultador_audio = OcultadorAudioFactory.get_builder(
-        modo_cifrado_audio, archivo_entrada_audio
+        modo_cifrado_audio, input_audio
     )
 
     print("Ocultador en audio  creado, ocultando imagen en audio ...")
-    ocultador_audio.ocultar_guardar(formato, archivo_salida_audio)
+    ocultador_audio.ocultar_guardar(formato, output)
 
     print("Proceso realizado")
 
@@ -54,7 +58,7 @@ def flujo_de_trabajo_desocultar(
     modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input, output, contraseña
 ):
     print("Creando estructura de la cache")
-    crear_cache(constantes.LISTA_DIR_CACHE_DESOCULTACION)
+    crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
 
     print(MENSAJE_INICIO_FLUJO % "desocultación")
 
@@ -66,7 +70,7 @@ def flujo_de_trabajo_desocultar(
 
     print("Creando ocultador en imagenes ...")
     ocultador_imagen = OcultadorImagenFactory.get_builder(
-        modo_cifrado_imagen, str(constantes.RUTA_IMAGEN_DESOCULTACION) % "png"
+        modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png"
     )
 
     print("Ocultador en imagenes  creado, ocultando datos en imagen ...")

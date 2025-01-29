@@ -11,8 +11,6 @@ from pitea.constantes import (
 class OcultadorAudio(ABC):
     nombre = ""
 
-    def __init__(self):
-        pass
 
     def __init__(self, ruta_audio):
         if ruta_audio:

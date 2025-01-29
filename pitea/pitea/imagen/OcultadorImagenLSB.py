@@ -4,7 +4,7 @@ from pitea.imagen.OcultadorImagen import OcultadorImagen
 class OcultadorImagenLSB(OcultadorImagen):
     nombre = "lsb"
 
-    def ocultar(self, datos):
+    def ocultar(self, datos, altura_imagen= None, anchura_imagen=None):
         datos_binarios = "".join(
             format(byte, "08b") for byte in datos
         )  # Convertir los datos a binarios del archivo cifrado
@@ -24,7 +24,6 @@ class OcultadorImagenLSB(OcultadorImagen):
             )
 
         indice_datos = 0
-        total_datos = len(datos)
         for y in range(self.alto):  # Iterar sobre los píxeles de la imagen
             for x in range(self.ancho):
                 pixel = list(self.pixeles[x, y])  # Obtener el valor de los píxeles

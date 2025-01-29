@@ -1,9 +1,10 @@
 from pitea.AbstractFactory import AbstractFactory
 from pitea.imagen.OcultadorImagenLSB import OcultadorImagenLSB
+from pitea.imagen.OcultadorImagenText import OcultadorImagenText
 
 
 class OcultadorImagenFactory(AbstractFactory):
-    lista_ocultadores = [OcultadorImagenLSB]
+    lista_ocultadores = [OcultadorImagenLSB,OcultadorImagenText]
 
     @staticmethod
     def get_builder(modo_cifrado, ruta_imagen):

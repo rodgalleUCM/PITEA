@@ -11,29 +11,30 @@ class OcultadorImagen(ABC):
     nombre = ""
 
     def __init__(self, ruta_imagen):
-        self.formato = ruta_imagen.split(".")[-1]
-        self.imagen = Image.open(ruta_imagen)
-        self.pixeles = self.imagen.load()
-        self.ancho, self.alto = self.imagen.size
+        if ruta_imagen:
+            self.formato = ruta_imagen.split(".")[-1]
+            self.imagen = Image.open(ruta_imagen)
+            self.pixeles = self.imagen.load()
+            self.ancho, self.alto = self.imagen.size
 
     @abstractmethod
-    def ocultar(self, datos):
+    def ocultar(self, datos_imagen,altura_imagen = None,anchura_imagen=None):
         pass
 
     @abstractmethod
     def desocultar(self):
         pass
 
-    def ocultar_guardar(self):
+    def ocultar_guardar(self,altura_imagen= None,anchura_imagen=None):
         with open(RUTA_DATOS_CIFRADO, "rb") as f:
             datos = f.read()
 
-        imagen, formato = self.ocultar(datos)
+        imagen, formato = self.ocultar(datos,altura_imagen,anchura_imagen)
 
-        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % self.formato)
+        imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % formato)
 
         print(
-            f"Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % self.formato}"
+            f"Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % formato}"
         )
 
         return imagen, formato

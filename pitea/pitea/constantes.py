@@ -72,10 +72,11 @@ SEMILLA = b"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10"
 VERBOSE = False
 
 FORMATO_IMAGEN_DESOCULTACION = "png"
+FORMATO_IMAGEN_OCULTACION = "png"
 FORMATO_AUDIO_OCULTACION = "wav"
 
 # Diccionario de modos disponibles en sstv, !no he comprobado que funcione con todos , es solo ejemplo
-MODES = {
+MODES_SSTV = {
     "MartinM1": (MartinM1,(320, 256)),
     "Robot36": (Robot36,(320,240)),
     "ScottieS1": (ScottieS1,(320,256)),

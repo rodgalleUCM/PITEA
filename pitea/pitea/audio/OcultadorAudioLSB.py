@@ -1,6 +1,5 @@
 from pitea.audio.OcultadorAudio import OcultadorAudio
 
-from pitea.mensajes import print
 
 
 class OcultadorAudioLSB(OcultadorAudio):
@@ -44,7 +43,6 @@ class OcultadorAudioLSB(OcultadorAudio):
 
     def desocultar(self):
         frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
-        tamano_imagen = 0
         self.audio.close()
 
         datos_binarios = ""

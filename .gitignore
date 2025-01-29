@@ -3,6 +3,3 @@
 venv/
 __pycache__/
 *cache*/
-audio_salida.wav
-datos_desocultos.txt
-configuracion.toml

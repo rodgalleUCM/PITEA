@@ -12,7 +12,9 @@ def test_ocultar_desocultar():
         "--modo-cifrado-imagen", "lsb",
         "--modo-cifrado-audio", "lsb",
         "--contraseña", "prueba123",
-        "-i", "archivos_prueba/prueba.txt archivos_prueba/imagen.png archivos_prueba/audio.wav",  
+        "-i", "archivos_prueba/prueba.txt",
+        "--input_imagen", "archivos_prueba/imagen.png", 
+        "--input_audio" , "archivos_prueba/audio.wav",  
         "-o", "archivos_prueba/audio_salida.wav",
         "-v"
     ]
