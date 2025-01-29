@@ -2,7 +2,7 @@ import click
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
  
 import pitea.constantes as constantes
-from pitea.pitea.mensajes import SEPARADOR
+from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
 
 
