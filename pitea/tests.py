@@ -33,7 +33,7 @@ def test_ocultar_desocultar_lsb():
         "--modo-cifrado", "aes",
         "--modo-cifrado-imagen", "lsb",
         "--modo-cifrado-audio", "lsb",
-        "-i", "archivos_prueba/audio_salida.wav",
+        "--input_audio", "archivos_prueba/audio_salida.wav",
         "-o", "archivos_prueba/datos_desocultos.txt",
         "--contraseña", "prueba123",
         "-v"
@@ -85,7 +85,7 @@ def test_ocultar_desocultar_sstv():
         "--modo-cifrado", "aes",
         "--modo-cifrado-imagen", "sstv",
         "--modo-cifrado-audio", "sstv",
-        "-i", "archivos_prueba/imagen_salida_sstv.png",
+        "--input_imagen", "archivos_prueba/imagen_salida_sstv.png",
         "-o", "archivos_prueba/datos_desocultos.txt",
         "--contraseña", "prueba123",
         "-v"

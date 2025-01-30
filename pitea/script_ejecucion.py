@@ -166,9 +166,12 @@ def ocultar(
     help="Modo verbose , muestra mensajes del flujoy.",
 )
 @click.option(
-    "-i",
-    "--input",
-    default="audio_salida.wav",
+    "--input_audio",
+    type=click.Path(exists=True),
+    help="Archivos de audio de entrada ",
+)
+@click.option(
+    "--input_imagen",
     type=click.Path(exists=True),
     help="Archivos de audio de entrada ",
 )
@@ -184,7 +187,8 @@ def desocultar(
     modo_cifrado,
     modo_cifrado_imagen,
     modo_cifrado_audio,
-    input,
+    input_audio,
+    input_imagen,
     output,
     contraseña,
     verbose,
@@ -197,7 +201,11 @@ def desocultar(
     if verbose:
         constantes.VERBOSE = True
 
-    comprobar_existencia_archivo(input)
+    #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio
+    if not input_audio  and not input_imagen :
+        click.BadOptionUsage("No se ha introducido nigún input")
+    elif input_audio and input_imagen :
+        click.BadOptionUsage("Solo se puede introducir input_imagen si no introduce input_audio")
 
     # Mostramos parámetros para depuración
     if constantes.VERBOSE:
@@ -206,7 +214,11 @@ def desocultar(
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
         click.echo(f"Contraseña: {contraseña}")
 
-        click.echo(f"Archivo de entrada de audio: {input}")
+        if input_audio :
+            click.echo(f"Archivo de entrada de audio: {input_audio}")
+        if input_imagen:
+            click.echo(f"Archivo de entrada de imagen: {input_imagen}")
+
         click.echo(f"Archivo de salida de audio: {output}")
 
         print(SEPARADOR)
@@ -215,7 +227,8 @@ def desocultar(
             modo_cifrado,
             modo_cifrado_imagen,
             modo_cifrado_audio,
-            input,
+            input_audio,
+            input_imagen,
             output,
             contraseña,
         )

@@ -1,7 +1,7 @@
 contador_cache = 1
-ult_fecha = "30-01-2025_16:27"
+ult_fecha = "30-01-2025_22:43"
 modo_sstv = "MartinM1"
 samples_per_sec = 11025
 bits = 16
-tamanio_fuente = 10
+tamanio_fuente = 30
 anchura_maxima = 800

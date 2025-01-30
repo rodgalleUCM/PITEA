@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from pitea.constantes import RUTA_DATOS_CIFRADO, RUTA_DATOS_LIMPIOS_DESOCULTACION
+from pitea.mensajes import print
 
 
 class Cifrador(ABC):

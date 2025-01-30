@@ -55,26 +55,37 @@ def flujo_de_trabajo_ocultar(
 
 
 def flujo_de_trabajo_desocultar(
-    modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input, output, contraseña
+    modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input_audio,input_imagen, output, contraseña
 ):
     print("Creando estructura de la cache")
     crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
 
     print(MENSAJE_INICIO_FLUJO % "desocultación")
 
-    print("Creando ocultador en audio ...")
-    ocultador_audio = OcultadorAudioFactory.get_builder(modo_cifrado_audio, input)
+    #Opcion de pasar el sstv ya decodificado como imagen
+    if input_audio :
+        print("Creando ocultador en audio ...")
+        ocultador_audio = OcultadorAudioFactory.get_builder(modo_cifrado_audio, input_audio)
 
-    print("Ocultador en audio  creado, ocultando imagen en audio ...")
-    ocultador_audio.desocultar_guardar()
+        print("Ocultador en audio  creado, ocultando imagen en audio ...")
+        ocultador_audio.desocultar_guardar()
 
-    print("Creando ocultador en imagenes ...")
-    ocultador_imagen = OcultadorImagenFactory.get_builder(
-        modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png"
-    )
+    if not input_imagen : 
+        print("Creando ocultador en imagenes ...")
+        ocultador_imagen = OcultadorImagenFactory.get_builder(
+            modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png"
+        )
 
-    print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
-    ocultador_imagen.desocultar_guardar()
+        print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
+        ocultador_imagen.desocultar_guardar()
+    else :
+        print("Creando ocultador en imagenes ...")
+        ocultador_imagen = OcultadorImagenFactory.get_builder(
+            modo_cifrado_imagen, input_imagen
+        )
+
+        print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
+        ocultador_imagen.desocultar_guardar()
 
     print("Creando cifrador...")
     cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, output)

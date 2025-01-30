@@ -4,9 +4,12 @@ from pitea.constantes import (
     RUTA_IMAGEN_CONTENEDORA,
     RUTA_DATOS_CIFRADOS_DESOCULTACION,
     RUTA_DATOS_CIFRADO,
+    RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA,
+    RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR,
 )
 import cv2
 import numpy as np
+from pitea.mensajes import print
 
 
 class OcultadorImagen(ABC):
@@ -33,6 +36,11 @@ class OcultadorImagen(ABC):
 
         imagen, formato = self.ocultar(datos,altura_imagen,anchura_imagen)
 
+        imagen.save(str(RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR) % formato)
+
+        #Ocultar el texto realizando transformaciones con inversa a la imagen
+        imagen=  self.transformar_imagen(imagen)
+
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % formato)
 
         print(
@@ -42,6 +50,8 @@ class OcultadorImagen(ABC):
         return imagen, formato
 
     def desocultar_guardar(self):
+        self.imagen = self.transformar_imagen_inversa(self.imagen)
+        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self.formato)
         datos_extraidos = self.desocultar()
 
         with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
