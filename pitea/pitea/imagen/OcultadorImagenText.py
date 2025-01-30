@@ -8,10 +8,6 @@ from pitea.utils import cargar_configuracion
 
 class OcultadorImagenText(OcultadorImagen):
     nombre = "text"
-
-
-    def transformar_imagen(self,imagen) :
-        return imagen
     
     def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         #Codificamos los datos en base64 ya que al estar cifrados hay caracteres no operbales o representables como str

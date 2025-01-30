@@ -4,3 +4,5 @@ pycryptodome==3.21.0
 pydub==0.25.1
 PySSTV==0.5.7
 tomli_w==1.2.0
+opencv-python
+numpy
