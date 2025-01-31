@@ -1,24 +1,33 @@
 import base64
+
+import numpy as np
 from pitea.imagen.OcultadorImagen import OcultadorImagen
 from PIL import Image, ImageDraw, ImageFont
 
 from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION
 from pitea.utils import cargar_configuracion
 from PIL import Image, ImageFilter
-import pytesseract
-
+import easyocr
+from PIL import ImageEnhance
 class OcultadorImagenText(OcultadorImagen):
     nombre = "text"
     
     def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-        #Codificamos los datos en base64 ya que al estar cifrados hay caracteres no operbales o representables como str
-        datos = base64.b64encode(datos).decode('utf-8')
+        #!Codificamos los datos en base64 ya que al estar cifrados hay caracteres no operbales o representables como str
+        if self.cifrado :
+            datos = base64.b64encode(datos).decode('utf-8')
+        else :
+            datos = datos.decode('utf-8')
         print(datos)
+        
+
        
         conf = cargar_configuracion(ARCHIVO_CONFIG)
         tamaño_fuente = conf["tamanio_fuente"]
-        fuente = ImageFont.truetype("DejaVuSans.ttf", tamaño_fuente)
         anchura_maxima = conf["anchura_maxima"]
+        ruta_fuente = conf["ruta_fuente"]
+        fuente = ImageFont.truetype(ruta_fuente, tamaño_fuente)
+        
 
         # Definir anchura máxima si no se ha proporcionado
         if anchura_imagen is None:
@@ -76,23 +85,36 @@ class OcultadorImagenText(OcultadorImagen):
 
     def desocultar(self):
 
-        #Extraer el texto oculto en formato base64
-        texto_base64 = pytesseract.image_to_string(self.imagen, config='--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+        image = self.imagen.convert('L')
+        enhancer = ImageEnhance.Contrast(image)
+        image = enhancer.enhance(10)  # Aumentar el contraste
 
-        
-        # Eliminar caracteres que no sean válidos en base64
-        texto_base64 = ''.join(filter(lambda c: c.isalnum() or c in '+/=', texto_base64))
+        #! Si funciona cambniar a ruta definaida en constantes y que s eguarde en cache
+        image.save("contarste.png")
 
-        print(texto_base64)
-        print("WWWWWWWWWWWWWWWWWWWWWWWWWW")
+        imagen_array = np.array(self.imagen)
+  
+         # Crear el lector OCR
+        reader = easyocr.Reader(['en'], gpu=True)  # 'latin' es un conjunto genérico que reconoce todos los caracteres latinos
 
-        # Fase 3: Decodificar el texto base64 a bytes
+        # Extraer texto de la imagen
+        resultado = reader.readtext(imagen_array, detail=0, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')  # Obtener solo el texto
+
+        # Combinar las líneas extraídas
+        texto_extraido = ''.join(resultado)
+
+        # Filtrar caracteres válidos en base64
+        texto_base64 = ''.join(filter(lambda c: c.isalnum() or c in '+/=', texto_extraido))
+
+        print("Texto base64 extraído:\n", texto_base64)
+
+        # Decodificar el texto base64 a bytes
         try:
-            datos_decodificados = base64.b64decode(texto_base64)
+            if self.cifrado :
+                datos_decodificados = base64.b64decode(texto_base64)
+            else :
+                datos_decodificados= texto_base64.encode()
             print("Datos decodificados exitosamente")
-            print(datos_decodificados)
+            return datos_decodificados
         except base64.binascii.Error:
             raise ValueError("El texto extraído no es una cadena válida de base64")
-
-        # Fase 4: Retornar los datos decodificados en bytes
-        return datos_decodificados

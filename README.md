@@ -37,6 +37,17 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen text \
+  --modo-cifrado-audio sstv \
+  --input_imagen ./archivos_prueba/imagen_salida_sstv\
+  -o ./archivos_prueba/datos_desocultos_text_sstv.txt \
+  --contraseña qwqwqw \
+  -v
+```
+
 ## Arbol de directorio provisional de pitea
 
 ```TFG-PITEA/
@@ -62,3 +73,5 @@ python3 script_ejecucion.py ocultar \
 │   │   ├── constantes.py
 │   └── script_ejecucion.py
 └── pyproject.toml
+
+

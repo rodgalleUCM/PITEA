@@ -14,13 +14,16 @@ from pitea.mensajes import print
 
 class OcultadorImagen(ABC):
     nombre = ""
+    
 
-    def __init__(self, ruta_imagen):
+    def __init__(self, ruta_imagen,modo_cifrador):
         if ruta_imagen:
             self.formato = ruta_imagen.split(".")[-1]
             self.imagen = Image.open(ruta_imagen)
             self.pixeles = self.imagen.load()
             self.ancho, self.alto = self.imagen.size
+        print(modo_cifrador)
+        self.cifrado = 1 if modo_cifrador not in ["none"] else 0
 
     @abstractmethod
     def ocultar(self, datos_imagen,altura_imagen = None,anchura_imagen=None):
@@ -33,7 +36,7 @@ class OcultadorImagen(ABC):
     def ocultar_guardar(self,altura_imagen= None,anchura_imagen=None):
         with open(RUTA_DATOS_CIFRADO, "rb") as f:
             datos = f.read()
-
+    
         imagen, formato = self.ocultar(datos,altura_imagen,anchura_imagen)
 
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR) % formato)
@@ -42,6 +45,8 @@ class OcultadorImagen(ABC):
         imagen=  self.transformar_imagen(imagen)
 
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % formato)
+
+        imagen.save("fotoooooooooo.png")
 
         print(
             f"Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % formato}"

@@ -1,7 +1,8 @@
-contador_cache = 1
-ult_fecha = "30-01-2025_22:43"
+contador_cache = 2
+ult_fecha = "31-01-2025_16:45"
 modo_sstv = "MartinM1"
 samples_per_sec = 11025
 bits = 16
-tamanio_fuente = 30
+tamanio_fuente = 10
 anchura_maxima = 800
+ruta_fuente = "../fuentes/ocraregular.ttf"

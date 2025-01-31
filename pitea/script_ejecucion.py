@@ -16,8 +16,8 @@ def main():
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        ["aes", "2"]
-    ),  #! el 2 es solo para dejar indicado que hay que añadir mas opciones
+        ["aes", "none"]
+    ),  
     default="aes",
     help="Modo de cifrado a utilizar (ej. aes, rsa).",
 )
@@ -138,8 +138,8 @@ def ocultar(
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        ["aes", "2"]
-    ),  #! el 2 es solo para dejar indicado que hay que añadir mas opciones
+        ["aes", "none"]
+    ),  
     default="aes",
     help="Modo de cifrado a utilizar (ej. aes, rsa).",
 )

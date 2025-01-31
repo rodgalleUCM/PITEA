@@ -5,7 +5,7 @@ from Crypto.Random import get_random_bytes
 from pitea.constantes import RUTA_DATOS_CIFRADOS_DESOCULTACION, SEMILLA
 
 
-class Cifrador_AES(Cifrador):
+class CifradorAES(Cifrador):
     nombre = "aes"
 
     def trasformar_contrasenia_a_clave(self):
@@ -41,12 +41,11 @@ class Cifrador_AES(Cifrador):
 
         return iv, datos_cifrados
 
-    def descifrar(self):
+    def descifrar(self,datos):
         tamano_bloque = AES.block_size
 
-        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "rb") as f:
-            iv = f.read(tamano_bloque)
-            datos_cifrados = f.read()
+        iv =datos[::tamano_bloque]
+        datos_cifrados = datos[tamano_bloque::]
 
         clave = self.trasformar_contrasenia_a_clave()
 

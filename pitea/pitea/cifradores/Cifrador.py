@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from pitea.constantes import RUTA_DATOS_CIFRADO, RUTA_DATOS_LIMPIOS_DESOCULTACION
+from pitea.constantes import RUTA_DATOS_CIFRADO, RUTA_DATOS_CIFRADOS_DESOCULTACION, RUTA_DATOS_LIMPIOS_DESOCULTACION
 from pitea.mensajes import print
 
 
@@ -22,7 +22,7 @@ class Cifrador(ABC):
         pass
 
     @abstractmethod
-    def descifrar():
+    def descifrar(self,datos):
         pass
 
     def cifrar_guardar(self, secreto):
@@ -37,7 +37,10 @@ class Cifrador(ABC):
         print(f"Archivo cifrado guardado en {RUTA_DATOS_CIFRADO}")
 
     def descifrar_guardar(self):
-        datos_descifrados = self.descifrar()
+        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "rb") as f:
+            datos = f.read()
+
+        datos_descifrados = self.descifrar(datos)
 
         # Guardar los datos descifrados en el archivo de salida
         with open(RUTA_DATOS_LIMPIOS_DESOCULTACION, "wb") as f:

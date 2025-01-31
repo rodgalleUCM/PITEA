@@ -1,9 +1,10 @@
-from pitea.cifradores.Cifrador_AES import Cifrador_AES
+from pitea.cifradores.CifradorAES import  CifradorAES
 from pitea.AbstractFactory import AbstractFactory
+from pitea.cifradores.CifradorNone import CifradorNone
 
 
 class CifradorFactory(AbstractFactory):
-    lista_cifradores = [Cifrador_AES]
+    lista_cifradores = [CifradorAES,CifradorNone]
     """
     Fábrica para obtener el constructor de Cifrador adecuado basado en el tipo de archivo.
 
