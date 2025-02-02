@@ -9,6 +9,7 @@ from pitea.utils import cargar_configuracion
 from PIL import Image, ImageFilter
 import easyocr
 from PIL import ImageEnhance
+import pytesseract
 class OcultadorImagenText(OcultadorImagen):
     nombre = "text"
     
@@ -92,16 +93,21 @@ class OcultadorImagenText(OcultadorImagen):
         #! Si funciona cambniar a ruta definaida en constantes y que s eguarde en cache
         image.save("contarste.png")
 
-        imagen_array = np.array(self.imagen)
-  
-         # Crear el lector OCR
-        reader = easyocr.Reader(['en'], gpu=True)  # 'latin' es un conjunto genérico que reconoce todos los caracteres latinos
 
-        # Extraer texto de la imagen
-        resultado = reader.readtext(imagen_array, detail=0, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')  # Obtener solo el texto
+        if self.cifrado :
+   
+            imagen_array = np.array(self.imagen)
+    
+            # Crear el lector OCR
+            reader = easyocr.Reader(['en'], gpu=True)  # 'latin' es un conjunto genérico que reconoce todos los caracteres latinos
 
+            # Extraer texto de la imagen
+            resultado = reader.readtext(imagen_array, detail=0, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=') 
+            texto_extraido = ''.join(resultado) # Obtener solo el texto
+        else:
+            texto_extraido = pytesseract.image_to_string(self.imagen, config='--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
         # Combinar las líneas extraídas
-        texto_extraido = ''.join(resultado)
+        
 
         # Filtrar caracteres válidos en base64
         texto_base64 = ''.join(filter(lambda c: c.isalnum() or c in '+/=', texto_extraido))
@@ -112,6 +118,7 @@ class OcultadorImagenText(OcultadorImagen):
         try:
             if self.cifrado :
                 datos_decodificados = base64.b64decode(texto_base64)
+                print(datos_decodificados)
             else :
                 datos_decodificados= texto_base64.encode()
             print("Datos decodificados exitosamente")
