@@ -75,3 +75,7 @@ python3 script_ejecucion.py ocultar \
 └── pyproject.toml
 
 
+
+
+ES NECESARIO INSTALAR tessercar-ocr o algo asi era
+
