@@ -44,7 +44,7 @@ class CifradorAES(Cifrador):
     def descifrar(self,datos):
         tamano_bloque = AES.block_size
 
-        iv =datos[::tamano_bloque]
+        iv =datos[:tamano_bloque]
         datos_cifrados = datos[tamano_bloque::]
 
         clave = self.trasformar_contrasenia_a_clave()
@@ -52,5 +52,6 @@ class CifradorAES(Cifrador):
         # Crear el descifrador y descifrar los datos
         descifrador = AES.new(clave, AES.MODE_CBC, iv)
         datos_descifrados = unpad(descifrador.decrypt(datos_cifrados), tamano_bloque)
+
 
         return datos_descifrados
