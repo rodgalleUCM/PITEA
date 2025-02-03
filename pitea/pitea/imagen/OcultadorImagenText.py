@@ -86,7 +86,7 @@ class OcultadorImagenText(OcultadorImagen):
 
     def desocultar(self):
 
-        gpu = cargar_configuracion(ARCHIVO_CONFIG)["gpu"]
+        gpu = True if cargar_configuracion(ARCHIVO_CONFIG)["gpu"] == "True" else False
 
         if self.cifrado :
    
