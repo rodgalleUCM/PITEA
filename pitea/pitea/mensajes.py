@@ -8,5 +8,6 @@ SEPARADOR = "-------------------------------------------------------------------
 def print(
     str,
 ):
+    
     if constantes.VERBOSE:
         builtins.print(str)

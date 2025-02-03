@@ -1,3 +1,4 @@
+import subprocess
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
 from pitea.utils import cargar_configuracion
@@ -25,8 +26,6 @@ class OcultadorAudioSSTV(OcultadorAudio):
             )
 
 
-
-
     def ocultar(self, datos,modo="MartinM1",image=None,samples_per_sec= None,bits= None):
         
         # Instanciamos el modo SSTV
@@ -37,9 +36,9 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
 
 
-    def desocultar():
-        pass
-
+    def desocultar(self):
+        subprocess.run(["qsstv"])
+        
     def ocultar_guardar(self, formato_imagen, ruta_saida):
 
         #Cargamos el modo de sstv del archivo de configuracion
@@ -62,33 +61,6 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
 
     def desocultar_guardar(self):
-        frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
-        self.audio.close()
+        self.desocultar()
 
-        datos_binarios = ""
-        for i in range(len(frames)):
-            datos_binarios += str(frames[i] & 1)
-            if len(datos_binarios) >= 32:
-                tamano_datos = int(
-                    datos_binarios[:32], 2
-                )  # Leer el tamaño de los datos
-                datos_binarios = datos_binarios[32:]  # Eliminar la cabecera
-                break  # Una vez obtenida la cabecera, podemos detener la lectura
-
-        # Verificar que la cabecera tenga el tamaño correcto
-        if tamano_datos == 0:
-            raise ValueError("No se pudo extraer el tamaño de los datos ocultos.")
-        # Extraer los datos de acuerdo al tamaño especificado
-
-        for i in range(len(frames)):
-            datos_binarios += str(frames[i] & 1)  # Extraer el bit menos significativo
-            if len(datos_binarios) >= tamano_datos + 32:
-                break
-
-        datos_binarios = datos_binarios[32:]
-
-        datos_extraidos = int(datos_binarios, 2).to_bytes(
-            tamano_datos // 8, byteorder="big"
-        )
-
-        return datos_extraidos
+        return None

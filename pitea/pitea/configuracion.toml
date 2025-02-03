@@ -1,7 +1,7 @@
-contador_cache = 1
-ult_fecha = "03-02-2025_19:41"
+contador_cache = 0
+ult_fecha = "03-02-2025_21:16"
 modo_sstv = "MartinM1"
-samples_per_sec = 11025
+samples_per_sec = 48000
 bits = 16
 tamanio_fuente = 10
 anchura_maxima = 800

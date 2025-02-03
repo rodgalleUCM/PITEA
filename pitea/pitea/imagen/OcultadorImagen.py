@@ -45,7 +45,6 @@ class OcultadorImagen(ABC):
         #imagen=  self.transformar_imagen(imagen)
 
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % formato)
-        imagen.save("fotoooo.png")
 
         print(
             f"Imagen contenedora guardada en {str(RUTA_IMAGEN_CONTENEDORA) % formato}"
