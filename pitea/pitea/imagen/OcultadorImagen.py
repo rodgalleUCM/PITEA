@@ -42,7 +42,7 @@ class OcultadorImagen(ABC):
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR) % formato)
 
         #Ocultar el texto realizando transformaciones con inversa a la imagen
-        imagen=  self.transformar_imagen(imagen)
+        #imagen=  self.transformar_imagen(imagen)
 
         imagen.save(str(RUTA_IMAGEN_CONTENEDORA) % formato)
         imagen.save("fotoooo.png")
@@ -54,8 +54,8 @@ class OcultadorImagen(ABC):
         return imagen, formato
 
     def desocultar_guardar(self):
-        self.imagen = self.transformar_imagen_inversa(self.imagen)
-        self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self.formato)
+        #self.imagen = self.transformar_imagen_inversa(self.imagen)
+        #self.imagen.save(str(RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self.formato)
         datos_extraidos = self.desocultar()
 
         with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
@@ -65,6 +65,8 @@ class OcultadorImagen(ABC):
 
     def transformar_imagen (self,imagen):
         
+        print("transformar imagen")
+
         #formato RGB
         imagen = imagen.convert("RGB")
         
@@ -99,6 +101,8 @@ class OcultadorImagen(ABC):
         return imagen_modificada_pil 
     
     def transformar_imagen_inversa (self,imagen):
+
+        print("transformar imagen inversa")
         
         imagen = imagen.convert("RGB")
         
@@ -123,10 +127,9 @@ class OcultadorImagen(ABC):
 
         # Reorganizar la imagen a su disposición original
         imagen_recuperada = cv2.vconcat([
-            cv2.hconcat([img1, img3]),
-            cv2.hconcat([img2, img4])
+            cv2.hconcat([img1, img2]),
+            cv2.hconcat([img3, img4])
         ])
-
         # Convertir el array de NumPy de vuelta a PIL
         imagen_recuperada_pil = Image.fromarray(imagen_recuperada)
 

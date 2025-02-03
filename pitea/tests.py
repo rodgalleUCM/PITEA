@@ -27,6 +27,8 @@ def test_ocultar_desocultar_lsb():
     )
     assert result.returncode == 0, f"Error en la prueba. Código de salida: {result.returncode}"
 
+    print(result.stdout)
+
     # Prueba de desocultar con cifrado AES y LSB
     command = [
         "python3", SCRIPT_PATH, "desocultar",
@@ -47,6 +49,8 @@ def test_ocultar_desocultar_lsb():
     )
 
     assert result.returncode == 0, f"Error en la prueba. Código de salida: {result.returncode}"
+
+    print(result.stdout)
     
     # Validar que los archivos sean iguales
     with open("archivos_prueba/prueba.txt", "rb") as file1, open("archivos_prueba/datos_desocultos.txt", "rb") as file2:
@@ -79,6 +83,9 @@ def test_ocultar_desocultar_sstv():
     )
     assert result.returncode == 0, f"Error en la prueba. Código de salida: {result.returncode}"
 
+    print(result.stdout)
+    print(result.stderr)
+
     # Prueba de desocultar con cifrado AES y SSTV
     command = [
         "python3", SCRIPT_PATH, "desocultar",
@@ -100,6 +107,9 @@ def test_ocultar_desocultar_sstv():
 
     assert result.returncode == 0, f"Error en la prueba. Código de salida: {result.returncode}"
     
+    print(result.stdout)
+    print(result.stderr)
+
     # Validar que los archivos sean iguales
     with open("archivos_prueba/prueba.txt", "rb") as file1, open("archivos_prueba/datos_desocultos.txt", "rb") as file2:
         assert file1.read() == file2.read(), "Los archivos no son iguales"
