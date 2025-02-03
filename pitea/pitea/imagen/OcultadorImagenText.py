@@ -86,20 +86,14 @@ class OcultadorImagenText(OcultadorImagen):
 
     def desocultar(self):
 
-        image = self.imagen.convert('L')
-        enhancer = ImageEnhance.Contrast(image)
-        image = enhancer.enhance(10)  # Aumentar el contraste
-
-        #! Si funciona cambniar a ruta definaida en constantes y que s eguarde en cache
-        image.save("contarste.png")
-
+        gpu = cargar_configuracion(ARCHIVO_CONFIG)["gpu"]
 
         if self.cifrado :
    
             imagen_array = np.array(self.imagen)
     
             # Crear el lector OCR
-            reader = easyocr.Reader(['en'], gpu=True)  # 'latin' es un conjunto genérico que reconoce todos los caracteres latinos
+            reader = easyocr.Reader(['en'], gpu=gpu)  
 
             # Extraer texto de la imagen
             resultado = reader.readtext(imagen_array, detail=0, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=') 
