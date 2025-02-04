@@ -20,7 +20,7 @@ python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
   --modo-cifrado-imagen lsb \
   --modo-cifrado-audio lsb \
-  -i ./archivos_prueba/audio_salida.wav \
+  --input_audio ./archivos_prueba/audio_salida.wav \
   -o ./archivos_prueba/datos_desocultos.txt \
   --contraseña qwqwqw \
   -v

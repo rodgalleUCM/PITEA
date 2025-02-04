@@ -19,9 +19,6 @@ class OcultadorImagenText(OcultadorImagen):
             datos = base64.b64encode(datos).decode('utf-8')
         else :
             datos = datos.decode('utf-8')
-        print(datos)
-        
-
        
         conf = cargar_configuracion(ARCHIVO_CONFIG)
         tamaño_fuente = conf["tamanio_fuente"]
