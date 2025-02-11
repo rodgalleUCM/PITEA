@@ -1,14 +1,12 @@
 
 import os
 from interfaz.command import Command
-from interfaz.constantes import RESET, ROJO, CYAN, YELLOW, SCRIPT_PATH
+from interfaz.constantes import RESET, ROJO, CYAN, YELLOW, SCRIPT_PATH,OCULTAR_CUADRO
 from interfaz.utils import ejecutar_comando
 
 class OcultarArchivoCommand(Command):
     def ejecutar(self):
-        print(CYAN + "\n╔══════════════════════════════╗")
-        print("║      🔒 Ocultar Archivo      ║")
-        print("╚══════════════════════════════╝" + RESET)
+        print(CYAN + OCULTAR_CUADRO + RESET)
 
         while True:
             modo_cifrado = input(YELLOW + "🔹 Modo de cifrado (aes): " + RESET).strip().lower() or "aes"

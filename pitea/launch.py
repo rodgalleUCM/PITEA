@@ -2,41 +2,20 @@ import os
 from interfaz.Invoker import Invoker
 from interfaz.OcultarArchivoCommand import OcultarArchivoCommand
 from interfaz.DesocultarArchivoCommand import DesocultarArchivoCommand
-from interfaz.constantes import RESET, ROJO, CYAN, YELLOW
+from interfaz.MenuPrinter import MenuPrinter
 
-def mostrar_menu():
-    
-    menu = """╔══════════════════════════════════╗
-║      🕵️‍♂️ ¿Qué desea hacer?        ║
-╠══════════════════════════════════╣
-║  1️⃣   Ocultar archivo             ║
-║  2️⃣   Desocultar archivo          ║
-║  3️⃣  🚪 Salir                     ║
-╚══════════════════════════════════╝
-"""
-    print(CYAN + menu + RESET)
-    opcion = input(YELLOW +"Seleccione una opción:" + RESET)
-    return opcion
 
 def menu():
+    menu_printer = MenuPrinter()
     Inv = Invoker()
     Inv.registrar_comando("1", OcultarArchivoCommand())
     Inv.registrar_comando("2", DesocultarArchivoCommand())
 
-    os.system('cls' if os.name == 'nt' else 'clear')  # Limpia la pantalla antes de mostrar el menú
-    print(ROJO +"""
-░▒▓███████▓▒░  ░▒▓█▓▒░ ░▒▓████████▓▒░ ░▒▓████████▓▒░  ░▒▓██████▓▒░  
-░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓███████▓▒░  ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓██████▓▒░   ░▒▓████████▓▒░ 
-░▒▓█▓▒░        ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░        ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░        ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-        """+ RESET)
+    menu_printer.mostrar_encabezado()
     while True:
-        opcion = mostrar_menu()   
+        opcion = menu_printer.mostrar_menu()   
         if opcion == "3":
-            print("Saliendo...")
+            menu_printer.mostrar_salida()
             break
         Inv.ejecutar_comando(opcion)
         

@@ -1,15 +1,12 @@
 import os
 from interfaz.command import Command
-from interfaz.constantes import RESET, ROJO, CYAN, YELLOW, SCRIPT_PATH
+from interfaz.constantes import RESET, ROJO, CYAN, YELLOW, SCRIPT_PATH, DESOCULTAR_CUADRO
 from interfaz.utils import ejecutar_comando
 
 
 class DesocultarArchivoCommand(Command):
     def ejecutar(self):
-        print(CYAN + "\n╔══════════════════════════════╗")
-        print("║     🔓 Desocultar Archivo    ║")
-        print("╚══════════════════════════════╝" + RESET)
-
+        print(CYAN + DESOCULTAR_CUADRO + RESET)
         while True:
             modo_cifrado = input(YELLOW + "🔹 Modo de cifrado (aes): " + RESET).strip().lower() or "aes"
             if modo_cifrado in ["aes"]:
