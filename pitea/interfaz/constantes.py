@@ -17,16 +17,21 @@ TITULO = """
 ░▒▓█▓▒░        ░▒▓█▓▒░    ░▒▓█▓▒░     ░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
         """
 MENU = """╔══════════════════════════════════╗
-║      🕵️‍♂️ ¿Qué desea hacer?        ║
+║        ¿Qué desea hacer?         ║
 ╠══════════════════════════════════╣
 ║  1️⃣   Ocultar archivo             ║
 ║  2️⃣   Desocultar archivo          ║
-║  3️⃣  🚪 Salir                     ║
+║  3️⃣   Salir                       ║
 ╚══════════════════════════════════╝
 """
 OCULTAR_CUADRO= """\n╔══════════════════════════════╗
-║      🔒 Ocultar Archivo      ║
+║       Ocultar Archivo        ║
 ╚══════════════════════════════╝"""
 DESOCULTAR_CUADRO = """\n╔══════════════════════════════╗
-║     🔓 Desocultar Archivo    ║
+║      Desocultar Archivo      ║
 ╚══════════════════════════════╝"""
+
+OPCIONES_CIFRADOS = ["aes", "none"]
+OPCIONES_MODO_IMAGEN = ["lsb", "text"]
+OPCIONES_MODO_AUDIO = ["lsb", "sstv"]
+OPCIONES_VERBOSE = ["s", "n"]

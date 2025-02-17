@@ -11,8 +11,9 @@ def menu():
     Inv.registrar_comando("1", OcultarArchivoCommand())
     Inv.registrar_comando("2", DesocultarArchivoCommand())
 
-    menu_printer.mostrar_encabezado()
+  
     while True:
+        menu_printer.mostrar_encabezado()
         opcion = menu_printer.mostrar_menu()   
         if opcion == "3":
             menu_printer.mostrar_salida()

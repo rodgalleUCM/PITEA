@@ -1,14 +1,44 @@
 import subprocess
 import threading
 import itertools
+import os
 import time
-from interfaz.constantes import RESET, VERDE, ROJO, MORADO, SPINNING
+from interfaz.constantes import RESET, VERDE, ROJO, MORADO, SPINNING,YELLOW
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import PathCompleter
+from prompt_toolkit.styles import Style
+
+# Autocompletador de rutas
+archivo_completer = PathCompleter(expanduser=True)
+
+def comprobar_directorio(mensaje):
+    while True:
+        salida = prompt(mensaje, completer=archivo_completer).strip()
+        directorio = os.path.dirname(salida)  # Extraer solo el directorio de la ruta
+
+        if directorio == "" or os.path.exists(directorio):  
+            return salida
+        print(ROJO + "❌ Error: La carpeta de salida no existe. Introduce una ruta válida." + RESET)
+
+def comprobar_opcion(mensaje, opciones):
+    while True:
+        opcion = input(YELLOW + mensaje + RESET).strip().lower()
+        if opcion in opciones:
+            return opcion
+        print(ROJO + "❌ Error: Opción inválida." + RESET)
+
+def comprobar_archivo(mensaje):
+    while True:
+        archivo = prompt( mensaje , completer=archivo_completer).strip()
+        if os.path.exists(archivo):
+            return archivo
+        print(ROJO + "❌ Error: El archivo no existe. Introduce una ruta válida." + RESET)
 
 def spinner():
     for cursor in itertools.cycle(['|', '/', '-', '\\']):
         if not SPINNING:
             break
-        print(MORADO + "\rProcesando... {cursor}" +RESET, end="", flush=True)
+        print(MORADO + f"\rProcesando... {cursor}" +RESET, end="", flush=True)
         time.sleep(0.1)
 
 def ejecutar_comando(comando):
