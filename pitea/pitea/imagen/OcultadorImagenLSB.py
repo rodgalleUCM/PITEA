@@ -46,6 +46,7 @@ class OcultadorImagenLSB(OcultadorImagen):
         return self.imagen, self.formato
 
     def desocultar(self):
+        self.pixeles = self.imagen.load()
         datos_binarios = ""
         tamano_datos = 0
 

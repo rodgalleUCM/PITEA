@@ -63,8 +63,6 @@ class OcultadorImagen(ABC):
 
     def transformar_imagen (self,imagen):
         
-        print("transformar imagen")
-
         #formato RGB
         imagen = imagen.convert("RGB")
         
@@ -99,9 +97,6 @@ class OcultadorImagen(ABC):
         return imagen_modificada_pil 
     
     def transformar_imagen_inversa (self,imagen):
-
-        print("transformar imagen inversa")
-        
         imagen = imagen.convert("RGB")
         
         # Convertir la imagen PIL a un array de NumPy (para poder usar la indexación)
