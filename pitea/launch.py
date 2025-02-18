@@ -1,7 +1,7 @@
 import os
 from interfaz.Invoker import Invoker
-from interfaz.OcultarArchivoCommand import OcultarArchivoCommand
-from interfaz.DesocultarArchivoCommand import DesocultarArchivoCommand
+from interfaz.comandos.OcultarArchivoCommand import OcultarArchivoCommand
+from interfaz.comandos.DesocultarArchivoCommand import DesocultarArchivoCommand
 from interfaz.MenuPrinter import MenuPrinter
 
 

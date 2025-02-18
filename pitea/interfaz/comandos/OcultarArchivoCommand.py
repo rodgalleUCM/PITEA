@@ -1,5 +1,5 @@
 
-from interfaz.command import Command
+from interfaz.comandos.command import Command
 from interfaz.constantes import *
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 
