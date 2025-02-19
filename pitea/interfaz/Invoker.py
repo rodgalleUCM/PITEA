@@ -4,6 +4,9 @@ from interfaz.constantes import RESET, ROJO
 class Invoker:
     def __init__(self):
         self.comandos = {}
+
+    def obtener_comandos(self):
+        return self.comandos
     
     def registrar_comando(self, nombre, comando):
         self.comandos[nombre] = comando

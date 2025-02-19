@@ -2,10 +2,15 @@
 from interfaz.comandos.command import Command
 from interfaz.constantes import *
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
+from interfaz.MenuPrinter import MenuPrinter
 
 class OcultarArchivoCommand(Command):
+    def __init__(self):
+        super().__init__("Ocultar  archivo")
+
     def ejecutar(self):
-        print(CYAN + OCULTAR_CUADRO + RESET)
+        menu = MenuPrinter()
+        menu. mostrar_opcion(self.descripcion)
 
         modo_cifrado =  comprobar_opcion(f"🔒 Modo de cifrado del texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion en imagen ({'/'.join(OPCIONES_MODO_IMAGEN)}): ", OPCIONES_MODO_IMAGEN)

@@ -2,11 +2,17 @@
 from interfaz.comandos.command import Command
 from interfaz.constantes import *
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
+from interfaz.MenuPrinter import MenuPrinter
 
 
 class DesocultarArchivoCommand(Command):
+
+    def __init__(self):
+        super().__init__("Desocultar  archivo")
+
     def ejecutar(self):
-        print(CYAN + DESOCULTAR_CUADRO + RESET)
+        menu = MenuPrinter()
+        menu. mostrar_opcion(self.descripcion)
         
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN)}): ", OPCIONES_MODO_IMAGEN)
 

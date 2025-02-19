@@ -1,8 +1,28 @@
 import subprocess 
 import os
+from PIL import Image
+from pitea.imagen.OcultadorImagenLSB import OcultadorImagenLSB
 
 # Ruta del script a probar
 SCRIPT_PATH = "script_ejecucion.py"
+
+def  test_transformada():
+    # Test de transformaciones sin ocultar datos
+    ruta_imagen_prueba = "archivos_prueba/imagen_salida_sstv.png"
+    imagen_original = Image.open(ruta_imagen_prueba)
+
+    # Crear instancia de OcultadorImagen
+    ocultador = OcultadorImagenLSB(ruta_imagen_prueba, modo_cifrador="none")
+
+    # Transformar la imagen
+    imagen_transformada = ocultador.transformar_imagen(imagen_original)
+
+    # Invertir la transformación
+    imagen_revertida = ocultador.transformar_imagen_inversa(imagen_transformada)
+
+    # Comparar píxeles para verificar reversibilidad completa
+    assert list(imagen_original.getdata()) == list(imagen_revertida.getdata()), " Las transformaciones no son reversibles."
+    print("✅ Prueba de transformación completamente reversible, completada con éxito \n")
 
 def test_ocultar_desocultar_lsb():
     # Prueba de ocultar con cifrado AES y LSB
@@ -131,7 +151,7 @@ def run_tests():
 
             print("🧪 Prueba de ocultar y desocultar con cifrado AES y LSB")
             test_ocultar_desocultar_lsb()
-            #test_ocultar_desocultar_sstv()
+            test_transformada()
 
             print(" \n🎉 Todas las pruebas han pasado correctamente. \n")
         except AssertionError as error:

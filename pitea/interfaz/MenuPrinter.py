@@ -1,16 +1,25 @@
 import os
-from interfaz.constantes import RESET, ROJO, CYAN, YELLOW,TITULO,MENU
+from interfaz.constantes import RESET, ROJO, CYAN, YELLOW,TITULO
 
 class MenuPrinter:
-    def __init__(self):
-        self.menu = MENU
     
     # Método para imprimir el menú en la terminal.
-    def mostrar_menu(self):
-      
-        print(CYAN + self.menu + RESET)
+    def mostrar_menu(self, comandos):
+        
+        print(CYAN+ "╔══════════════════════════════════╗")
+        print("║        ¿Qué desea hacer?         ║")
+        print("╠══════════════════════════════════╣")            
+        for key, command in comandos.items():
+            print(f"║  {key}️⃣   {command.descripcion.ljust(26)}  ║")
+        print("║  3️⃣   Salir                       ║")
+        print("╚══════════════════════════════════╝"+ RESET)
         opcion = input(YELLOW +"Seleccione una opción:" + RESET)
         return opcion
+    
+    def mostrar_opcion(self,opcion):
+        print(CYAN + "╔══════════════════════════════╗")
+        print(f"║      {opcion.ljust(24)}║")
+        print("╚══════════════════════════════╝"+ RESET)
 
     # Método para imprimir el encabezado o título decorado
     def mostrar_encabezado(self):

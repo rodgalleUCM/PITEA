@@ -7,18 +7,21 @@ from interfaz.MenuPrinter import MenuPrinter
 
 def menu():
     menu_printer = MenuPrinter()
-    Inv = Invoker()
-    Inv.registrar_comando("1", OcultarArchivoCommand())
-    Inv.registrar_comando("2", DesocultarArchivoCommand())
+    inv = Invoker()
+
+    # Registro automático de comandos
+    comandos = [OcultarArchivoCommand(), DesocultarArchivoCommand()]
+    for idx, comando in enumerate(comandos, start=1):
+        inv.registrar_comando(str(idx), comando)
 
   
     while True:
         menu_printer.mostrar_encabezado()
-        opcion = menu_printer.mostrar_menu()   
-        if opcion == "3":
+        opcion = menu_printer.mostrar_menu(inv.obtener_comandos())   
+        if opcion == str(idx+1) :
             menu_printer.mostrar_salida()
             break
-        Inv.ejecutar_comando(opcion)
+        inv.ejecutar_comando(opcion)
         
 
 if __name__ == "__main__":
