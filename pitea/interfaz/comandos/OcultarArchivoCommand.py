@@ -1,6 +1,6 @@
 
 from interfaz.comandos.command import Command
-from interfaz.constantes import *
+from interfaz.constantes import OPCIONES_CIFRADOS,OPCIONES_MODO_IMAGEN,OPCIONES_MODO_AUDIO,OPCIONES_VERBOSE,SCRIPT_PATH,RESET,YELLOW
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 from interfaz.MenuPrinter import MenuPrinter
 

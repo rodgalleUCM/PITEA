@@ -6,9 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION ,RUTA_DATOS_OCULTADOR_IMAGEN_TEXT
 from pitea.utils import cargar_configuracion
-from PIL import Image, ImageFilter
 import easyocr
-from PIL import ImageEnhance
 import pytesseract
 class OcultadorImagenText(OcultadorImagen):
     nombre = "text"

@@ -1,5 +1,4 @@
 import subprocess
-import os
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
 from pitea.utils import cargar_configuracion

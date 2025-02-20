@@ -1,6 +1,6 @@
 
 from interfaz.comandos.command import Command
-from interfaz.constantes import *
+from interfaz.constantes import OPCIONES_MODO_IMAGEN_DESOCULTACION,OPCIONES_CIFRADOS,OPCIONES_MODO_AUDIO_DESOCULTACION,YELLOW,RESET,SCRIPT_PATH,OPCIONES_VERBOSE
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 from interfaz.MenuPrinter import MenuPrinter
 
@@ -14,7 +14,7 @@ class DesocultarArchivoCommand(Command):
         menu = MenuPrinter()
         menu. mostrar_opcion(self.descripcion)
         
-        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN_DESOCULTACION)}): ", OPCIONES_DESOCULTACION_IMAGEN)
+        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN_DESOCULTACION)}): ", OPCIONES_MODO_IMAGEN_DESOCULTACION)
 
         if modo_imagen == "lsb": 
             modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)

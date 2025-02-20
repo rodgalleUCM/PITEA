@@ -3,7 +3,7 @@ from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 import pitea.constantes as constantes
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
-from opciones_ocultadores import *
+from opciones_ocultadores import OPCIONES_CIFRADO, OPCIONES_DESOCULTACION_IMAGEN, OPCIONES_DESCOCULTACION_AUDIO,OPCIONES_OCULTACION_IMAGEN,OPCIONES_OCULTACION_AUDIO
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))

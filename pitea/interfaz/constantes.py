@@ -1,4 +1,4 @@
-from opciones_ocultadores import *
+from opciones_ocultadores import OPCIONES_OCULTACION_IMAGEN,OPCIONES_OCULTACION_AUDIO,OPCIONES_DESOCULTACION_IMAGEN,OPCIONES_DESCOCULTACION_AUDIO
 
 SCRIPT_PATH = "script_ejecucion.py"
 SPINNING = False
