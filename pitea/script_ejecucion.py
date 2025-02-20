@@ -3,6 +3,7 @@ from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 import pitea.constantes as constantes
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
+from opciones_ocultadores import *
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -15,7 +16,7 @@ def main():
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        ["aes", "none"]
+        OPCIONES_CIFRADO
     ),  
     default="aes",
     help="Modo de cifrado a utilizar (ej. aes, rsa).",
@@ -23,7 +24,7 @@ def main():
 @click.option(
     "--modo-cifrado-imagen",
     type=click.Choice(
-        ["lsb", "text"]
+        OPCIONES_OCULTACION_IMAGEN
     ), 
     default="lsb",
     help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
@@ -31,7 +32,7 @@ def main():
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["lsb", "sstv"]
+        OPCIONES_OCULTACION_AUDIO
     ),  
     default="1",
     help="Modo de cifrado específico para audio (ej. sstv).",
@@ -137,7 +138,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        ["aes", "none"]
+        OPCIONES_CIFRADO
     ),  
     default="aes",
     help="Modo de cifrado a utilizar (ej. aes, rsa).",
@@ -145,15 +146,15 @@ def ocultar(
 @click.option(
     "--modo-cifrado-imagen",
     type=click.Choice(
-        ["lsb", "text","none"]
-    ),  #! el 2 es solo para dejar indicado que hay que añadir mas opciones
+        OPCIONES_DESOCULTACION_IMAGEN
+    ),  
     default="lsb",
     help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
 )
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["lsb", "sstv","none"]
+        OPCIONES_DESCOCULTACION_AUDIO
     ),  
     default="lsb",
     help="Modo de cifrado específico para audio (ej. sstv).",

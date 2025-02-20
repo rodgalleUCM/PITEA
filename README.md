@@ -59,6 +59,17 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen none \
+  --modo-cifrado-audio none \
+  --input_text ./archivos_prueba/base64.txt\
+  -o ./archivos_prueba/datos_desocultos_text_sstv.txt \
+  --contraseña qwqwqw \
+  -v
+```
+
 ## Arbol de directorio provisional de pitea
 
 ```TFG-PITEA/

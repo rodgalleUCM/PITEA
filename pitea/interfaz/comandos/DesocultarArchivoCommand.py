@@ -14,12 +14,12 @@ class DesocultarArchivoCommand(Command):
         menu = MenuPrinter()
         menu. mostrar_opcion(self.descripcion)
         
-        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN)}): ", OPCIONES_MODO_IMAGEN)
+        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN_DESOCULTACION)}): ", OPCIONES_DESOCULTACION_IMAGEN)
 
         if modo_imagen == "lsb": 
             modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
 
-        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(OPCIONES_MODO_AUDIO)}): ", OPCIONES_MODO_AUDIO)
+        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", OPCIONES_MODO_AUDIO_DESOCULTACION)
         contraseña = input(YELLOW + "🔑 Contraseña: " + RESET).strip()
 
         if modo_audio == "sstv":
