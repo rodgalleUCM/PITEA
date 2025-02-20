@@ -145,7 +145,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado-imagen",
     type=click.Choice(
-        ["lsb", "text"]
+        ["lsb", "text","none"]
     ),  #! el 2 es solo para dejar indicado que hay que añadir mas opciones
     default="lsb",
     help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
@@ -153,7 +153,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        ["lsb", "sstv"]
+        ["lsb", "sstv","none"]
     ),  
     default="lsb",
     help="Modo de cifrado específico para audio (ej. sstv).",
@@ -175,6 +175,12 @@ def ocultar(
     help="Archivos de audio de entrada ",
 )
 @click.option(
+    "-i",
+    "--input_text",
+    type=click.Path(exists=True),
+    help="Archivos de texto de entrada ",
+)
+@click.option(
     "-o",
     "--output",
     default="datos_desocultos.txt",
@@ -188,6 +194,7 @@ def desocultar(
     modo_cifrado_audio,
     input_audio,
     input_imagen,
+    input_text,
     output,
     contraseña,
     verbose,
@@ -201,10 +208,14 @@ def desocultar(
         constantes.VERBOSE = True
 
     #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio
-    if not input_audio  and not input_imagen :
+    if not input_audio  and not input_imagen and not input_text :
         click.BadOptionUsage("No se ha introducido nigún input")
     elif input_audio and input_imagen :
         click.BadOptionUsage("Solo se puede introducir input_imagen si no introduce input_audio")
+    elif input_text and input_imagen :
+        click.BadOptionUsage("Solo se puede introducir input_text si no introduce input_imagen")
+    elif input_text and input_audio :
+        click.BadOptionUsage("Solo se puede introducir input_text si no introduce input_audio")
 
     # Mostramos parámetros para depuración
     if constantes.VERBOSE:
@@ -228,6 +239,7 @@ def desocultar(
             modo_cifrado_audio,
             input_audio,
             input_imagen,
+            input_text,
             output,
             contraseña,
         )

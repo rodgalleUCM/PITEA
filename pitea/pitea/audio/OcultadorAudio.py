@@ -16,6 +16,7 @@ class OcultadorAudio(ABC):
         if ruta_audio:
             self.audio = wave.open(ruta_audio, mode="rb")
             self.formato = ruta_audio.split(".")[-1]
+            self.ruta_audio = ruta_audio
 
     def guardar(self,ruta,frames) :
         with (

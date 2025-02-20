@@ -1,11 +1,12 @@
 from pitea.AbstractFactory import AbstractFactory
 from pitea.audio.OcultadorAudioLSB import OcultadorAudioLSB
 from pitea.audio.OcultadorAudioSSTV import OcultadorAudioSSTV
+from pitea.audio.OcultadorAudioNone import OcultadorAudioNone
 
 
 class OcultadorAudioFactory(AbstractFactory):
 
-    lista_ocultadores = [OcultadorAudioLSB,OcultadorAudioSSTV]
+    lista_ocultadores = [OcultadorAudioLSB,OcultadorAudioSSTV,OcultadorAudioNone]
 
     @staticmethod
     def get_builder(modo_cifrado, ruta_audio):

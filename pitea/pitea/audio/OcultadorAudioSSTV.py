@@ -1,10 +1,13 @@
 import subprocess
+import os
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
 from pitea.utils import cargar_configuracion
+from pathlib import Path
 
 from pitea.mensajes import print
-from pitea.constantes import ARCHIVO_CONFIG, FORMATO_AUDIO_OCULTACION, MODES_SSTV, RUTA_AUDIO_CONTENEDOR, RUTA_IMAGEN_CONTENEDORA,RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA
+import builtins
+from pitea.constantes import FORMATO_IMAGEN_DESOCULTACION, RUTA_IMAGEN_DESOCULTACION, ARCHIVO_CONFIG, FORMATO_AUDIO_OCULTACION, MODES_SSTV, RUTA_AUDIO_CONTENEDOR, RUTA_IMAGEN_CONTENEDORA,RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA
 
 
 class OcultadorAudioSSTV(OcultadorAudio):
@@ -37,7 +40,31 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
 
     def desocultar(self):
-        subprocess.run(["qsstv"])
+
+        # Conviertos rutas relativas a absolutas para que los mensajes sean solo copiar y pegar y poder funcionar todo
+        RUTA_AUDIO = Path(f"{self.ruta_audio}").resolve()  
+        RUTA_IMAGEN_DESOCULTACION_absoluta = ( Path.cwd() / Path(RUTA_IMAGEN_DESOCULTACION)).resolve()
+
+        while True:
+            builtins.print(f"Una vez abierto QSSTV elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
+            builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")
+            subprocess.run(["qsstv"])
+
+            # Verificar si hay exactamente un archivo PNG en la ruta
+            ruta_padre=Path(RUTA_IMAGEN_DESOCULTACION).parent
+            archivos_png = list(ruta_padre.glob("*.png"))  # Busca archivos con extensión .png
+
+            if len(archivos_png) >= 1:  # Solo se rompe el bucle si hay exactamente un archivo PNG
+                break
+            else :
+                raise Exception(f"No hay nigun archivo 'png' en el directorio pedido: {ruta_padre}")
+
+
+
+
+
+
+        
         
     def ocultar_guardar(self, formato_imagen, ruta_saida):
 

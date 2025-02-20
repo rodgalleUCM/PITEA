@@ -4,7 +4,7 @@ import numpy as np
 from pitea.imagen.OcultadorImagen import OcultadorImagen
 from PIL import Image, ImageDraw, ImageFont
 
-from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION
+from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION ,RUTA_DATOS_OCULTADOR_IMAGEN_TEXT
 from pitea.utils import cargar_configuracion
 from PIL import Image, ImageFilter
 import easyocr
@@ -19,6 +19,13 @@ class OcultadorImagenText(OcultadorImagen):
             datos = base64.b64encode(datos).decode('utf-8')
         else :
             datos = datos.decode('utf-8')
+
+
+        with open(RUTA_DATOS_OCULTADOR_IMAGEN_TEXT, 'w') as f:
+            f.write(datos)
+
+        print(f"Datos escritos en {RUTA_DATOS_OCULTADOR_IMAGEN_TEXT}")
+        
        
         conf = cargar_configuracion(ARCHIVO_CONFIG)
         tamaño_fuente = conf["tamanio_fuente"]

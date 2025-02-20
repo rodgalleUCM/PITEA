@@ -16,12 +16,14 @@ class OcultadorImagen(ABC):
     nombre = ""
     
 
-    def __init__(self, ruta_imagen,modo_cifrador):
+    def __init__(self, ruta_imagen,modo_cifrador,ruta_txt = None):
         if ruta_imagen:
             self.formato = ruta_imagen.split(".")[-1]
             self.imagen = Image.open(ruta_imagen)
             self.pixeles = self.imagen.load()
             self.ancho, self.alto = self.imagen.size
+        else :
+            self.ruta_txt = ruta_txt
         self.cifrado = 1 if modo_cifrador not in ["none"] else 0
 
     @abstractmethod

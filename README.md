@@ -42,7 +42,18 @@ python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
   --modo-cifrado-imagen text \
   --modo-cifrado-audio sstv \
-  --input_imagen ./archivos_prueba/imagen_salida_sstv\
+  --input_imagen ./archivos_prueba/imagen_salida_sstv.png\
+  -o ./archivos_prueba/datos_desocultos_text_sstv.txt \
+  --contraseña qwqwqw \
+  -v
+```
+
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen text \
+  --modo-cifrado-audio sstv \
+  --input_audio ./archivos_prueba/sstv.wav\
   -o ./archivos_prueba/datos_desocultos_text_sstv.txt \
   --contraseña qwqwqw \
   -v
@@ -77,5 +88,6 @@ python3 script_ejecucion.py ocultar \
 
 
 
-ES NECESARIO INSTALAR tessercar-ocr o algo asi era
+ES NECESARIO INSTALAR tessercar-ocr o algo asi era, es necesario instalar qsstv, es necesario instalar la fuente a utilizar
+En qsstv hay que ponerlo ne modod sound form file y activar el auto slant
 

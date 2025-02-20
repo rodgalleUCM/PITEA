@@ -55,7 +55,7 @@ def flujo_de_trabajo_ocultar(
 
 
 def flujo_de_trabajo_desocultar(
-    modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input_audio,input_imagen, output, contraseña
+    modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input_audio,input_imagen,input_text, output, contraseña
 ):
     print("Creando estructura de la cache")
     crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
@@ -71,22 +71,23 @@ def flujo_de_trabajo_desocultar(
         ocultador_audio.desocultar_guardar()
 
     #Opcion de pasar el audio sstv
-    if not input_imagen : 
-        print("Creando ocultador en imagenes ...")
+    print("Creando ocultador en imagenes ...")
+    if  input_audio : 
         ocultador_imagen = OcultadorImagenFactory.get_builder(
             modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
         )
-
-        print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
-        ocultador_imagen.desocultar_guardar()
-    else : #opcion de pasar la imagen decodificada
-        print("Creando ocultador en imagenes ...")
+    elif input_imagen : #opcion de pasar la imagen decodificada
         ocultador_imagen = OcultadorImagenFactory.get_builder(
             modo_cifrado_imagen, input_imagen,modo_cifrado
         )
+    elif input_text :
+        ocultador_imagen = OcultadorImagenFactory.get_builder(
+            modo_cifrado_imagen, input_imagen,modo_cifrado,input_text
+        )
+        
+    print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
+    ocultador_imagen.desocultar_guardar()
 
-        print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
-        ocultador_imagen.desocultar_guardar()
 
     print("Creando cifrador...")
     cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, output)
