@@ -2,6 +2,8 @@
 
 ## EJEMPLO DE LLAMADA
 
+## LSB
+
 ```bash
 python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
@@ -26,6 +28,8 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+## SSTV
+
 ```bash
 python3 script_ejecucion.py ocultar \
   --modo-cifrado aes \
@@ -36,6 +40,8 @@ python3 script_ejecucion.py ocultar \
   --contraseña qwqwqw \
   -v
 ```
+
+### Desocultacion desde imagen
 
 ```bash
   python3 script_ejecucion.py desocultar \
@@ -48,6 +54,8 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+### Desocultacion desde audio
+
 ```bash
   python3 script_ejecucion.py desocultar \
   --modo-cifrado aes \
@@ -58,6 +66,8 @@ python3 script_ejecucion.py ocultar \
   --contraseña qwqwqw \
   -v
 ```
+
+### Desocultacion desde base64
 
 ```bash
   python3 script_ejecucion.py desocultar \

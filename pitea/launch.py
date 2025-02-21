@@ -5,22 +5,25 @@ from interfaz.MenuPrinter import MenuPrinter
 
 
 def menu():
-    menu_printer = MenuPrinter()
-    inv = Invoker()
+    menu_printer = MenuPrinter() #Creamos el printer
+    inv = Invoker()              #Creamos el invoker
 
-    # Registro automático de comandos
+    # Registro de comandos
     comandos = [OcultarArchivoCommand(), DesocultarArchivoCommand()]
     for idx, comando in enumerate(comandos, start=1):
         inv.registrar_comando(str(idx), comando)
 
   
     while True:
-        menu_printer.mostrar_encabezado()
-        opcion = menu_printer.mostrar_menu(inv.obtener_comandos())   
-        if opcion == str(idx+1) :
+        menu_printer.mostrar_titulo()                            #mostramos el nombre de la aplicacion
+        opcion = menu_printer.mostrar_menu(inv.obtener_comandos())   #mostramos el menu de opciones
+        if opcion == str(idx+1) :                                    
             menu_printer.mostrar_salida()
             break
-        inv.ejecutar_comando(opcion)
+        elif opcion < str(idx+1) and opcion > "0":
+            inv.ejecutar_comando(opcion)                              #ejecutamos el comando seleccionado
+        else:
+            print("Opción inválida.")                              
         
 
 if __name__ == "__main__":

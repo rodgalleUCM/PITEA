@@ -16,13 +16,14 @@ class MenuPrinter:
         opcion = input(YELLOW +"Seleccione una opción:" + RESET)
         return opcion
     
+    # Método para imprimir la cabecera de la opcion correspondiente
     def mostrar_opcion(self,opcion):
         print(CYAN + "╔══════════════════════════════╗")
         print(f"║      {opcion.ljust(24)}║")
         print("╚══════════════════════════════╝"+ RESET)
 
-    # Método para imprimir el encabezado o título decorado
-    def mostrar_encabezado(self):
+    # Método para mostrar el titulo de la aplicación
+    def mostrar_titulo(self):
          os.system('cls' if os.name == 'nt' else 'clear')  # Limpia la pantalla antes de mostrar el menú
          print(ROJO + TITULO + RESET)
     

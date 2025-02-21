@@ -3,7 +3,7 @@ import os
 from PIL import Image
 from pitea.imagen.OcultadorImagenLSB import OcultadorImagenLSB
 
-# Ruta del script a probar
+# Ruta del script principal
 SCRIPT_PATH = "script_ejecucion.py"
 
 def  test_transformada():
@@ -152,13 +152,14 @@ def run_tests():
             print("🧪 Prueba de ocultar y desocultar con cifrado AES y LSB")
             test_ocultar_desocultar_lsb()
             test_transformada()
+            #test_base64()
 
             print(" \n🎉 Todas las pruebas han pasado correctamente. \n")
         except AssertionError as error:
             print("❌ Error en la prueba:", error)
             exit(1)
         except subprocess.CalledProcessError as error:
-            print("❌ Error en la prueba:", error.stderr)
+            print("❌ Error en subproceso:", error)
             exit(1)
         
 

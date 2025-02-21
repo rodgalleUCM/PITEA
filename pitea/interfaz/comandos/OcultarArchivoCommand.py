@@ -12,6 +12,9 @@ class OcultarArchivoCommand(Command):
         menu = MenuPrinter()
         menu. mostrar_opcion(self.descripcion)
 
+        imagen = ""
+        audio = ""
+
         modo_cifrado =  comprobar_opcion(f"🔒 Modo de cifrado del texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion en imagen ({'/'.join(OPCIONES_MODO_IMAGEN)}): ", OPCIONES_MODO_IMAGEN)
         modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion en audio ({'/'.join(OPCIONES_MODO_AUDIO)}): ", OPCIONES_MODO_AUDIO)
@@ -21,10 +24,10 @@ class OcultarArchivoCommand(Command):
 
         if modo_imagen == "lsb":
             imagen = comprobar_archivo("🖼️  Ruta de la imagen: ") 
+
+        if modo_audio == "lsb":
             audio = comprobar_archivo("🎵 Ruta del audio: ")
-        else:
-            imagen = ""
-            audio = ""
+           
 
         salida = comprobar_directorio("💾 Ruta del audio de salida: ")
         verbose = comprobar_opcion(f"📢 Modo verbose ({'/'.join(OPCIONES_VERBOSE)}): ", OPCIONES_VERBOSE)
@@ -40,9 +43,9 @@ class OcultarArchivoCommand(Command):
             "-o", salida
         ]
 
-        if imagen: # Si se especifica la imagen, se añade al comando
+        if imagen: 
             comando.extend(["--input_imagen", imagen])
-        if audio:  # Si se especifica el audio, se añade al comando
+        if audio:  
             comando.extend(["--input_audio", audio])
         if verbose == "s":
             comando.extend(["-v"])

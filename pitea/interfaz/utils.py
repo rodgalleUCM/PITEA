@@ -10,6 +10,7 @@ from prompt_toolkit.completion import PathCompleter
 # Autocompletador de rutas
 archivo_completer = PathCompleter(expanduser=True)
 
+# Funcion para comprobar si un directorio existe
 def comprobar_directorio(mensaje):
     while True:
         salida = prompt(mensaje, completer=archivo_completer).strip()
@@ -19,6 +20,7 @@ def comprobar_directorio(mensaje):
             return salida
         print(ROJO + "❌ Error: La carpeta de salida no existe. Introduce una ruta válida." + RESET)
 
+# Funcion para comprobar si una opcion es valida
 def comprobar_opcion(mensaje, opciones):
     while True:
         opcion = input(YELLOW + mensaje + RESET).strip().lower()
@@ -26,6 +28,7 @@ def comprobar_opcion(mensaje, opciones):
             return opcion
         print(ROJO + "❌ Error: Opción inválida." + RESET)
 
+# Funcion para comprobar si un archivo existe
 def comprobar_archivo(mensaje):
     while True:
         archivo = prompt( mensaje , completer=archivo_completer).strip()
@@ -33,6 +36,7 @@ def comprobar_archivo(mensaje):
             return archivo
         print(ROJO + "❌ Error: El archivo no existe. Introduce una ruta válida." + RESET)
 
+# Funcion para mostrar un spinner mientras se ejecuta un comando
 def spinner():
     for cursor in itertools.cycle(['|', '/', '-', '\\']):
         if not SPINNING:
@@ -40,6 +44,7 @@ def spinner():
         print(MORADO + f"\rProcesando... {cursor}" +RESET, end="", flush=True)
         time.sleep(0.1)
 
+# Funcion para ejecutar un comando y mostrar el resultado
 def ejecutar_comando(comando):
     global SPINNING
     SPINNING = True

@@ -1,6 +1,7 @@
 
 from interfaz.constantes import RESET, ROJO
 
+#clase para invocar comandos
 class Invoker:
     def __init__(self):
         self.comandos = {}

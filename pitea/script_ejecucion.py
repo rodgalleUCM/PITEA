@@ -8,7 +8,7 @@ from opciones_ocultadores import OPCIONES_CIFRADO, OPCIONES_DESOCULTACION_IMAGEN
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 def main():
-    """CLI para realizar análisis de grafos."""
+    """PITEA"""
     pass
 
 
@@ -19,7 +19,7 @@ def main():
         OPCIONES_CIFRADO
     ),  
     default="aes",
-    help="Modo de cifrado a utilizar (ej. aes, rsa).",
+    help=f"Modo de cifrado a utilizar ({'/'.join(OPCIONES_CIFRADO)}): ",
 )
 @click.option(
     "--modo-cifrado-imagen",
@@ -27,38 +27,38 @@ def main():
         OPCIONES_OCULTACION_IMAGEN
     ), 
     default="lsb",
-    help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
+    help=f"Modo de ocultacion a usar en la imagen ({'/'.join(OPCIONES_OCULTACION_IMAGEN)}): ",
 )
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
         OPCIONES_OCULTACION_AUDIO
     ),  
-    default="1",
-    help="Modo de cifrado específico para audio (ej. sstv).",
+    default="lsb",
+    help=f"Modo de ocultacion específico para audio ({'/'.join(OPCIONES_OCULTACION_AUDIO)}): ",
 )
 @click.option(
     "-v",
     "--verbose",
     is_flag=True,
-    help="Modo verbose , muestra mensajes del flujoy.",
+    help="Modo verbose , muestra mensajes del flujo.",
 )
 @click.option(
     "-i",
     "--input",
     required=True,
     type=click.Path(exists=True),
-    help="Archivos de datos a ocultar",
+    help="Archivo de datos a ocultar",
 )
 @click.option(
     "--input_imagen",
     type=click.Path(exists=True),
-    help="Archivos de imagen requerido para ciertos modo de ocultacion de imagen ",
+    help="Archivo de imagen requerido para ciertos modo de ocultacion de imagen ",
 )
 @click.option(
     "--input_audio",
     type=click.Path(exists=True),
-    help="Archivos de audio requerido para ciertos modo de ocultacion de audio ",
+    help="Archivo de audio requerido para ciertos modo de ocultacion de audio ",
 )
 @click.option(
     "-o",
@@ -94,12 +94,12 @@ def ocultar(
    
     comprobar_existencia_archivo(input)
 
-    if input_imagen is None and modo_cifrado_imagen in ["lsb"] :
+    if input_imagen is None and modo_cifrado_imagen in OPCIONES_OCULTACION_IMAGEN:
         raise click.BadParameter(f"En el modo {modo_cifrado_imagen} es necesario añadir la opcion --input_imagen ARCHIVO ")
     elif input_imagen is not None:
         comprobar_existencia_archivo(input_imagen)
 
-    if input_audio is None and modo_cifrado_audio in ["lsb"] :
+    if input_audio is None and modo_cifrado_audio in OPCIONES_OCULTACION_AUDIO:
         raise click.BadParameter(f"En el modo {modo_cifrado_audio} es necesario añadir la opcion --input_audio ARCHIVO ")
     elif input_audio is not None :
         comprobar_existencia_archivo(input_audio)
@@ -141,7 +141,7 @@ def ocultar(
         OPCIONES_CIFRADO
     ),  
     default="aes",
-    help="Modo de cifrado a utilizar (ej. aes, rsa).",
+    help=f"Modo de cifrado a utilizar ({'/'.join(OPCIONES_CIFRADO)}): ",
 )
 @click.option(
     "--modo-cifrado-imagen",
@@ -149,7 +149,7 @@ def ocultar(
         OPCIONES_DESOCULTACION_IMAGEN
     ),  
     default="lsb",
-    help="Modo de ocultacion a usar en la imagen , no todos son compatibles con todos los formatos de imagen.",
+    help=f"Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_OCULTACION_IMAGEN)}): ",
 )
 @click.option(
     "--modo-cifrado-audio",
@@ -157,7 +157,7 @@ def ocultar(
         OPCIONES_DESCOCULTACION_AUDIO
     ),  
     default="lsb",
-    help="Modo de cifrado específico para audio (ej. sstv).",
+    help=f"Modo de ocultacion usado en el audio ({'/'.join(OPCIONES_OCULTACION_AUDIO)}): ",
 )
 @click.option(
     "-v",
@@ -173,7 +173,7 @@ def ocultar(
 @click.option(
     "--input_imagen",
     type=click.Path(exists=True),
-    help="Archivos de audio de entrada ",
+    help="Archivos de imagen de entrada ",
 )
 @click.option(
     "-i",
