@@ -8,7 +8,7 @@ from opciones_ocultadores import OPCIONES_CIFRADO, OPCIONES_DESOCULTACION_IMAGEN
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 def main():
-    """PITEA"""
+    """Punto de entrada al programa"""
     pass
 
 
@@ -84,8 +84,24 @@ def ocultar(
     verbose,
 ):
     """
-    Ejecuta la acción de ocultación usando los archivos especificados.
+    Ejecuta la acción de ocultación utilizando los archivos especificados.
+
+    Args:
+        modo_cifrado (str): Modo de cifrado a utilizar. Debe ser una de las opciones definidas en `opciones_ocultadores.OPCIONES_CIFRADO`.
+        modo_cifrado_imagen (str): Modo de ocultación para imágenes. Debe ser una de las opciones en `opciones_ocultadores.OPCIONES_OCULTACION_IMAGEN`.
+        modo_cifrado_audio (str): Modo de ocultación específico para audio. Debe ser una de las opciones en `opciones_ocultadores.OPCIONES_OCULTACION_AUDIO`.
+        input (str): Ruta del archivo de datos a ocultar. Debe existir.
+        input_imagen (str, optional): Ruta del archivo de imagen, requerido para ciertos modos de ocultación de imagen.
+        input_audio (str, optional): Ruta del archivo de audio, requerido para ciertos modos de ocultación de audio.
+        output (str): Nombre del archivo de salida. Por defecto, "audio_salida".
+        contraseña (str): Contraseña utilizada para el cifrado o descifrado.
+        verbose (bool): Si está activado, muestra mensajes detallados del flujo de ejecución.
+
+    Raises:
+        click.BadParameter: Si se selecciona un modo de ocultación de imagen o audio sin proporcionar el archivo correspondiente.
+
     """
+
 
     # activo el modo verbose o no
     if verbose:
@@ -201,8 +217,24 @@ def desocultar(
     verbose,
 ):
     """
-    Ejecuta la acción de desocultación usando los archivos especificados.
+    Ejecuta la acción de desocultación utilizando los archivos especificados.
+
+    Args:
+        modo_cifrado (str): Modo de cifrado a utilizar. Debe ser una de las opciones definidas en `opciones_ocultadores.OPCIONES_CIFRADO`.
+        modo_cifrado_imagen (str): Modo de ocultación utilizado en la imagen. Debe ser una de las opciones en `opciones_ocultadores.OPCIONES_DESOCULTACION_IMAGEN`.
+        modo_cifrado_audio (str): Modo de ocultación utilizado en el audio. Debe ser una de las opciones en `opciones_ocultadores.OPCIONES_DESCOCULTACION_AUDIO`.
+        input_audio (str, optional): Ruta del archivo de audio de entrada. Debe existir.
+        input_imagen (str, optional): Ruta del archivo de imagen de entrada. Debe existir.
+        input_text (str, optional): Ruta del archivo de texto de entrada. Debe existir.
+        output (str): Nombre del archivo de salida de texto. Por defecto, "datos_desocultos.txt".
+        contraseña (str): Contraseña utilizada para el descifrado.
+        verbose (bool): Si está activado, muestra mensajes detallados del flujo de ejecución.
+
+    Raises:
+        click.BadOptionUsage: Si no se proporciona ningún archivo de entrada o si se combinan múltiples tipos de entrada de manera no permitida.
+
     """
+
 
     # activo el modo verbose o no
     if verbose:

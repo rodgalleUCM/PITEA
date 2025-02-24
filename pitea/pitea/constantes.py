@@ -13,10 +13,8 @@ RUTA_CACHE_GENERAL = RUTA_PROGRAMA / "cache"
 
 conf = cargar_configuracion(ARCHIVO_CONFIG)
 
-# Obtener la fecha y hora actual
 fecha_hora_actual = datetime.now()
 
-# Formatear la fecha y hora como "DD:MM:YYYY_HH:Minutos"
 formato = fecha_hora_actual.strftime("%d-%m-%Y_%H:%M")
 
 if formato != conf["ult_fecha"]:
@@ -81,7 +79,7 @@ FORMATO_IMAGEN_DESOCULTACION = "png"
 FORMATO_IMAGEN_OCULTACION = "png"
 FORMATO_AUDIO_OCULTACION = "wav"
 
-# Diccionario de modos disponibles en sstv, !no he comprobado que funcione con todos , es solo ejemplo
+# Diccionario de modos disponibles en sstv, #!no he comprobado que funcione con todos , es solo ejemplo
 MODES_SSTV = {
     "MartinM1": (MartinM1,(320, 256)),
     "Robot36": (Robot36,(320,240)),

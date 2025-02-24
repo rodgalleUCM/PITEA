@@ -16,6 +16,24 @@ def flujo_de_trabajo_ocultar(
     output,
     contraseña,
 ):
+
+    """
+    Ejecuta el flujo de trabajo para cifrar y/o posteriormente ocultar datos en imágenes y audio.
+
+    Args:
+        modo_cifrado (str): Método de cifrado utilizado para los datos.
+        modo_cifrado_imagen (str): Método de ocultación utilizado para imágenes.
+        modo_cifrado_audio (str): Método de ocultación utilizado para audio.
+        input (str): Ruta del archivo de datos a ocultar.
+        input_imagen (str): Ruta del archivo de imagen contenedora.
+        input_audio (str): Ruta del archivo de audio contenedor.
+        output (str): Nombre del archivo de salida.
+        contraseña (str): Contraseña utilizada para el cifrado.
+
+    Notes:
+        - Crea la estructura de caché necesaria antes de iniciar el proceso.
+    """
+
     print("Creando estructura de la cache")
     crear_cache(LISTA_DIR_CACHE_OCULTACION)
 
@@ -57,6 +75,23 @@ def flujo_de_trabajo_ocultar(
 def flujo_de_trabajo_desocultar(
     modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input_audio,input_imagen,input_text, output, contraseña
 ):
+    """
+    Ejecuta el flujo de trabajo para desocultar y descifrar datos desde imágenes y/o audio.
+
+    Args:
+        modo_cifrado (str): Método de cifrado utilizado para los datos ocultos.
+        modo_cifrado_imagen (str): Método de desocultación utilizado para imágenes.
+        modo_cifrado_audio (str): Método de desocultación utilizado para audio.
+        input_audio (str or None): Ruta del archivo de audio contenedor (opcional).
+        input_imagen (str or None): Ruta del archivo de imagen contenedora (opcional).
+        input_text (str or None): Ruta del archivo de texto contenedor (opcional).
+        output (str): Nombre del archivo de salida.
+        contraseña (str): Contraseña utilizada para el descifrado.
+
+    Notes:
+        - Crea la estructura de caché necesaria antes de iniciar el proceso.
+    """
+
     print("Creando estructura de la cache")
     crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
 
