@@ -105,10 +105,53 @@ python3 script_ejecucion.py ocultar \
 │   │   ├── constantes.py
 │   └── script_ejecucion.py
 └── pyproject.toml
+```
 
 
 
 
 ES NECESARIO INSTALAR tessercar-ocr o algo asi era, es necesario instalar qsstv, es necesario instalar la fuente a utilizar
 En qsstv hay que ponerlo ne modod sound form file y activar el auto slant
+
+
+
+## Documentacion deñ .toml
+
+
+``` python
+# Archivo de configuracion utilizado para guardar ciertos valores entre ejecuciones del programa
+# o parámetros de configuración más concretos que hemos decidido que no se pasen por parámetro
+# debido a que no responden al fin de la herramienta, sino a parámetros específicos de esta.
+
+[persistente]
+# Contador utilizado para distinguir la cache entre varias ejecuciones en un mismo minuto
+contador_cache = 0
+
+# Fecha de la última ejecución, usada para saber si es necesario utilizar el contador de cache
+ult_fecha = "20-02-2025_21:22" 
+
+[Ajustes_sstv]
+# Modo de transmisión SSTV seleccionado, especifica el tipo de imagen que se usará
+modo_sstv = "MartinM1"
+
+# Muestras por segundo, define la calidad de la transmisión en términos de frecuencia
+samples_per_sec = 48000
+
+# Número de bits por muestra, determina la resolución de las muestras de audio
+bits = 16
+
+[Ajustes_ocultador_imagen_text]
+# Tamaño de la fuente en píxeles, utilizado para ajustar el texto sobre las imágenes
+tamanio_fuente = 10
+
+# Ancho máximo de las imágenes, para asegurarse de que las imágenes no sean demasiado anchas
+anchura_maxima = 800
+
+# Ruta relativa a la fuente utilizada para el texto (debe estar en el directorio adecuado)
+ruta_fuente = "../fuentes/ocraregular.ttf"
+
+# Configuración para usar la GPU, puede ser un valor booleano (True o False)
+gpu = "True"
+
+```
 
