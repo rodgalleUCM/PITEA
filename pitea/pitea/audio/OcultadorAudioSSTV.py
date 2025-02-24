@@ -69,9 +69,9 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
         #Cargamos el modo de sstv del archivo de configuracion
         conf = cargar_configuracion(ARCHIVO_CONFIG)
-        modo = conf["modo_sstv"]
-        samples_per_sec=conf["samples_per_sec"]
-        bits=conf["bits"]
+        modo = conf['Ajustes_sstv']["modo_sstv"]
+        samples_per_sec=conf['Ajustes_sstv']["samples_per_sec"]
+        bits=conf['Ajustes_sstv']["bits"]
         
         #Leemos la imagen con Pillow, Image.Resampling.LANCZOS suaviza la foto al redimensionarla
         image = Image.open(str(RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(MODES_SSTV[modo][1], Image.Resampling.LANCZOS)

@@ -17,15 +17,15 @@ fecha_hora_actual = datetime.now()
 
 formato = fecha_hora_actual.strftime("%d-%m-%Y_%H:%M")
 
-if formato != conf["ult_fecha"]:
+if formato != conf['persistente']["ult_fecha"]:
     RUTA_CACHE_ESPECIFICA = RUTA_CACHE_GENERAL / f"cache_{formato}"
-    conf["ult_fecha"] = formato
-    conf["contador_cache"] = 0
+    conf['persistente']["ult_fecha"] = formato
+    conf['persistente']["contador_cache"] = 0
 else:
     RUTA_CACHE_ESPECIFICA = (
-        RUTA_CACHE_GENERAL / f"cache_{formato}_{conf['contador_cache']}"
+        RUTA_CACHE_GENERAL / f"cache_{formato}_{conf['persistente']['contador_cache']}"
     )
-    conf["contador_cache"] += 1
+    conf['persistente']["contador_cache"] += 1
 
 actualizar_conf(conf, ARCHIVO_CONFIG)
 

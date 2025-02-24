@@ -110,12 +110,12 @@ def ocultar(
    
     comprobar_existencia_archivo(input)
 
-    if input_imagen is None and modo_cifrado_imagen in OPCIONES_OCULTACION_IMAGEN:
+    if input_imagen is None and modo_cifrado_imagen  in ["lsb"] :
         raise click.BadParameter(f"En el modo {modo_cifrado_imagen} es necesario añadir la opcion --input_imagen ARCHIVO ")
     elif input_imagen is not None:
         comprobar_existencia_archivo(input_imagen)
 
-    if input_audio is None and modo_cifrado_audio in OPCIONES_OCULTACION_AUDIO:
+    if input_audio is None and modo_cifrado_audio  in ["lsb"]:
         raise click.BadParameter(f"En el modo {modo_cifrado_audio} es necesario añadir la opcion --input_audio ARCHIVO ")
     elif input_audio is not None :
         comprobar_existencia_archivo(input_audio)

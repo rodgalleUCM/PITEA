@@ -56,7 +56,7 @@ def flujo_de_trabajo_ocultar(
         imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
     else :
         conf = cargar_configuracion(ARCHIVO_CONFIG)
-        modo_sstv = conf["modo_sstv"]
+        modo_sstv = conf['Ajustes_sstv']["modo_sstv"]
         anchura = MODES_SSTV[modo_sstv][1][0]
         altura = MODES_SSTV[modo_sstv][1][1]
         imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)

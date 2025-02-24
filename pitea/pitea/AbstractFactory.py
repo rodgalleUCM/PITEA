@@ -1,34 +1,24 @@
 from abc import ABC
-
-
 class AbstractFactory(ABC):
     """
-    Fábrica para obtener el constructor de ocultadores en imagenes adecuado basado en el tipo de archivo.
+    Fábrica abstracta para obtener el constructor adecuado de ocultadores de datos basado en el modo de cifrado.
 
-    Métodos
-    -------
-    get_builder(modo_cifrado,clave):
-        Devuelve el constructor de Cifrador correspondiente según el tipo de archivo.
+    Methods:
+        get_builder(modo_cifrado):
+            Devuelve el constructor correspondiente según el modo de cifrado.
     """
 
     @staticmethod
-    def get_builder(modo_cifrado, clave):
-        """
-        Devuelve el constructor de cifrador correspondiente según el modo de cifrado.
+    def get_builder(modo_cifrado):
+        """Devuelve el constructor correspondiente según el modo de cifrado.
 
-        Parameters
-        ----------
-        modo_cifrado :   str
-                         nombre del modo de cifrado , el cual esta acotado por el parseo de argumentos de script_ejecucion.py
+        Args:
+            modo_cifrado (str): Nombre del modo de cifrado o ocultacion, determinado por el parseo de argumentos en el script de ejecución.
 
-        Returns
-        -------
-        CifradorBuilder
-            Una instancia de la subclase de CifradorBuilder correspondiente.
+        Returns:
+            Object: Una instancia del objeto construido
 
-        Raises
-        ------
-        ValueError
-            Si el modo de cifrado es desconocido.
+        Raises:
+            ValueError: Si el modo de cifrado es desconocido.
         """
         pass
