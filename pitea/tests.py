@@ -1,6 +1,5 @@
 import subprocess 
 import os
-import tempfile
 from PIL import Image
 from pitea.imagen.OcultadorImagenLSB import OcultadorImagenLSB
 

@@ -1,6 +1,5 @@
 from pitea.imagen.OcultadorImagen import OcultadorImagen
 
-from pitea.imagen.OcultadorImagen import OcultadorImagen
 
 
 class OcultadorImagenLSB(OcultadorImagen):
