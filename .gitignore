@@ -5,6 +5,6 @@ venv/
 __pycache__/
 *cache*/
 logs/
-configuracion.toml
-archivos_prueba/
+*configuracion.toml
+*archivos_prueba/
 

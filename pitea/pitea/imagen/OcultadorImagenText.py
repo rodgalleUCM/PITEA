@@ -150,7 +150,6 @@ class OcultadorImagenText(OcultadorImagen):
         try:
             if self.cifrado:
                 datos_decodificados = base64.b64decode(texto_base64)
-                print(datos_decodificados)
             else:
                 datos_decodificados = texto_base64.encode()
             print("Datos decodificados exitosamente")

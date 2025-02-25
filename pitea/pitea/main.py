@@ -4,7 +4,11 @@ from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
 from pitea.constantes import ARCHIVO_CONFIG, LISTA_DIR_CACHE_DESOCULTACION, LISTA_DIR_CACHE_OCULTACION, MODES_SSTV, RUTA_IMAGEN_DESOCULTACION
 from pitea.utils import cargar_configuracion, crear_cache
+from colorama import init, Fore
+import traceback
 
+# Inicializar colorama (para compatibilidad con Windows)
+init()
 
 def flujo_de_trabajo_ocultar(
     modo_cifrado,
@@ -34,42 +38,49 @@ def flujo_de_trabajo_ocultar(
         - Crea la estructura de caché necesaria antes de iniciar el proceso.
     """
 
-    print("Creando estructura de la cache")
-    crear_cache(LISTA_DIR_CACHE_OCULTACION)
+    try :
+        print("Creando estructura de la cache")
+        crear_cache(LISTA_DIR_CACHE_OCULTACION)
 
 
-    print(MENSAJE_INICIO_FLUJO % "ocultación")
+        print(MENSAJE_INICIO_FLUJO % "ocultación")
 
-    print("Creando cifrador...")
-    cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, None)
+        print("Creando cifrador...")
+        cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, None)
 
-    print("Cifrador creado , cifrando datos ...")
-    cifrador.cifrar_guardar(input)
+        print("Cifrador creado , cifrando datos ...")
+        cifrador.cifrar_guardar(input)
 
-    print("Creando ocultador en imagenes ...")
-    ocultador_imagen = OcultadorImagenFactory.get_builder(
-        modo_cifrado_imagen, input_imagen, modo_cifrado
-    )
+        print("Creando ocultador en imagenes ...")
+        ocultador_imagen = OcultadorImagenFactory.get_builder(
+            modo_cifrado_imagen, input_imagen, modo_cifrado
+        )
 
-    print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
-    if modo_cifrado_audio not in ["sstv"] :
-        imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
-    else :
-        conf = cargar_configuracion(ARCHIVO_CONFIG)
-        modo_sstv = conf['Ajustes_sstv']["modo_sstv"]
-        anchura = MODES_SSTV[modo_sstv][1][0]
-        altura = MODES_SSTV[modo_sstv][1][1]
-        imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)
+        print("Ocultador en imagenes  creado, ocultando datos en imagen ...")
+        if modo_cifrado_audio not in ["sstv"] :
+            imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
+        else :
+            conf = cargar_configuracion(ARCHIVO_CONFIG)
+            modo_sstv = conf['Ajustes_sstv']["modo_sstv"]
+            anchura = MODES_SSTV[modo_sstv][1][0]
+            altura = MODES_SSTV[modo_sstv][1][1]
+            imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)
 
-    print("Creando ocultador en audio ...")
-    ocultador_audio = OcultadorAudioFactory.get_builder(
-        modo_cifrado_audio, input_audio
-    )
+        print("Creando ocultador en audio ...")
+        ocultador_audio = OcultadorAudioFactory.get_builder(
+            modo_cifrado_audio, input_audio
+        )
 
-    print("Ocultador en audio  creado, ocultando imagen en audio ...")
-    ocultador_audio.ocultar_guardar(formato, output)
+        print("Ocultador en audio  creado, ocultando imagen en audio ...")
+        ocultador_audio.ocultar_guardar(formato, output)
 
-    print("Proceso realizado")
+        print("Proceso realizado")
+    except Exception as e:  # Captura cualquier tipo de excepción
+        print(f"{Fore.RED}Se ha producido una excepción: {str(e)}")
+        print(f"{Fore.RED}Pila de llamadas:")
+        traceback.print_exc()
+        print(f"{Fore.RED}Programa acabado de manera abrupta{Fore.RESET}")
+
 
 
 def flujo_de_trabajo_desocultar(
@@ -92,40 +103,48 @@ def flujo_de_trabajo_desocultar(
         - Crea la estructura de caché necesaria antes de iniciar el proceso.
     """
 
-    print("Creando estructura de la cache")
-    crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
+    try :
+        print("Creando estructura de la cache")
+        crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
 
-    print(MENSAJE_INICIO_FLUJO % "desocultación")
+        print(MENSAJE_INICIO_FLUJO % "desocultación")
 
-    #Opcion de pasar el sstv ya decodificado como imagen
-    if input_audio :
-        print("Creando ocultador en audio ...")
-        ocultador_audio = OcultadorAudioFactory.get_builder(modo_cifrado_audio, input_audio)
+        #Opcion de pasar el sstv ya decodificado como imagen
+        if input_audio :
+            print("Creando ocultador en audio ...")
+            ocultador_audio = OcultadorAudioFactory.get_builder(modo_cifrado_audio, input_audio)
 
-        print("Ocultador en audio  creado, desocultando imagen en audio ...")
-        ocultador_audio.desocultar_guardar()
+            print("Ocultador en audio  creado, desocultando imagen en audio ...")
+            ocultador_audio.desocultar_guardar()
 
-    #Opcion de pasar el audio sstv
-    print("Creando ocultador en imagenes ...")
-    if  input_audio : 
-        ocultador_imagen = OcultadorImagenFactory.get_builder(
-            modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
-        )
-    elif input_imagen : #opcion de pasar la imagen decodificada
-        ocultador_imagen = OcultadorImagenFactory.get_builder(
-            modo_cifrado_imagen, input_imagen,modo_cifrado
-        )
-    elif input_text :
-        ocultador_imagen = OcultadorImagenFactory.get_builder(
-            modo_cifrado_imagen, input_imagen,modo_cifrado,input_text
-        )
-        
-    print("Ocultador en imagenes  creado, desocultando datos en imagen ...")
-    ocultador_imagen.desocultar_guardar()
+        #Opcion de pasar el audio sstv
+        print("Creando ocultador en imagenes ...")
+        if  input_audio : 
+            ocultador_imagen = OcultadorImagenFactory.get_builder(
+                modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
+            )
+        elif input_imagen : #opcion de pasar la imagen decodificada
+            ocultador_imagen = OcultadorImagenFactory.get_builder(
+                modo_cifrado_imagen, input_imagen,modo_cifrado
+            )
+        elif input_text :
+            ocultador_imagen = OcultadorImagenFactory.get_builder(
+                modo_cifrado_imagen, input_imagen,modo_cifrado,input_text
+            )
+            
+        print("Ocultador en imagenes  creado, desocultando datos en imagen ...")
+        ocultador_imagen.desocultar_guardar()
 
 
-    print("Creando cifrador...")
-    cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, output)
+        print("Creando cifrador...")
+        cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, output)
 
-    print("Cifrador creado, descifrando datos ...")
-    cifrador.descifrar_guardar()
+        print("Cifrador creado, descifrando datos ...")
+        cifrador.descifrar_guardar()
+
+        print("Proceso realizado")
+    except Exception as e:  # Captura cualquier tipo de excepción
+        print(f"{Fore.RED}Se ha producido una excepción: {str(e)}")
+        print(f"{Fore.RED}Pila de llamadas:")
+        traceback.print_exc()
+        print(f"{Fore.RED}Programa acabado de manera abrupta{Fore.RESET}")
