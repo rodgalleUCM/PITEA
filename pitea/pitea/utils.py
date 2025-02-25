@@ -5,20 +5,34 @@ from pathlib import Path
 
 
 def crear_cache(lista):
+    """
+    Crea los directorios de caché especificados en la lista.
+
+    Args:
+        lista (list of Path): Lista de objetos `Path` que representan los directorios a crear.
+
+    Notes:
+        - Si el directorio ya existe, no se genera un error.
+        - Se crean todos los directorios padres si no existen.
+
+    """
+
     for dir in lista:
         dir.mkdir(exist_ok=True, parents=True)
 
 
 def cargar_configuracion(archivo_conf):
-    """Cargar la configuración desde un archivo TOML.
+    """
+    Carga la configuración desde un archivo TOML.
 
     Args:
-        archivo_conf (str): Nombre del archivo de configuración.
+        archivo_conf (str): Ruta del archivo de configuración en formato TOML.
 
     Returns:
-        dict: Contenido del archivo de configuración.
-              En caso de error, devuelve None.
+        dict or None: Un diccionario con el contenido del archivo de configuración si se carga correctamente.
+                    Retorna None en caso de error.
     """
+
     try:
         with open(archivo_conf, "rb") as f:
             conf = tomllib.load(f)
@@ -36,20 +50,32 @@ def cargar_configuracion(archivo_conf):
 
 
 def actualizar_conf(conf, archivo_conf):
-    """Actualizar el archivo de configuración.
+    """
+    Actualiza el archivo de configuración con los valores de 'conf'.
 
     Args:
-        conf (dict): Diccionario con el contenido en formato TOML.
-        archivo_conf (str): Nombre del archivo de configuración.
+        conf (dict): Diccionario que contiene la configuración en formato TOML.
+        archivo_conf (str): Ruta del archivo de configuración a actualizar.
 
     Returns:
         None
+
     """
+
     with open(archivo_conf, "wb") as f:
         tomli_w.dump(conf, f)
 
 
 def comprobar_existencia_archivo(nombre):
+    """
+    Verifica la existencia y validez de un archivo.
+
+    Args:
+        nombre (str): Ruta del archivo a comprobar.
+
+    Raises:
+        click.UsageError: Si el archivo no existe o no es un archivo válido.
+    """
     ruta = Path(nombre)
     if not ruta.exists():
         raise click.UsageError(f"El archivo '{nombre}' no existe.")
