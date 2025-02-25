@@ -5,6 +5,15 @@ from interfaz.MenuPrinter import MenuPrinter
 
 
 def menu():
+    """
+    Función principal que maneja la interacción con el usuario a través del menú.
+
+    - Crea el objeto `MenuPrinter` para mostrar el menú y la interfaz.
+    - Crea el objeto `Invoker` para gestionar los comandos.
+    - Registra los comandos en el `Invoker`.
+    - Muestra el menú y ejecuta los comandos seleccionados por el usuario.
+    - Si el usuario selecciona una opción inválida o sale, el ciclo termina.
+    """
     menu_printer = MenuPrinter() #Creamos el printer
     inv = Invoker()              #Creamos el invoker
 
