@@ -92,6 +92,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
         while True:
             builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
+            builtins.print(f"Elija el modo \033[1;33m {cargar_configuracion(ARCHIVO_CONFIG)['Ajustes_sstv']['modo_sstv']} \033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")
             subprocess.run(["qsstv"])
 

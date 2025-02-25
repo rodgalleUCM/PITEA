@@ -2,7 +2,6 @@ from pitea.cifradores.Cifrador import Cifrador
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
-from pitea.constantes import SEMILLA
 import hashlib
 
 
