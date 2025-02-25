@@ -3,6 +3,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 from pitea.constantes import SEMILLA
+import hashlib
 
 
 class CifradorAES(Cifrador):
@@ -32,14 +33,13 @@ class CifradorAES(Cifrador):
             bytes: La clave de 16 bytes resultante después de mezclar la contraseña con la semilla.
         """
         contraseña_bytes = self.contraseña.encode()
-        # Rellenar o truncar la contraseña a 16 bytes
-        if len(contraseña_bytes) < 16:
-            contraseña_bytes += b"\x00" * (16 - len(contraseña_bytes))  # Rellenar con 0s
-        else:
-            contraseña_bytes = contraseña_bytes[:16]  # Tomar los primeros 16 bytes
 
-        # Mezclar la contraseña con la semilla para crear la clave
-        clave = bytes(a ^ b for a, b in zip(contraseña_bytes, SEMILLA))  # XOR para mezclar
+        # Crear un hash SHA-256 de la contraseña
+        hash_object = hashlib.sha256(contraseña_bytes)
+        hash_digest = hash_object.digest()
+
+        # Tomar los primeros 16 bytes para usar como clave
+        clave = hash_digest[:16]
 
         return clave
 
