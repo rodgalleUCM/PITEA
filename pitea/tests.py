@@ -2,14 +2,16 @@ import subprocess
 import os
 from PIL import Image
 from pitea.imagen.OcultadorImagenLSB import OcultadorImagenLSB
+from pathlib import Path
 
 # Ruta del script principal
 SCRIPT_PATH = "script_ejecucion.py"
 
 def ejecutar_comando(command):
-    stdout_temp_path = "SalidaPitea.log"
-    stderr_temp_path = "ErroresPitea.log"
-    
+    stdout_temp_path = Path("logs/SalidaPitea.log")
+    stderr_temp_path = Path("logs/ErroresPitea.log")
+    stdout_temp_path.parent.mkdir(parents=True, exist_ok=True)
+
     with open(stdout_temp_path, 'w') as stdout_temp, open(stderr_temp_path, 'w') as stderr_temp:
         result = subprocess.run(
             command,
