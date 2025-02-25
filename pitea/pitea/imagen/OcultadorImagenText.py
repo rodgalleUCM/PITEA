@@ -146,8 +146,6 @@ class OcultadorImagenText(OcultadorImagen):
         # Filtrar caracteres válidos en base64
         texto_base64 = ''.join(filter(lambda c: c.isalnum() or c in '+/=', texto_extraido))
 
-        print("Texto base64 extraído:\n", texto_base64)
-
         # Decodificar el texto base64 a bytes
         try:
             if self.cifrado:

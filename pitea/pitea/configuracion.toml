@@ -1,6 +1,6 @@
 [persistente]
-contador_cache = 3
-ult_fecha = "25-02-2025_13:40"
+contador_cache = 0
+ult_fecha = "25-02-2025_13:56"
 
 [Ajustes_sstv]
 modo_sstv = "MartinM1"
