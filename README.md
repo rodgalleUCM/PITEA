@@ -143,6 +143,20 @@ python3 script_ejecucion.py ocultar \
   -v
 ```
 
+### Desocultacion desde audio streaming
+
+```bash
+  python3 script_ejecucion.py desocultar \
+  --modo-cifrado aes \
+  --modo-cifrado-imagen text \
+  --modo-cifrado-audio sstv \
+  --input_audio ./archivos_prueba/sstv.wav\
+  -o ./archivos_prueba/datos_desocultos_text_sstv.txt \
+  --contraseña qwqwqw \
+  -v \
+  -s
+```
+
 ### Desocultacion desde base64
 
 ```bash

@@ -73,11 +73,13 @@ LISTA_DIR_CACHE_DESOCULTACION = [RUTA_DESOCULTACION_DATOS, RUTA_DESOCULTACION_IM
 
 VERBOSE = False
 
+STREAMING = False
+
 FORMATO_IMAGEN_DESOCULTACION = "png"
 FORMATO_IMAGEN_OCULTACION = "png"
 FORMATO_AUDIO_OCULTACION = "wav"
 
-# Diccionario de modos disponibles en sstv, #!no he comprobado que funcione con todos , es solo ejemplo
+# Diccionario de modos disponibles en sstv
 MODES_SSTV = {
     "MartinM1": (MartinM1,(320, 256)),
     "Robot36": (Robot36,(320,240)),

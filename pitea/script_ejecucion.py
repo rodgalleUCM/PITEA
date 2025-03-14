@@ -1,6 +1,6 @@
 import click
-from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 import pitea.constantes as constantes
+from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
 from opciones_ocultadores import OPCIONES_CIFRADO, OPCIONES_DESOCULTACION_IMAGEN, OPCIONES_DESCOCULTACION_AUDIO,OPCIONES_OCULTACION_IMAGEN,OPCIONES_OCULTACION_AUDIO
@@ -165,6 +165,12 @@ def ocultar(
     help="Modo verbose , muestra mensajes del flujo.",
 )
 @click.option(
+    "-s",
+    "--streaming",
+    is_flag=True,
+    help="Modo streaming, captura el audio sstv en streaming en vez de pasarle un audio.",
+)
+@click.option(
     "--input_audio",
     type=click.Path(exists=True),
     help="Archivo de audio de entrada.",
@@ -198,6 +204,7 @@ def desocultar(
     output,
     contraseña,
     verbose,
+    streaming
 ):
     """
     Ejecuta la acción de desocultación utilizando los archivos especificados.
@@ -206,9 +213,12 @@ def desocultar(
     # activo el modo verbose o no
     if verbose:
         constantes.VERBOSE = True
+        # activo el modo streaming o no
+    if streaming:
+        constantes.STREAMING = True
 
     #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio
-    if not input_audio  and not input_imagen and not input_text :
+    if not input_audio  and not input_imagen and not input_textand and not constantes.STREAMING:
         click.BadOptionUsage("No se ha introducido nigún input")
     elif input_audio and input_imagen :
         click.BadOptionUsage("Solo se puede introducir input_imagen si no introduce input_audio")
@@ -222,6 +232,8 @@ def desocultar(
         click.echo(f"Modo de cifrado: {modo_cifrado}")
         click.echo(f"Modo de cifrado de imagen: {modo_cifrado_imagen}")
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
+        click.echo(f"Streaming: {'Si' if constantes.STREAMING else 'No'}")
+
         click.echo(f"Contraseña: {contraseña}")
 
         if input_audio :

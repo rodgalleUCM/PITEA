@@ -1,10 +1,3 @@
-import subprocess
-from pitea.audio.OcultadorAudio import OcultadorAudio
-from PIL import Image
-from pitea.utils import cargar_configuracion
-from pathlib import Path
-from pitea.mensajes import print
-import builtins
 from pitea.constantes import (
     FORMATO_IMAGEN_DESOCULTACION,
     RUTA_IMAGEN_DESOCULTACION,
@@ -13,8 +6,17 @@ from pitea.constantes import (
     MODES_SSTV,
     RUTA_AUDIO_CONTENEDOR,
     RUTA_IMAGEN_CONTENEDORA,
-    RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA
+    RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA,
 )
+import pitea.constantes as constantes
+import subprocess
+from pitea.audio.OcultadorAudio import OcultadorAudio
+from PIL import Image
+from pitea.utils import cargar_configuracion
+from pathlib import Path
+from pitea.mensajes import print
+import builtins
+
 
 
 class OcultadorAudioSSTV(OcultadorAudio):
@@ -87,12 +89,14 @@ class OcultadorAudioSSTV(OcultadorAudio):
         Raises:
             Exception: Si no se encuentra ninguna imagen decodificada después de ejecutar QSSTV.
         """
+
         RUTA_AUDIO = Path(f"{self.ruta_audio}").resolve()
         RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(RUTA_IMAGEN_DESOCULTACION)).resolve()
 
         while True:
-            builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
-            builtins.print(f"Elija el modo \033[1;33m {cargar_configuracion(ARCHIVO_CONFIG)['Ajustes_sstv']['modo_sstv']} \033[0m")
+            print(constantes.STREAMING)
+            if not constantes.STREAMING:
+                builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")
             subprocess.run(["qsstv"])
 
@@ -103,7 +107,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
             if len(archivos_png) >= 1:
                 break
             else:
-                raise Exception(f"No hay ningún archivo 'png' en el directorio especificado: {ruta_padre}")
+                print(f"\033[91mNo hay ningún archivo 'png' en el directorio especificado: {ruta_padre} \033[0m")
 
     def ocultar_guardar(self, formato_imagen, ruta_salida):
         """Codifica una imagen en audio SSTV y la guarda en un archivo.
