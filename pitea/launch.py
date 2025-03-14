@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from interfaz.Invoker import Invoker
 from interfaz.comandos.OcultarArchivoCommand import OcultarArchivoCommand
 from interfaz.comandos.DesocultarArchivoCommand import DesocultarArchivoCommand
