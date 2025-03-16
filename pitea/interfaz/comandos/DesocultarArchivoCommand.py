@@ -70,20 +70,18 @@ class DesocultarArchivoCommand(Command):
             if modo_audio == "sstv":
                 #Usar o un audio o una imagen
                 while True:
-                    opcion = input(YELLOW + "🔊 ¿Desea usar un audio o una imagen? (audio/imagen): " + RESET).strip().lower()
-                    if opcion == "audio":
-                        flag_streaming = input(YELLOW + "🔊 ¿Desea capturar el audio en streaming? (S/n): " + RESET).lower()
-                        if flag_streaming == "n" :
-                            input_audio = comprobar_archivo("🎵 Ruta del audio: ")
-                            break
-                        else : break
-                    elif opcion == "imagen":
-                        input_imagen = comprobar_archivo("🖼️ Ruta de la imagen: ")
+
+                    flag_streaming = input(YELLOW + "🔊 ¿Desea capturar el audio en streaming? (S/n): " + RESET).lower()
+                    if flag_streaming == "n" :
+                        input_audio = comprobar_archivo("🎵 Ruta del audio: ")
                         break
-                    else:
-                        print("Opción inválida.")
-            else:
+                    else : break
+
+            elif modo_audio == "lsb":
                 input_audio = comprobar_archivo("🎵 Ruta del audio: ")
+            elif modo_audio == "none" and modo_imagen == "text":
+                input_imagen = comprobar_archivo("🖼️ Ruta de la imagen: ")
+
 
     
         # Solicitar la ruta de salida y el modo verbose
