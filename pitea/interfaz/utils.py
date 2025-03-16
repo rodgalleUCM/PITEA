@@ -127,13 +127,18 @@ def ejecutar_comando(comando):
         result = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         SPINNING = False 
         hilo_spinner.join() 
-
+        
         print(VERDE + "\r🟢 Proceso de " + comando[2] + " finalizado.\n" + RESET)
         print(MORADO + "Podra encontrar el archivo en la ruta especificada.\n"+ RESET)
         print(result.stdout)
         print(result.stderr)
         input(MORADO + "Presione enter para continuar..."+ RESET)
     except subprocess.CalledProcessError as error:
+        SPINNING = False
+        hilo_spinner.join()
+        print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)
+        input(MORADO + "Presione enter para continuar..."+ RESET)
+    except Exception as error:
         SPINNING = False
         hilo_spinner.join()
         print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)

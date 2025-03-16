@@ -242,7 +242,7 @@ def desocultar(
 
         print(SEPARADOR)
 
-        flujo_de_trabajo_desocultar(
+    flujo_de_trabajo_desocultar(
             modo_cifrado,
             modo_cifrado_imagen,
             modo_cifrado_audio,
