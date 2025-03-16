@@ -5,6 +5,7 @@ from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,c
 from interfaz.MenuPrinter import MenuPrinter
 from getpass import getpass
 
+
 class OcultarArchivoCommand(Command):
     """
     Comando para ocultar un archivo en otros archivos (imagen o audio).

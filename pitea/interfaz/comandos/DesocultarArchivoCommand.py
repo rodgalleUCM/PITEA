@@ -9,6 +9,7 @@ from pathlib import Path
 import builtins
 
 
+
 class DesocultarArchivoCommand(Command):
     """
     Comando para desocultar un archivo de texto, imagen o audio oculto en otro archivo.

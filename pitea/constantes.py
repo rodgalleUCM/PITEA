@@ -29,6 +29,7 @@ else:
     )
     conf['persistente']["contador_cache"] += 1
 
+
 actualizar_conf(conf, ARCHIVO_CONFIG)
 
 

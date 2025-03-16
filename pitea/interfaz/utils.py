@@ -6,6 +6,11 @@ import time
 from constantes import RESET, VERDE, ROJO, MORADO, SPINNING,YELLOW
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import PathCompleter
+import sys
+sys.path.append("../../")  
+from script_ejecucion import main
+from click.testing import CliRunner
+
 
 
 
@@ -117,30 +122,22 @@ def ejecutar_comando(comando):
     Raises:
         subprocess.CalledProcessError: Si ocurre un error durante la ejecución del comando.
     """
-    global SPINNING
-    SPINNING = True
 
-    # Iniciar el spinner en un hilo separado
-    hilo_spinner = threading.Thread(target=spinner)
-    hilo_spinner.start()
+    comando = comando[2:]
 
     try:
-        result = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-        SPINNING = False 
-        hilo_spinner.join() 
-        
-        print(VERDE + "\r🟢 Proceso de " + comando[2] + " finalizado.\n" + RESET)
-        print(MORADO + "Podra encontrar el archivo en la ruta especificada.\n"+ RESET)
-        print(result.stdout)
-        print(result.stderr)
-        input(MORADO + "Presione enter para continuar..."+ RESET)
-    except subprocess.CalledProcessError as error:
-        SPINNING = False
-        hilo_spinner.join()
-        print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)
-        input(MORADO + "Presione enter para continuar..."+ RESET)
+        runner = CliRunner()
+        result = runner.invoke(main, comando)
+        print(result.output)
+
+        if result.exception:
+            raise result.exception 
+
+        print(VERDE + f"\r🟢 Proceso de {comando[0]} finalizado.\n" + RESET)
+        print(MORADO + "Podrá encontrar el archivo en la ruta especificada.\n" + RESET)
+        input(MORADO + "Presione enter para continuar..." + RESET)
+
     except Exception as error:
-        SPINNING = False
-        hilo_spinner.join()
-        print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)
-        input(MORADO + "Presione enter para continuar..."+ RESET)
+        print(ROJO + "\r❌ Error en la ejecución:\n" + RESET, error)
+        input(MORADO + "Presione enter para continuar..." + RESET)
+        raise error  
