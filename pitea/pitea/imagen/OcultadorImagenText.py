@@ -6,6 +6,8 @@ from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION, RUTA_DAT
 from pitea.utils import cargar_configuracion
 import easyocr
 import pytesseract
+from pitea.mensajes import print
+
 
 class OcultadorImagenText(OcultadorImagen):
     """
