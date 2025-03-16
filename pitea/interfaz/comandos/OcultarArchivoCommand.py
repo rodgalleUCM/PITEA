@@ -1,6 +1,6 @@
 
 from interfaz.comandos.command import Command
-from interfaz.constantes import OPCIONES_CIFRADOS,OPCIONES_MODO_IMAGEN,OPCIONES_MODO_AUDIO,OPCIONES_VERBOSE,SCRIPT_PATH,RESET,YELLOW,ROJO
+from constantes import OPCIONES_CIFRADOS,OPCIONES_MODO_IMAGEN,OPCIONES_MODO_AUDIO,OPCIONES_VERBOSE,SCRIPT_PATH,RESET,YELLOW,ROJO
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 from interfaz.MenuPrinter import MenuPrinter
 from getpass import getpass
@@ -46,16 +46,18 @@ class OcultarArchivoCommand(Command):
 
         imagen = ""
         audio = ""
+        contraseña=""
 
         # Solicitar modos de cifrado y ocultación
         modo_cifrado =  comprobar_opcion(f"🔒 Modo de cifrado del texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion en imagen ({'/'.join(OPCIONES_MODO_IMAGEN)}): ", OPCIONES_MODO_IMAGEN)
         modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion en audio ({'/'.join(OPCIONES_MODO_AUDIO)}): ", OPCIONES_MODO_AUDIO)
-        while True :
-            contraseña = getpass(YELLOW + "🔑 Contraseña: " + RESET).strip()
-            contraseña_conf = getpass(YELLOW + "🔑 Introduzca de nuevo al contraseña: " + RESET).strip()
-            if contraseña == contraseña_conf : break
-            else : print(ROJO +"Las contraseñas introducidad no coinciden"+RESET)
+        if modo_cifrado != "none" :
+            while True :
+                contraseña = getpass(YELLOW + "🔑 Contraseña: " + RESET).strip()
+                contraseña_conf = getpass(YELLOW + "🔑 Introduzca de nuevo al contraseña: " + RESET).strip()
+                if contraseña == contraseña_conf : break
+                else : print(ROJO +"Las contraseñas introducidad no coinciden"+RESET)
 
         archivo =   comprobar_archivo("📂 Ruta del archivo a ocultar: ")
        
@@ -77,7 +79,6 @@ class OcultarArchivoCommand(Command):
             "--modo-cifrado", modo_cifrado,
             "--modo-cifrado-imagen", modo_imagen,
             "--modo-cifrado-audio", modo_audio,
-            "--contraseña", contraseña,
             "-i", archivo,
             "-o", salida
         ]
@@ -89,6 +90,8 @@ class OcultarArchivoCommand(Command):
             comando.extend(["--input_audio", audio])
         if verbose == "s":
             comando.extend(["-v"])
+        if contraseña:
+           comando.extend(["--contraseña", contraseña])
         
         # Ejecutar el comando
         ejecutar_comando(comando)

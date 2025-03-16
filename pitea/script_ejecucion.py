@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import click
-import pitea.constantes as constantes
+import constantes as constantes
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo

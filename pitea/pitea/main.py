@@ -2,7 +2,7 @@ from pitea.mensajes import MENSAJE_INICIO_FLUJO, print
 from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
-from pitea.constantes import ARCHIVO_CONFIG, LISTA_DIR_CACHE_DESOCULTACION, LISTA_DIR_CACHE_OCULTACION, MODES_SSTV, RUTA_IMAGEN_DESOCULTACION
+from constantes import ARCHIVO_CONFIG, LISTA_DIR_CACHE_DESOCULTACION, LISTA_DIR_CACHE_OCULTACION, MODES_SSTV, RUTA_IMAGEN_DESOCULTACION
 from pitea.utils import cargar_configuracion, crear_cache
 from colorama import init, Fore
 import traceback

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import wave
-from pitea.constantes import (
+from constantes import (
     FORMATO_AUDIO_OCULTACION,
     FORMATO_IMAGEN_DESOCULTACION,
     RUTA_IMAGEN_CONTENEDORA,

@@ -1,4 +1,4 @@
-from pitea.constantes import (
+from constantes import (
     FORMATO_IMAGEN_DESOCULTACION,
     RUTA_IMAGEN_DESOCULTACION,
     ARCHIVO_CONFIG,
@@ -8,7 +8,7 @@ from pitea.constantes import (
     RUTA_IMAGEN_CONTENEDORA,
     RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA,
 )
-import pitea.constantes as constantes
+import constantes as constantes
 import subprocess
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
@@ -94,7 +94,6 @@ class OcultadorAudioSSTV(OcultadorAudio):
         RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(RUTA_IMAGEN_DESOCULTACION)).resolve()
 
         while True:
-            print(constantes.STREAMING)
             if not constantes.STREAMING:
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")

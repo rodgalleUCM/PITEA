@@ -1,4 +1,4 @@
-import pitea.constantes as constantes
+import constantes as constantes
 import builtins
 
 

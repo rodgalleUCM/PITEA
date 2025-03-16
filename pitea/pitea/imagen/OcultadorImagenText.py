@@ -2,7 +2,7 @@ import base64
 import numpy as np
 from pitea.imagen.OcultadorImagen import OcultadorImagen
 from PIL import Image, ImageDraw, ImageFont
-from pitea.constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION, RUTA_DATOS_OCULTADOR_IMAGEN_TEXT
+from constantes import ARCHIVO_CONFIG, FORMATO_IMAGEN_OCULTACION, RUTA_DATOS_OCULTADOR_IMAGEN_TEXT
 from pitea.utils import cargar_configuracion
 import easyocr
 import pytesseract

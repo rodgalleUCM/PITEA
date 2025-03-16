@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from PIL import Image
-from pitea.constantes import (
+from constantes import (
     RUTA_IMAGEN_CONTENEDORA,
     RUTA_DATOS_CIFRADOS_DESOCULTACION,
     RUTA_DATOS_CIFRADO,

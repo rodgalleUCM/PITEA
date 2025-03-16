@@ -1,7 +1,7 @@
 import base64
 
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-from pitea.constantes import RUTA_DATOS_CIFRADOS_DESOCULTACION
+from constantes import RUTA_DATOS_CIFRADOS_DESOCULTACION
 
 class OcultadorImagenNone(OcultadorImagen):
     """

@@ -1,5 +1,5 @@
 import os
-from interfaz.constantes import RESET, ROJO, CYAN, YELLOW,TITULO
+from constantes import RESET, ROJO, CYAN, YELLOW,TITULO
 
 class MenuPrinter:
     """

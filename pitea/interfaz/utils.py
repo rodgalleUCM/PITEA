@@ -3,9 +3,10 @@ import threading
 import itertools
 import os
 import time
-from interfaz.constantes import RESET, VERDE, ROJO, MORADO, SPINNING,YELLOW
+from constantes import RESET, VERDE, ROJO, MORADO, SPINNING,YELLOW
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import PathCompleter
+
 
 
 archivo_completer = PathCompleter(expanduser=True)
