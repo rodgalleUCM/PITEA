@@ -9,7 +9,7 @@ RUTA_PROGRAMA = Path("pitea")
 
 ARCHIVO_CONFIG = RUTA_PROGRAMA / "configuracion.toml"
 
-RUTA_CACHE_GENERAL = RUTA_PROGRAMA / "cache"
+RUTA_CACHE_GENERAL = ".." / RUTA_PROGRAMA / "cache"
 
 conf = cargar_configuracion(ARCHIVO_CONFIG)
 

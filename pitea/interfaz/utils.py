@@ -136,7 +136,5 @@ def ejecutar_comando(comando):
     except subprocess.CalledProcessError as error:
         SPINNING = False
         hilo_spinner.join()
-        print(result.stdout)
-        print(result.stderr)
         print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)
         input(MORADO + "Presione enter para continuar..."+ RESET)
