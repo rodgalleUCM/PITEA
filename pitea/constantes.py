@@ -116,3 +116,71 @@ OPCIONES_MODO_AUDIO = OPCIONES_OCULTACION_AUDIO
 OPCIONES_MODO_IMAGEN_DESOCULTACION = OPCIONES_DESOCULTACION_IMAGEN
 OPCIONES_MODO_AUDIO_DESOCULTACION= OPCIONES_DESCOCULTACION_AUDIO
 OPCIONES_VERBOSE = OPCIONES_VERBOSE
+
+def actualizar_cache():
+    global RUTA_CACHE_ESPECIFICA, RUTA_OCULTACION, RUTA_OCULTACION_DATOS, RUTA_OCULTACION_IMAGEN, RUTA_OCULTACION_AUDIO
+    global RUTA_DATOS_CIFRADO, RUTA_DATOS_OCULTADOR_IMAGEN_TEXT, RUTA_IMAGEN_CONTENEDORA, RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR
+    global RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA, RUTA_AUDIO_CONTENEDOR, RUTA_DESOCULTACION, RUTA_DESOCULTACION_DATOS
+    global RUTA_DESOCULTACION_IMAGEN, RUTA_DATOS_CIFRADOS_DESOCULTACION, RUTA_DATOS_LIMPIOS_DESOCULTACION, RUTA_IMAGEN_DESOCULTACION
+    global RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA, LISTA_DIR_CACHE_OCULTACION, LISTA_DIR_CACHE_DESOCULTACION
+
+    # Cargar configuración
+    conf = cargar_configuracion(ARCHIVO_CONFIG)
+
+    # Obtener fecha y hora actual
+    fecha_hora_actual = datetime.now()
+    formato = fecha_hora_actual.strftime("%d-%m-%Y_%H:%M")
+
+    # Verificar si la fecha actual es diferente a la última almacenada
+    if formato != conf['persistente']["ult_fecha"]:
+        RUTA_CACHE_ESPECIFICA = RUTA_CACHE_GENERAL / f"cache_{formato}"
+        conf['persistente']["ult_fecha"] = formato
+        conf['persistente']["contador_cache"] = 0
+    else:
+        RUTA_CACHE_ESPECIFICA = (
+            RUTA_CACHE_GENERAL / f"cache_{formato}_{conf['persistente']['contador_cache']}"
+        )
+        conf['persistente']["contador_cache"] += 1
+
+    # Actualizar configuración en archivo
+    actualizar_conf(conf, ARCHIVO_CONFIG)
+
+    # Actualizar las rutas de ocultación y desocultación
+    RUTA_OCULTACION = RUTA_CACHE_ESPECIFICA / "ocultacion"
+    RUTA_OCULTACION_DATOS = RUTA_OCULTACION / "datos"
+    RUTA_OCULTACION_IMAGEN = RUTA_OCULTACION / "imagen"
+    RUTA_OCULTACION_AUDIO = RUTA_OCULTACION / "audio"
+
+    RUTA_DATOS_CIFRADO = RUTA_OCULTACION_DATOS / "datos_originales_cifrados.txt"
+    RUTA_DATOS_OCULTADOR_IMAGEN_TEXT = RUTA_OCULTACION_DATOS / "datos_ocultador_imagen_text.txt"
+    RUTA_IMAGEN_CONTENEDORA = RUTA_OCULTACION_IMAGEN / "imagen_contenedora.%s"
+    RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR = RUTA_OCULTACION_IMAGEN / "imagen_contenedora_sin_transformar.%s"
+    RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA = RUTA_OCULTACION_IMAGEN / "imagen_contenedora_redimensionada.%s"
+    RUTA_AUDIO_CONTENEDOR = RUTA_OCULTACION_AUDIO / "audio_contenedor.%s"
+
+    RUTA_DESOCULTACION = RUTA_CACHE_ESPECIFICA / "desocultacion"
+    RUTA_DESOCULTACION_DATOS = RUTA_DESOCULTACION / "datos"
+    RUTA_DESOCULTACION_IMAGEN = RUTA_DESOCULTACION / "imagen"
+
+    RUTA_DATOS_CIFRADOS_DESOCULTACION = (
+        RUTA_DESOCULTACION_DATOS / "datos_desocultos_originales_cifrados.txt"
+    )
+    RUTA_DATOS_LIMPIOS_DESOCULTACION = (
+        RUTA_DESOCULTACION_DATOS / "datos_desocultos_originales_limpios.txt"
+    )
+    RUTA_IMAGEN_DESOCULTACION = (
+        RUTA_DESOCULTACION_IMAGEN / "imagen_contenedora_desocultacion.%s"
+    )
+    RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA = (
+        RUTA_DESOCULTACION_IMAGEN / "imagen_contenedora_desocultacion_destransformada.%s"
+    )
+
+    LISTA_DIR_CACHE_OCULTACION = [
+        RUTA_OCULTACION_DATOS,
+        RUTA_OCULTACION_IMAGEN,
+        RUTA_OCULTACION_AUDIO,
+    ]
+
+    LISTA_DIR_CACHE_DESOCULTACION = [RUTA_DESOCULTACION_DATOS, RUTA_DESOCULTACION_IMAGEN]
+
+
