@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import click
 import pitea.constantes as constantes
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
@@ -83,7 +84,7 @@ def ocultar(
     verbose,
 ):
     """
-    Ejecuta la acción de ocultación utilizando los archivos especificados.
+    Ejecuta la acción de ocultación.
     """
 
     # activo el modo verbose o no
@@ -206,7 +207,7 @@ def desocultar(
     streaming
 ):
     """
-    Ejecuta la acción de desocultación utilizando los archivos especificados.
+    Ejecuta la acción de desocultación.
     """
 
     # activo el modo verbose o no
