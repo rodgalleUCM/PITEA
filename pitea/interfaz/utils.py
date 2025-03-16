@@ -29,6 +29,7 @@ def comprobar_directorio(mensaje):
     """
     while True:
         salida = prompt(mensaje, completer=archivo_completer).strip()
+        salida = os.path.expanduser(salida)  # Expande '~' a '/home/usuario/'
         directorio = os.path.dirname(salida)  # Extraer solo el directorio de la ruta
 
         if directorio == "" or os.path.exists(directorio):  
@@ -130,9 +131,12 @@ def ejecutar_comando(comando):
         print(VERDE + "\r🟢 Proceso de " + comando[2] + " finalizado.\n" + RESET)
         print(MORADO + "Podra encontrar el archivo en la ruta especificada.\n"+ RESET)
         print(result.stdout)
+        print(result.stderr)
         input(MORADO + "Presione enter para continuar..."+ RESET)
     except subprocess.CalledProcessError as error:
         SPINNING = False
         hilo_spinner.join()
+        print(result.stdout)
+        print(result.stderr)
         print(ROJO +"\r❌ Error en la ejecución:\n" + RESET, error.stderr)
         input(MORADO + "Presione enter para continuar..."+ RESET)

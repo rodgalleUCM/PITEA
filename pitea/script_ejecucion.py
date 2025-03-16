@@ -109,7 +109,6 @@ def ocultar(
         click.echo(f"Modo de cifrado: {modo_cifrado}")
         click.echo(f"Modo de cifrado de imagen: {modo_cifrado_imagen}")
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
-        click.echo(f"Contraseña: {contraseña}")
 
         click.echo(f"Archivo de entrada de texto: {input}")
         if input_imagen:
@@ -218,7 +217,7 @@ def desocultar(
         constantes.STREAMING = True
 
     #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio
-    if not input_audio  and not input_imagen and not input_textand and not constantes.STREAMING:
+    if not input_audio  and not input_imagen and not input_text and not constantes.STREAMING:
         click.BadOptionUsage("No se ha introducido nigún input")
     elif input_audio and input_imagen :
         click.BadOptionUsage("Solo se puede introducir input_imagen si no introduce input_audio")
@@ -234,14 +233,12 @@ def desocultar(
         click.echo(f"Modo de cifrado de audio: {modo_cifrado_audio}")
         click.echo(f"Streaming: {'Si' if constantes.STREAMING else 'No'}")
 
-        click.echo(f"Contraseña: {contraseña}")
-
         if input_audio :
             click.echo(f"Archivo de entrada de audio: {input_audio}")
         if input_imagen:
             click.echo(f"Archivo de entrada de imagen: {input_imagen}")
 
-        click.echo(f"Archivo de salida de audio: {output}")
+        click.echo(f"Archivo de salida: {output}")
 
         print(SEPARADOR)
 

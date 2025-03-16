@@ -7,6 +7,7 @@ from pitea.constantes import (
     RUTA_AUDIO_CONTENEDOR,
     RUTA_IMAGEN_DESOCULTACION,
 )
+from pitea.mensajes import print
 
 
 class OcultadorAudio(ABC):

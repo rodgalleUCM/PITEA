@@ -3,6 +3,7 @@ from interfaz.comandos.command import Command
 from interfaz.constantes import OPCIONES_MODO_IMAGEN_DESOCULTACION,OPCIONES_CIFRADOS,OPCIONES_MODO_AUDIO_DESOCULTACION,YELLOW,RESET,SCRIPT_PATH,OPCIONES_VERBOSE
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 from interfaz.MenuPrinter import MenuPrinter
+from getpass import getpass
 
 
 class DesocultarArchivoCommand(Command):
@@ -48,12 +49,13 @@ class DesocultarArchivoCommand(Command):
         input_audio = ""
         input_imagen = ""
         input_text = ""
+        flag_streaming = "n"
         
          # Solicitar modos de ocultación y cifrado
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN_DESOCULTACION)}): ", OPCIONES_MODO_IMAGEN_DESOCULTACION)
         modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
         modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", OPCIONES_MODO_AUDIO_DESOCULTACION)
-        contraseña = input(YELLOW + "🔑 Contraseña: " + RESET).strip()
+        contraseña = getpass(YELLOW + "🔑 Contraseña: " + RESET).strip()
 
     
         # Validar si es necesario usar texto, imagen o audio para la desocultación
@@ -65,8 +67,11 @@ class DesocultarArchivoCommand(Command):
                 while True:
                     opcion = input(YELLOW + "🔊 ¿Desea usar un audio o una imagen? (audio/imagen): " + RESET).strip().lower()
                     if opcion == "audio":
-                        input_audio = comprobar_archivo("🎵 Ruta del audio: ")
-                        break
+                        flag_streaming = input(YELLOW + "🔊 ¿Desea capturar el audio en streaming? (S/n): " + RESET).lower()
+                        if flag_streaming == "n" :
+                            input_audio = comprobar_archivo("🎵 Ruta del audio: ")
+                            break
+                        else : break
                     elif opcion == "imagen":
                         input_imagen = comprobar_archivo("🖼️ Ruta de la imagen: ")
                         break
@@ -97,8 +102,10 @@ class DesocultarArchivoCommand(Command):
             comando.extend(["--input_audio", input_audio])
         if input_imagen:
             comando.extend(["--input_imagen", input_imagen])
-        if verbose == "s":
+        if verbose and verbose == "s":
             comando.extend(["-v"])
-        
+        if flag_streaming and flag_streaming == "s":
+            comando.extend(["-s"])
+    
         # Ejecutar el comando
         ejecutar_comando(comando)
