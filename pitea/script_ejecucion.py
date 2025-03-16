@@ -216,7 +216,7 @@ def desocultar(
     if streaming:
         constantes.STREAMING = True
 
-    #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio
+    #Se puede pasar o el de audio o el de imagen, los dos no y uno obligatorio a no ser que estemos e streaming
     if not input_audio  and not input_imagen and not input_text and not constantes.STREAMING:
         click.BadOptionUsage("No se ha introducido nigún input")
     elif input_audio and input_imagen :
@@ -251,6 +251,7 @@ def desocultar(
             input_text,
             output,
             contraseña,
+            streaming
         )
 
 

@@ -55,7 +55,7 @@ class OcultadorImagenNone(OcultadorImagen):
         Raises:
             FileNotFoundError: Si el archivo de texto no se encuentra en la ruta indicada.
         """
-        with open(self.ruta_txt, 'r') as f:
+        with open(self.ruta_txt, 'rb') as f:
             datos = f.read()
         
         if self.cifrado:
