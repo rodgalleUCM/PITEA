@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import click
-import constantes as constantes
+from constantes import constantes
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
-from opciones_ocultadores import OPCIONES_CIFRADO, OPCIONES_DESOCULTACION_IMAGEN, OPCIONES_DESCOCULTACION_AUDIO,OPCIONES_OCULTACION_IMAGEN,OPCIONES_OCULTACION_AUDIO
 import os
+
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 def main():
@@ -17,7 +17,7 @@ def main():
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        OPCIONES_CIFRADO
+        constantes.OPCIONES_CIFRADO
     ),  
     default="aes",
     help=f"Modo de cifrado a utilizar.",
@@ -25,7 +25,7 @@ def main():
 @click.option(
     "--modo-cifrado-imagen",
     type=click.Choice(
-        OPCIONES_OCULTACION_IMAGEN
+        constantes.OPCIONES_OCULTACION_IMAGEN
     ), 
     default="lsb",
     help=f"Modo de ocultacion a usar en la imagen.",
@@ -33,7 +33,7 @@ def main():
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        OPCIONES_OCULTACION_AUDIO
+        constantes.OPCIONES_OCULTACION_AUDIO
     ),  
     default="lsb",
     help=f"Modo de ocultacion específico para audio.",
@@ -137,7 +137,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado",
     type=click.Choice(
-        OPCIONES_CIFRADO
+        constantes.OPCIONES_CIFRADO
     ),  
     default="aes",
     help=f"Modo de cifrado a utilizar."
@@ -145,7 +145,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado-imagen",
     type=click.Choice(
-        OPCIONES_DESOCULTACION_IMAGEN
+        constantes.OPCIONES_DESOCULTACION_IMAGEN
     ),  
     default="lsb",
     help=f"Modo de ocultacion usado en la imagen.",
@@ -153,7 +153,7 @@ def ocultar(
 @click.option(
     "--modo-cifrado-audio",
     type=click.Choice(
-        OPCIONES_DESCOCULTACION_AUDIO
+        constantes.OPCIONES_DESCOCULTACION_AUDIO
     ),  
     default="lsb",
     help=f"Modo de ocultacion usado en el audio.",

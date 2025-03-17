@@ -1,14 +1,4 @@
-from constantes import (
-    FORMATO_IMAGEN_DESOCULTACION,
-    RUTA_IMAGEN_DESOCULTACION,
-    ARCHIVO_CONFIG,
-    FORMATO_AUDIO_OCULTACION,
-    MODES_SSTV,
-    RUTA_AUDIO_CONTENEDOR,
-    RUTA_IMAGEN_CONTENEDORA,
-    RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA,
-)
-import constantes as constantes
+from constantes import constantes
 import subprocess
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
@@ -80,7 +70,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
         Returns:
             PySSTV: Objeto de codificación SSTV.
         """
-        sstv = MODES_SSTV[modo][0](image, samples_per_sec, bits)
+        sstv = constantes.MODES_SSTV[modo][0](image, samples_per_sec, bits)
         return sstv
 
     def desocultar(self):
@@ -91,16 +81,16 @@ class OcultadorAudioSSTV(OcultadorAudio):
         """
 
         RUTA_AUDIO = Path(f"{self.ruta_audio}").resolve()
-        RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(RUTA_IMAGEN_DESOCULTACION)).resolve()
+        RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(constantes.RUTA_IMAGEN_DESOCULTACION)).resolve()
 
         while True:
             if not constantes.STREAMING:
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
-            builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")
+            builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % constantes.FORMATO_IMAGEN_DESOCULTACION}\033[0m")
             subprocess.run(["qsstv"])
 
             # Verificar si hay al menos un archivo PNG en la ruta
-            ruta_padre = Path(RUTA_IMAGEN_DESOCULTACION).parent
+            ruta_padre = Path(constantes.RUTA_IMAGEN_DESOCULTACION).parent
             archivos_png = list(ruta_padre.glob("*.png"))
 
             if len(archivos_png) >= 1:
@@ -116,23 +106,23 @@ class OcultadorAudioSSTV(OcultadorAudio):
             ruta_salida (str): Ruta donde se guardará el audio generado.
         """
         # Cargar configuración de SSTV desde archivo
-        conf = cargar_configuracion(ARCHIVO_CONFIG)
+        conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
         modo = conf['Ajustes_sstv']["modo_sstv"]
         samples_per_sec = conf['Ajustes_sstv']["samples_per_sec"]
         bits = conf['Ajustes_sstv']["bits"]
 
         # Leer y redimensionar la imagen con Pillow
-        image = Image.open(str(RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(
-            MODES_SSTV[modo][1], Image.Resampling.LANCZOS
+        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(
+            constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS
         )
 
-        self.guardar_imagen_redimensionada(image, str(RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
+        self.guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
 
         # Codificar imagen en audio SSTV
         sstv = self.ocultar(None, modo, image, samples_per_sec, bits)
 
         # Guardar el archivo de audio
-        self.guardar(str(RUTA_AUDIO_CONTENEDOR) % FORMATO_AUDIO_OCULTACION, sstv)
+        self.guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
         self.guardar(ruta_salida, sstv)
 
     def desocultar_guardar(self):

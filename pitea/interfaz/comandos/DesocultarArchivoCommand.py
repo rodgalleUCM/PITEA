@@ -1,10 +1,9 @@
 
 from interfaz.comandos.command import Command
-from constantes import OPCIONES_MODO_IMAGEN_DESOCULTACION,OPCIONES_CIFRADOS,OPCIONES_MODO_AUDIO_DESOCULTACION,YELLOW,RESET,SCRIPT_PATH,OPCIONES_VERBOSE
+from constantes import constantes
 from interfaz.utils import ejecutar_comando,comprobar_opcion,comprobar_archivo,comprobar_directorio
 from interfaz.MenuPrinter import MenuPrinter
 from getpass import getpass
-from constantes import RUTA_IMAGEN_DESOCULTACION, FORMATO_IMAGEN_DESOCULTACION 
 from pathlib import Path
 import builtins
 
@@ -57,9 +56,9 @@ class DesocultarArchivoCommand(Command):
         contraseña=""
         
          # Solicitar modos de ocultación y cifrado
-        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(OPCIONES_MODO_IMAGEN_DESOCULTACION)}): ", OPCIONES_MODO_IMAGEN_DESOCULTACION)
-        modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(OPCIONES_CIFRADOS)}): ", OPCIONES_CIFRADOS)
-        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", OPCIONES_MODO_AUDIO_DESOCULTACION)
+        modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(constantes._OPCIONES_DESOCULTACION_IMAGEN)}): ", constantes._OPCIONES_DESOCULTACION_IMAGEN)
+        modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(constantes.OPCIONES_CIFRADOS)}): ", constantes.OPCIONES_CIFRADOS)
+        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)
         if modo_cifrado != "none" :
             contraseña = getpass(YELLOW + "🔑 Contraseña: " + RESET).strip()
 
@@ -91,7 +90,7 @@ class DesocultarArchivoCommand(Command):
 
         # Construir el comando
         comando = [
-            "python3", SCRIPT_PATH, "desocultar",
+            "python3", constantes.SCRIPT_PATH, "desocultar",
             "--modo-cifrado", modo_cifrado,
             "--modo-cifrado-imagen", modo_imagen,
             "--modo-cifrado-audio", modo_audio,

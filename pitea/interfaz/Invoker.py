@@ -1,5 +1,5 @@
 
-from constantes import RESET, ROJO
+from constantes import constantes
 
 #clase para invocar comandos
 class Invoker:

@@ -3,7 +3,7 @@ from interfaz.Invoker import Invoker
 from interfaz.comandos.OcultarArchivoCommand import OcultarArchivoCommand
 from interfaz.comandos.DesocultarArchivoCommand import DesocultarArchivoCommand
 from interfaz.MenuPrinter import MenuPrinter
-from constantes import actualizar_cache
+from constantes import constantes
 
 
 def menu():
@@ -35,7 +35,7 @@ def menu():
             inv.ejecutar_comando(opcion)                              #ejecutamos el comando seleccionado
         else:
             print("Opción inválida.")     
-        actualizar_cache()                   
+        constantes.actualizar_cache()                   
         
 
 if __name__ == "__main__":

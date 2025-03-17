@@ -3,7 +3,7 @@ import threading
 import itertools
 import os
 import time
-from constantes import RESET, VERDE, ROJO, MORADO, SPINNING,YELLOW
+from constantes import constantes
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import PathCompleter
 import sys
@@ -60,10 +60,10 @@ def comprobar_opcion(mensaje, opciones):
         ValueError: Si la opción ingresada no es válida.
     """
     while True:
-        opcion = input(YELLOW + mensaje + RESET).strip().lower()
+        opcion = input(constantes.YELLOW + mensaje + constantes.RESET).strip().lower()
         if opcion in opciones:
             return opcion
-        print(ROJO + "❌ Error: Opción inválida." + RESET)
+        print(constantes.ROJO + "❌ Error: Opción inválida." + constantes.RESET)
 
 
 def comprobar_archivo(mensaje):
@@ -133,11 +133,11 @@ def ejecutar_comando(comando):
         if result.exception:
             raise result.exception 
 
-        print(VERDE + f"\r🟢 Proceso de {comando[0]} finalizado.\n" + RESET)
-        print(MORADO + "Podrá encontrar el archivo en la ruta especificada.\n" + RESET)
-        input(MORADO + "Presione enter para continuar..." + RESET)
+        print(constantes.VERDE + f"\r🟢 Proceso de {comando[0]} finalizado.\n" + constantes.RESET)
+        print(constantes.MORADO + "Podrá encontrar el archivo en la ruta especificada.\n" + constantes.RESET)
+        input(constantes.MORADO + "Presione enter para continuar..." + RESET)
 
     except Exception as error:
-        print(ROJO + "\r❌ Error en la ejecución:\n" + RESET, error)
-        input(MORADO + "Presione enter para continuar..." + RESET)
+        print(constantes.ROJO + "\r❌ Error en la ejecución:\n" + constantes.RESET, error)
+        input(constantes.MORADO + "Presione enter para continuar..." + constantes.RESET)
         raise error  

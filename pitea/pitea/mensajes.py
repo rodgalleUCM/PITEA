@@ -1,4 +1,4 @@
-import constantes as constantes
+from constantes import constantes
 import builtins
 
 

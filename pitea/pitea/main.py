@@ -2,7 +2,7 @@ from pitea.mensajes import MENSAJE_INICIO_FLUJO, print
 from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
-from constantes import ARCHIVO_CONFIG, LISTA_DIR_CACHE_DESOCULTACION, LISTA_DIR_CACHE_OCULTACION, MODES_SSTV, RUTA_IMAGEN_DESOCULTACION
+from constantes import constantes
 from pitea.utils import cargar_configuracion, crear_cache
 from colorama import init, Fore
 import traceback
@@ -40,7 +40,7 @@ def flujo_de_trabajo_ocultar(
 
     try :
         print("Creando estructura de la cache")
-        crear_cache(LISTA_DIR_CACHE_OCULTACION)
+        crear_cache(constantes.LISTA_DIR_CACHE_OCULTACION)
 
 
         print(MENSAJE_INICIO_FLUJO % "ocultación")
@@ -60,10 +60,10 @@ def flujo_de_trabajo_ocultar(
         if modo_cifrado_audio not in ["sstv"] :
             imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
         else :
-            conf = cargar_configuracion(ARCHIVO_CONFIG)
+            conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
             modo_sstv = conf['Ajustes_sstv']["modo_sstv"]
-            anchura = MODES_SSTV[modo_sstv][1][0]
-            altura = MODES_SSTV[modo_sstv][1][1]
+            anchura = constantes.MODES_SSTV[modo_sstv][1][0]
+            altura = constantes.MODES_SSTV[modo_sstv][1][1]
             imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)
 
         print("Creando ocultador en audio ...")
@@ -106,7 +106,7 @@ def flujo_de_trabajo_desocultar(
 
     try :
         print("Creando estructura de la cache")
-        crear_cache(LISTA_DIR_CACHE_DESOCULTACION)
+        crear_cache(constantes.LISTA_DIR_CACHE_DESOCULTACION)
 
         print(MENSAJE_INICIO_FLUJO % "desocultación")
 
@@ -123,7 +123,7 @@ def flujo_de_trabajo_desocultar(
         print("Creando ocultador en imagenes ...")
         if  input_audio : 
             ocultador_imagen = OcultadorImagenFactory.get_builder(
-                modo_cifrado_imagen, str(RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
+                modo_cifrado_imagen, str(constantes.RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
             )
         elif input_imagen : #opcion de pasar la imagen decodificada
             ocultador_imagen = OcultadorImagenFactory.get_builder(

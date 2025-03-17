@@ -1,7 +1,8 @@
 import base64
 
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-from constantes import RUTA_DATOS_CIFRADOS_DESOCULTACION
+
+from constantes import constantes
 
 class OcultadorImagenNone(OcultadorImagen):
     """
@@ -74,7 +75,7 @@ class OcultadorImagenNone(OcultadorImagen):
         """
         datos_extraidos = self.desocultar()
 
-        with open(RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
+        with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
             f.write(datos_extraidos)
 
-        print(f"Datos cifrados guardados en {RUTA_DATOS_CIFRADOS_DESOCULTACION}")
+        print(f"Datos cifrados guardados en {constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION}")
