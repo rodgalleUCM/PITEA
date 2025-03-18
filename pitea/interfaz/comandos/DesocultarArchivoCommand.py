@@ -60,7 +60,7 @@ class DesocultarArchivoCommand(Command):
         modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(constantes.OPCIONES_CIFRADOS)}): ", constantes.OPCIONES_CIFRADOS)
         modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)
         if modo_cifrado != "none" :
-            contraseña = getpass(YELLOW + "🔑 Contraseña: " + RESET).strip()
+            contraseña = getpass(constantes.YELLOW + "🔑 Contraseña: " + constantes.RESET).strip()
 
     
         # Validar si es necesario usar texto, imagen o audio para la desocultación
@@ -71,11 +71,12 @@ class DesocultarArchivoCommand(Command):
                 #Usar o un audio o una imagen
                 while True:
 
-                    flag_streaming = input(YELLOW + "🔊 ¿Desea capturar el audio en streaming? (S/n): " + RESET).lower()
+                    flag_streaming = input(constantes.YELLOW + "🔊 ¿Desea capturar el audio en streaming? (S/n): " + constantes.RESET).lower()
                     if flag_streaming == "n" :
                         input_audio = comprobar_archivo("🎵 Ruta del audio: ")
                         break
-                    else : break
+                    else : 
+                        break
 
             elif modo_audio == "lsb":
                 input_audio = comprobar_archivo("🎵 Ruta del audio: ")
@@ -86,7 +87,7 @@ class DesocultarArchivoCommand(Command):
     
         # Solicitar la ruta de salida y el modo verbose
         salida = comprobar_directorio("💾 Ruta del archivo de salida: ")
-        verbose = comprobar_opcion(f"📢 Modo verbose ({'/'.join(OPCIONES_VERBOSE)}): ", OPCIONES_VERBOSE)
+        verbose = comprobar_opcion(f"📢 Modo verbose ({'/'.join(constantes.OPCIONES_VERBOSE)}): ", constantes.OPCIONES_VERBOSE)
 
         # Construir el comando
         comando = [
@@ -114,10 +115,10 @@ class DesocultarArchivoCommand(Command):
         RUTA_AUDIO = Path(f"{input_audio}").resolve()
         
         if modo_audio == "sstv" :
-            RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(RUTA_IMAGEN_DESOCULTACION)).resolve()
+            RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(constantes.RUTA_IMAGEN_DESOCULTACION)).resolve()
             if flag_streaming == "n" :
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
-            builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % FORMATO_IMAGEN_DESOCULTACION}\033[0m")
+            builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % constantes.FORMATO_IMAGEN_DESOCULTACION}\033[0m")
             
         # Ejecutar el comando
         ejecutar_comando(comando)

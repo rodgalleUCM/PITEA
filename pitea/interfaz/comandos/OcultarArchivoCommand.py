@@ -57,8 +57,10 @@ class OcultarArchivoCommand(Command):
             while True :
                 contraseña = getpass(constantes.YELLOW + "🔑 Contraseña: " + constantes.RESET).strip()
                 contraseña_conf = getpass(constantes.YELLOW + "🔑 Introduzca de nuevo al contraseña: " + constantes.RESET).strip()
-                if contraseña == contraseña_conf : break
-                else : print(constantes.ROJO +"Las contraseñas introducidad no coinciden"+constantes.RESET)
+                if contraseña == contraseña_conf : 
+                    break
+                else : 
+                    print(constantes.ROJO +"Las contraseñas introducidad no coinciden"+constantes.RESET)
 
         archivo =   comprobar_archivo("📂 Ruta del archivo a ocultar: ")
        

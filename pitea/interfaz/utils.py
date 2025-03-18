@@ -1,5 +1,3 @@
-import subprocess
-import threading
 import itertools
 import os
 import time
@@ -40,7 +38,7 @@ def comprobar_directorio(mensaje):
 
         if directorio == "" or os.path.exists(directorio):  
             return salida
-        print(ROJO + "❌ Error: La carpeta de salida no existe. Introduce una ruta válida." + RESET)
+        print(constantes.ROJO + "❌ Error: La carpeta de salida no existe. Introduce una ruta válida." + constantes.RESET)
 
 
 def comprobar_opcion(mensaje, opciones):
@@ -86,7 +84,7 @@ def comprobar_archivo(mensaje):
         archivo = prompt( mensaje , completer=archivo_completer).strip()
         if os.path.exists(archivo):
             return archivo
-        print(ROJO + "❌ Error: El archivo no existe. Introduce una ruta válida." + RESET)
+        print(constantes.ROJO + "❌ Error: El archivo no existe. Introduce una ruta válida." + constantes.RESET)
 
 
 def spinner():
@@ -99,9 +97,9 @@ def spinner():
     El spinner se detiene cuando la variable global `SPINNING` es cambiada a False.
     """
     for cursor in itertools.cycle(['|', '/', '-', '\\']):
-        if not SPINNING:
+        if not constantes.SPINNING:
             break
-        print(MORADO + f"\rProcesando... {cursor}" +RESET, end="", flush=True)
+        print(constantes.MORADO + f"\rProcesando... {cursor}" +constantes.RESET, end="", flush=True)
         time.sleep(0.1)
 
 
@@ -135,7 +133,7 @@ def ejecutar_comando(comando):
 
         print(constantes.VERDE + f"\r🟢 Proceso de {comando[0]} finalizado.\n" + constantes.RESET)
         print(constantes.MORADO + "Podrá encontrar el archivo en la ruta especificada.\n" + constantes.RESET)
-        input(constantes.MORADO + "Presione enter para continuar..." + RESET)
+        input(constantes.MORADO + "Presione enter para continuar..." + constantes.RESET)
 
     except Exception as error:
         print(constantes.ROJO + "\r❌ Error en la ejecución:\n" + constantes.RESET, error)
