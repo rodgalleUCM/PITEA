@@ -57,8 +57,8 @@ class DesocultarArchivoCommand(Command):
         
          # Solicitar modos de ocultación y cifrado
         modo_imagen = comprobar_opcion(f"🖼️  Modo de ocultacion usado en la imagen ({'/'.join(constantes._OPCIONES_DESOCULTACION_IMAGEN)}): ", constantes._OPCIONES_DESOCULTACION_IMAGEN)
-        modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(constantes.OPCIONES_CIFRADOS)}): ", constantes.OPCIONES_CIFRADOS)
-        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)}): ", constantes.OPCIONES_MODO_AUDIO_DESOCULTACION)
+        modo_cifrado = comprobar_opcion(f"🔒 Modo de cifrado usado en el texto ({'/'.join(constantes.OPCIONES_CIFRADO)}): ", constantes.OPCIONES_CIFRADO)
+        modo_audio =  comprobar_opcion(f"🎵 Modo de ocultacion usado en el audio ({'/'.join(constantes.OPCIONES_DESCOCULTACION_AUDIO)}): ", constantes.OPCIONES_DESCOCULTACION_AUDIO)
         if modo_cifrado != "none" :
             contraseña = getpass(constantes.YELLOW + "🔑 Contraseña: " + constantes.RESET).strip()
 
