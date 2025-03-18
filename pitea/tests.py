@@ -51,7 +51,7 @@ def ejecutar_comando(command):
         print(f"Se ha guardado stderr en: {stderr_temp_path}")
     except subprocess.CalledProcessError as e:
         # Si el comando falla, mostramos un mensaje indicando el error
-        print(f"❌ El comando falló. Los detalles del error están en:")
+        print("❌ El comando falló. Los detalles del error están en:")
         print(f"   stdout guardado en: {stdout_temp_path}")
         print(f"   stderr guardado en: {stderr_temp_path}")
         print(f"   Error: {e.stderr}")

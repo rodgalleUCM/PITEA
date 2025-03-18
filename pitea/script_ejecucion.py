@@ -4,7 +4,6 @@ from constantes import constantes
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
 from pitea.mensajes import SEPARADOR
 from pitea.utils import comprobar_existencia_archivo
-import os
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -20,7 +19,7 @@ def main():
         constantes.OPCIONES_CIFRADO
     ),  
     default="aes",
-    help=f"Modo de cifrado a utilizar.",
+    help="Modo de cifrado a utilizar.",
 )
 @click.option(
     "--modo-cifrado-imagen",
@@ -28,7 +27,7 @@ def main():
         constantes.OPCIONES_OCULTACION_IMAGEN
     ), 
     default="lsb",
-    help=f"Modo de ocultacion a usar en la imagen.",
+    help="Modo de ocultacion a usar en la imagen.",
 )
 @click.option(
     "--modo-cifrado-audio",
@@ -36,7 +35,7 @@ def main():
         constantes.OPCIONES_OCULTACION_AUDIO
     ),  
     default="lsb",
-    help=f"Modo de ocultacion específico para audio.",
+    help="Modo de ocultacion específico para audio.",
 )
 @click.option(
     "-v",
@@ -140,7 +139,7 @@ def ocultar(
         constantes.OPCIONES_CIFRADO
     ),  
     default="aes",
-    help=f"Modo de cifrado a utilizar."
+    help="Modo de cifrado a utilizar."
 )
 @click.option(
     "--modo-cifrado-imagen",
@@ -148,7 +147,7 @@ def ocultar(
         constantes.OPCIONES_DESOCULTACION_IMAGEN
     ),  
     default="lsb",
-    help=f"Modo de ocultacion usado en la imagen.",
+    help="Modo de ocultacion usado en la imagen.",
 )
 @click.option(
     "--modo-cifrado-audio",
@@ -156,7 +155,7 @@ def ocultar(
         constantes.OPCIONES_DESCOCULTACION_AUDIO
     ),  
     default="lsb",
-    help=f"Modo de ocultacion usado en el audio.",
+    help="Modo de ocultacion usado en el audio.",
 )
 @click.option(
     "-v",
