@@ -3,6 +3,7 @@ import base64
 from pitea.imagen.OcultadorImagen import OcultadorImagen
 
 from constantes import constantes
+from pitea.mensajes import print
 
 class OcultadorImagenNone(OcultadorImagen):
     """
