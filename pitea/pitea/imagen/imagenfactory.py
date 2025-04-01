@@ -12,15 +12,15 @@ class OcultadorImagenFactory(AbstractFactory):
         lista_ocultadores (list): Lista de clases de ocultadores de imagen disponibles.
 
     Métodos:
-        get_builder(modo_ocultacion, ruta_imagen, modo_cifrador, input_text=None):
-            Devuelve el constructor adecuado de OcultadorImagen según el modo de cifrado.
+        creacion(modo_ocultacion, ruta_imagen, modo_cifrador, input_text=None):
+            Devuelve el objeto adecuado de OcultadorImagen según el modo de cifrado.
     """
 
     lista_ocultadores = [OcultadorImagenLSB,OcultadorImagenText,OcultadorImagenNone]
 
     @staticmethod
-    def get_builder(modo_ocultacion, ruta_imagen,modo_cifrador,input_text= None):
-        """Devuelve el constructor de OcultadorImagen correspondiente según el modo de cifrado.
+    def creacion(modo_ocultacion, ruta_imagen,modo_cifrador,input_text= None):
+        """Devuelve el objeto de OcultadorImagen correspondiente según el modo de cifrado.
 
         Args:
             modo_ocultacion (str): Nombre del modo de cifrado, determinado por el parseo de argumentos en el script de ejecución.

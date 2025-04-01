@@ -46,13 +46,13 @@ def flujo_de_trabajo_ocultar(
         print(MENSAJE_INICIO_FLUJO % "ocultación")
 
         print("Creando cifrador...")
-        cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, None)
+        cifrador = CifradorFactory.creacion(modo_cifrado, contraseña, None)
 
         print("Cifrador creado , cifrando datos ...")
         cifrador.cifrar_guardar(input)
 
         print("Creando ocultador en imagenes ...")
-        ocultador_imagen = OcultadorImagenFactory.get_builder(
+        ocultador_imagen = OcultadorImagenFactory.creacion(
             modo_cifrado_imagen, input_imagen, modo_cifrado
         )
 
@@ -67,7 +67,7 @@ def flujo_de_trabajo_ocultar(
             imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)
 
         print("Creando ocultador en audio ...")
-        ocultador_audio = OcultadorAudioFactory.get_builder(
+        ocultador_audio = OcultadorAudioFactory.creacion(
             modo_cifrado_audio, input_audio
         )
 
@@ -113,7 +113,7 @@ def flujo_de_trabajo_desocultar(
         #Opcion de pasar el audio sstv o en streaming
         if input_audio or streaming :
             print("Creando ocultador en audio ...")
-            ocultador_audio = OcultadorAudioFactory.get_builder(modo_cifrado_audio, input_audio)
+            ocultador_audio = OcultadorAudioFactory.creacion(modo_cifrado_audio, input_audio)
 
             print("Ocultador en audio  creado, desocultando imagen en audio ...")
             ocultador_audio.desocultar_guardar()
@@ -122,15 +122,15 @@ def flujo_de_trabajo_desocultar(
         #Opcion de pasar el sstv ya decodificado como imagen
         print("Creando ocultador en imagenes ...")
         if  input_audio : 
-            ocultador_imagen = OcultadorImagenFactory.get_builder(
+            ocultador_imagen = OcultadorImagenFactory.creacion(
                 modo_cifrado_imagen, str(constantes.RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
             )
         elif input_imagen : #opcion de pasar la imagen decodificada
-            ocultador_imagen = OcultadorImagenFactory.get_builder(
+            ocultador_imagen = OcultadorImagenFactory.creacion(
                 modo_cifrado_imagen, input_imagen,modo_cifrado
             )
         elif input_text :
-            ocultador_imagen = OcultadorImagenFactory.get_builder(
+            ocultador_imagen = OcultadorImagenFactory.creacion(
                 modo_cifrado_imagen, input_imagen,modo_cifrado,input_text
             )
             
@@ -139,7 +139,7 @@ def flujo_de_trabajo_desocultar(
 
 
         print("Creando cifrador...")
-        cifrador = CifradorFactory.get_builder(modo_cifrado, contraseña, output)
+        cifrador = CifradorFactory.creacion(modo_cifrado, contraseña, output)
 
         print("Cifrador creado, descifrando datos ...")
         cifrador.descifrar_guardar()

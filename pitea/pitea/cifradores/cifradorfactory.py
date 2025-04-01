@@ -8,7 +8,7 @@ class CifradorFactory(AbstractFactory):
     Fábrica para obtener el constructor de Cifrador adecuado basado en el tipo de archivo.
 
     Esta clase permite obtener el constructor correspondiente de un cifrador basado en el tipo de cifrado
-    seleccionado (AES, None, etc.). A través de su método estático `get_builder`, se puede obtener una instancia
+    seleccionado (AES, None, etc.). A través de su método estático `creacion`, se puede obtener una instancia
     de la subclase de Cifrador adecuada.
 
     Atributos:
@@ -18,9 +18,9 @@ class CifradorFactory(AbstractFactory):
     lista_cifradores = [CifradorAES, CifradorNone]
 
     @staticmethod
-    def get_builder(modo_cifrado, clave, ruta):
+    def creacion(modo_cifrado, clave, ruta):
         """
-        Devuelve el constructor de cifrador correspondiente según el modo de cifrado.
+        Devuelve el objeto de cifrador correspondiente según el modo de cifrado.
 
         Este método selecciona y devuelve una instancia de la subclase de Cifrador adecuada según el modo de cifrado
         que se pasa como parámetro. Si el modo de cifrado no es reconocido, se lanza una excepción `ValueError`.

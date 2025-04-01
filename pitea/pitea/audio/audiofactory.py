@@ -15,16 +15,16 @@ class OcultadorAudioFactory(AbstractFactory):
         lista_ocultadores (list): Lista de clases de ocultadores de audio disponibles.
 
     Métodos:
-        get_builder(modo_ocultacion, ruta_audio):
+        creacion(modo_ocultacion, ruta_audio):
             Devuelve una instancia del ocultador de audio correspondiente.
     """
 
     lista_ocultadores = [OcultadorAudioLSB, OcultadorAudioSSTV, OcultadorAudioNone]
 
     @staticmethod
-    def get_builder(modo_ocultacion, ruta_audio):
+    def creacion(modo_ocultacion, ruta_audio):
         """
-        Devuelve el constructor de ocultador de audio correspondiente según el modo seleccionado.
+        Devuelve el objeto de ocultador de audio correspondiente según el modo seleccionado.
 
         Args:
             modo_ocultacion (str): Nombre del modo de ocultación de audio.
