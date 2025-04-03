@@ -121,7 +121,7 @@ def flujo_de_trabajo_desocultar(
         
         #Opcion de pasar el sstv ya decodificado como imagen
         print("Creando ocultador en imagenes ...")
-        if  input_audio : 
+        if  input_audio or streaming: 
             ocultador_imagen = OcultadorImagenFactory.creacion(
                 modo_cifrado_imagen, str(constantes.RUTA_IMAGEN_DESOCULTACION) % "png",modo_cifrado
             )
