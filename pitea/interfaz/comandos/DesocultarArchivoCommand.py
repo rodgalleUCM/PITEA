@@ -75,7 +75,7 @@ class DesocultarArchivoCommand(Command):
                     if flag_streaming == "n" :
                         input_audio = comprobar_archivo("🎵 Ruta del audio: ")
                         break
-                    else : 
+                    elif flag_streaming == "s" : 
                         break
 
             elif modo_audio == "lsb":
