@@ -32,7 +32,7 @@
 
 ES NECESARIO INSTALAR tessercar-ocr, qsstv y la fuente a utilizar.
 
-En qsstv hay que ponerlo en modo "sound form file2 y activar el auto slant.
+En qsstv hay que ponerlo en modo "sound fromm file2 y activar el auto slant.
 
 
 

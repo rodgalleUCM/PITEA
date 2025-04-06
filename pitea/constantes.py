@@ -7,7 +7,7 @@ from pysstv.color import MartinM1, Robot36, ScottieS1
 
 class Constantes:
     def __init__(self):
-        self._RUTA_PROGRAMA = Path("pitea")
+        self._RUTA_PROGRAMA = Path(__file__).resolve().parent / "pitea"
         self._ARCHIVO_CONFIG = self._RUTA_PROGRAMA / "configuracion.toml"
         self._RUTA_CACHE_GENERAL = self._RUTA_PROGRAMA.parent / "cache"
         self._RUTA_CACHE_GENERAL = self._RUTA_CACHE_GENERAL.resolve()

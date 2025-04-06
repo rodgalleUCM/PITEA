@@ -1,0 +1,14 @@
+[persistente]
+contador_cache = 0
+ult_fecha = "01-04-2025_21:03"
+
+[Ajustes_sstv]
+modo_sstv = "MartinM1"
+samples_per_sec = 48000
+bits = 16
+
+[Ajustes_ocultador_imagen_text]
+tamanio_fuente = 10
+anchura_maxima = 800
+ruta_fuente = "./fuentes/ocraregular.ttf"
+gpu = "True"

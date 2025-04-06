@@ -6,7 +6,7 @@ from pitea.utils import cargar_configuracion
 from pathlib import Path
 from pitea.mensajes import print
 import builtins
-
+import os
 
 
 class OcultadorAudioSSTV(OcultadorAudio):
@@ -73,6 +73,44 @@ class OcultadorAudioSSTV(OcultadorAudio):
         sstv = constantes.MODES_SSTV[modo][0](image, samples_per_sec, bits)
         return sstv
 
+    def launch_qsstv(self):
+        """Lanza la aplicación externa QSSTV desde un entorno limpio.
+
+        Esta función ejecuta QSSTV mediante `subprocess.run()` desde un directorio seguro
+        (`$HOME`) y con un entorno de ejecución depurado, eliminando variables de entorno
+        que pueden interferir con bibliotecas Qt, como ocurre con entornos virtuales
+        de Python que utilizan OpenCV o PyQt.
+
+        Esto evita errores comunes de Qt como:
+            - "Could not load the Qt platform plugin 'xcb'"
+            - "QObject::moveToThread: Current thread is not the object's thread"
+
+        Las variables de entorno eliminadas son:
+            - QT_QPA_PLATFORM_PLUGIN_PATH
+            - QT_QPA_PLATFORM
+            - LD_LIBRARY_PATH
+            - OPENCV_UI_BACKEND
+
+        Returns:
+            None
+        """
+
+        # Crear entorno limpio
+        env_clean = os.environ.copy()
+        for var in ["QT_QPA_PLATFORM_PLUGIN_PATH", "QT_QPA_PLATFORM", "LD_LIBRARY_PATH", "OPENCV_UI_BACKEND"]:
+            env_clean.pop(var, None)
+
+        # Guardar el cwd actual
+        original_cwd = os.getcwd()
+        try:
+            # Cambiar a un directorio seguro
+            os.chdir(os.path.expanduser("~"))
+            subprocess.run(["qsstv"], env=env_clean)
+        finally:
+            # Restaurar el cwd original (opcional pero recomendable)
+            os.chdir(original_cwd)
+
+
     def desocultar(self):
         """Abre QSSTV para decodificar la imagen oculta en el archivo de audio.
 
@@ -87,7 +125,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
             if not constantes.STREAMING:
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % constantes.FORMATO_IMAGEN_DESOCULTACION}\033[0m")
-            subprocess.run(["qsstv"])
+            self.launch_qsstv()
 
             # Verificar si hay al menos un archivo PNG en la ruta
             ruta_padre = Path(constantes.RUTA_IMAGEN_DESOCULTACION).parent
