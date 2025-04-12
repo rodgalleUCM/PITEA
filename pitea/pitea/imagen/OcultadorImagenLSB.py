@@ -48,25 +48,16 @@ class OcultadorImagenLSB(OcultadorImagen):
         pixeles = self.imagen.load()
         ancho, alto = self.imagen.size
 
-        if ancho % 2 == 1 or alto % 2 == 1:
-            ancho_or = ancho
-            alt_or= alto
-            if ancho % 2 == 1:
-                ancho += 1
-            if alto % 2 == 1:
-                alto += 1
-            # Creamos una nueva imagen con anchura par
-            imagen_auxiliar= Image.new("RGB", (ancho, alto), (0, 0, 0))
-            pixeles_aux = imagen_auxiliar.load()
+        # Comprobar si tiene canal alfa
+        if self.imagen.mode == "RGBA":
+            for y in range(alto):
+                for x in range(ancho):
+                    r, g, b, a = pixeles[x, y]
+                    if a == 0:
+                        # Poner píxel completamente transparente en negro
+                        pixeles[x, y] = (0, 0, 0, 255)
 
-            # Copiamos los píxeles originales en la nueva imagen, como usamos en el ancho y alto de la imagen original , la liena nueva se mantiene
-            for y in range(alt_or):
-                for x in range(ancho_or):
-                        pixeles_aux[x, y] = pixeles[x, y]
-            
-            # Actualizar la imagen original y volvemos a cargar los pixeles
-            self.imagen = imagen_auxiliar
-            pixeles = self.imagen.load()  
+        
 
         # Añadir una cabecera con el tamaño de los datos (32 bits)
         tamano_datos_binarios = format(len(datos_binarios), "032b")

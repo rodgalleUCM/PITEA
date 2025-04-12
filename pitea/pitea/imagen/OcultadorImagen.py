@@ -134,8 +134,33 @@ class OcultadorImagen(ABC):
         Returns:
             PIL.Image: Imagen transformada con los datos ocultos.
         """
+
         imagen = imagen.convert("RGB")
-        
+
+        pixeles = imagen.load()
+        ancho, alto = imagen.size
+
+        if ancho % 2 == 1 or alto % 2 == 1:
+            ancho_or = ancho
+            alt_or= alto
+            if ancho % 2 == 1:
+                ancho += 1
+            if alto % 2 == 1:
+                alto += 1
+            # Creamos una nueva imagen con anchura par
+            imagen_auxiliar= Image.new("RGB", (ancho, alto), (0, 0, 0))
+            pixeles_aux = imagen_auxiliar.load()
+
+            # Copiamos los píxeles originales en la nueva imagen, como usamos en el ancho y alto de la imagen original , la liena nueva se mantiene
+            for y in range(alt_or):
+                for x in range(ancho_or):
+                        pixeles_aux[x, y] = pixeles[x, y]
+            
+            # Actualizar la imagen original y volvemos a cargar los pixeles
+            imagen = imagen_auxiliar
+            pixeles = imagen.load()  
+
+      
         imagen_np = np.array(imagen)
         h, w = imagen_np.shape[:2]
         h1, w1 = h // 2, w // 2  # Punto medio para dividir en 4 partes
