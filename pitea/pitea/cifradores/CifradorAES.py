@@ -20,22 +20,16 @@ class CifradorAES(Cifrador):
 
     def trasformar_contrasenia_a_clave(self):
         """
-        Transforma la contraseña en una clave de 16 bytes utilizando una semilla y el operador XOR.
+        Transforma la contraseña en una clave de 16 bytes utilizando sha256.
 
-        La contraseña proporcionada se convierte en una clave de 16 bytes. Si la contraseña es más corta,
-        se rellena con ceros. Si es más larga, se trunca a 16 bytes.
-
-        Luego, la clave se mezcla con una semilla definida (SEMILLA) mediante el operador XOR para
-        generar la clave final.
 
         Returns:
-            bytes: La clave de 16 bytes resultante después de mezclar la contraseña con la semilla.
+            bytes: La clave de 16 bytes resultante después de pasar por sha256 y ser truncada.
         """
         contraseña_bytes = self.contraseña.encode()
 
         # Crear un hash SHA-256 de la contraseña
-        hash_object = hashlib.sha256(contraseña_bytes)
-        hash_digest = hash_object.digest()
+        hash_digest = hashlib.sha256(contraseña_bytes).digest()
 
         # Tomar los primeros 16 bytes para usar como clave
         clave = hash_digest[:16]

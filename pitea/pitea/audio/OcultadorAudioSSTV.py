@@ -2,7 +2,6 @@ from constantes import constantes
 import subprocess
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
-from pitea.utils import cargar_configuracion
 from pathlib import Path
 from pitea.mensajes import print
 import builtins
@@ -47,14 +46,16 @@ class OcultadorAudioSSTV(OcultadorAudio):
         sstv.write_wav(ruta)  # Usar el método directo de PySSTV
         print(f"La imagen ha sido ocultada en el archivo de audio: {ruta}")
 
-    def guardar_imagen_redimensionada(self, imagen, ruta):
+    def guardar_imagen_redimensionada(self, imagen, ruta,modo):
         """Guarda la imagen redimensionada en una ruta específica.
 
         Args:
             imagen (PIL.Image): Imagen redimensionada.
             ruta (str): Ruta donde se guardará la imagen.
+            modo (str): Modo de SSTV usado.
         """
-        imagen.save(ruta)
+
+        imagen.resize(constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS).save(ruta)
         print(f"Imagen contenedora redimensionada guardada en {ruta}")
 
     def ocultar(self, datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
@@ -144,16 +145,12 @@ class OcultadorAudioSSTV(OcultadorAudio):
             ruta_salida (str): Ruta donde se guardará el audio generado.
         """
         # Cargar configuración de SSTV desde archivo
-        conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
-        modo = conf['Ajustes_sstv']["modo_sstv"]
-        samples_per_sec = conf['Ajustes_sstv']["samples_per_sec"]
-        bits = conf['Ajustes_sstv']["bits"]
+        modo = constantes.conf['Ajustes_sstv']["modo_sstv"]
+        samples_per_sec = constantes.conf['Ajustes_sstv']["samples_per_sec"]
+        bits = constantes.conf['Ajustes_sstv']["bits"]
 
         # Leer y redimensionar la imagen con Pillow
-        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(
-            constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS
-        )
-
+        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen,modo)
         self.guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
 
         # Codificar imagen en audio SSTV

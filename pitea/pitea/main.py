@@ -3,7 +3,8 @@ from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
 from constantes import constantes
-from pitea.utils import cargar_configuracion, crear_cache
+
+gifrom pitea.utils import crear_cache
 from colorama import init, Fore
 import traceback
 
@@ -60,8 +61,8 @@ def flujo_de_trabajo_ocultar(
         if modo_cifrado_audio not in ["sstv"] :
             imagen_contenedora, formato = ocultador_imagen.ocultar_guardar()
         else :
-            conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
-            modo_sstv = conf['Ajustes_sstv']["modo_sstv"]
+            
+            modo_sstv = constantes.conf['Ajustes_sstv']["modo_sstv"]
             anchura = constantes.MODES_SSTV[modo_sstv][1][0]
             altura = constantes.MODES_SSTV[modo_sstv][1][1]
             imagen_contenedora, formato = ocultador_imagen.ocultar_guardar(altura,anchura)

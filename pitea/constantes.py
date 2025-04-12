@@ -12,7 +12,7 @@ class Constantes:
         self._RUTA_CACHE_GENERAL = self._RUTA_PROGRAMA.parent / "cache"
         self._RUTA_CACHE_GENERAL = self._RUTA_CACHE_GENERAL.resolve()
 
-        self.actualizar_cache()
+        self.conf = self.actualizar_cache()
 
         self._VERBOSE = False
         self._STREAMING = False
@@ -116,5 +116,7 @@ class Constantes:
         ]
 
         self._LISTA_DIR_CACHE_DESOCULTACION = [self._RUTA_DESOCULTACION_DATOS, self._RUTA_DESOCULTACION_IMAGEN]
+
+        return conf
 
 constantes = Constantes()
