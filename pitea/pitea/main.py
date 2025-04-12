@@ -3,8 +3,7 @@ from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
 from pitea.audio.audiofactory import OcultadorAudioFactory
 from constantes import constantes
-
-gifrom pitea.utils import crear_cache
+from pitea.utils import crear_cache
 from colorama import init, Fore
 import traceback
 
