@@ -15,7 +15,7 @@ class OcultadorImagenFactory(AbstractFactory):
         creacion(modo_ocultacion, ruta_imagen, modo_cifrador, input_text=None):
             Devuelve el objeto adecuado de OcultadorImagen según el modo de cifrado.
     """
-
+    
     lista_ocultadores = [OcultadorImagenLSB,OcultadorImagenText,OcultadorImagenNone]
 
     @staticmethod

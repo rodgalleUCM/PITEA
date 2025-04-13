@@ -7,12 +7,23 @@ class OcultadorAudioLSB(OcultadorAudio):
     Este método inserta bits de la imagen dentro de los bits menos significativos de las muestras de audio.
 
     Attributes:
-        nombre (str): Nombre del método de ocultación.
+        __nombre (str): Nombre del método de ocultación.
     """
 
-    nombre = "lsb"
 
-    def ocultar(self, datos_imagen):
+    def __init__(self, ruta_audio):
+        """
+        Inicializa el objeto con un archivo de audio.
+
+        Args:
+            ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
+        """
+        super().__init_(ruta_audio)
+        self.__nombre= "lsb"
+       
+
+
+    def _ocultar(self, datos_imagen):
         """Oculta los datos de una imagen dentro de un archivo de audio utilizando el método LSB.
 
         Args:
@@ -48,7 +59,7 @@ class OcultadorAudioLSB(OcultadorAudio):
 
         return frames
 
-    def desocultar(self):
+    def _desocultar(self):
         """Extrae los datos ocultos del archivo de audio utilizando el método LSB.
 
         Este método lee los bits menos significativos de los frames de audio y reconstruye los datos ocultos (en este caso, los datos de la imagen).

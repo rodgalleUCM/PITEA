@@ -17,18 +17,23 @@ class OcultadorImagenNone(OcultadorImagen):
         nombre (str): El nombre del tipo de ocultador, en este caso 'none'.
     
     Métodos:
-        ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+        _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
             Lanza una excepción indicando que el ocultador 'none' no puede realizar ocultación.
         
-        desocultar(self):
+        _desocultar(self):
             Extrae y descompone los datos del archivo de texto, devolviendo los datos desocultados.
         
         desocultar_guardar(self):
             Extrae los datos y los guarda en un archivo para su posterior uso.
     """
-    nombre = "none"
+
+
+    def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        super.__init__(ruta_imagen, modo_cifrador, ruta_txt=None)
+        self.__nombre = "none"
+
     
-    def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+    def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """
         Lanza una excepción indicando que el ocultador 'none' no puede realizar ocultación.
 
@@ -44,7 +49,7 @@ class OcultadorImagenNone(OcultadorImagen):
         """
         raise Exception("El modo Ocultador de imagen None no es valido para ocultacion, solo para desocultacion")
 
-    def desocultar(self):
+    def _desocultar(self):
         """
         Extrae y descompone los datos de un archivo de texto.
 
@@ -57,10 +62,10 @@ class OcultadorImagenNone(OcultadorImagen):
         Raises:
             FileNotFoundError: Si el archivo de texto no se encuentra en la ruta indicada.
         """
-        with open(self.ruta_txt, 'rb') as f:
+        with open(self._ruta_txt, 'rb') as f:
             datos = f.read()
         
-        if self.cifrado:
+        if self._cifrado:
             return base64.b64decode(datos)
         else:
             return datos
@@ -74,7 +79,7 @@ class OcultadorImagenNone(OcultadorImagen):
         Returns:
             None
         """
-        datos_extraidos = self.desocultar()
+        datos_extraidos = self._desocultar()
 
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
             f.write(datos_extraidos)

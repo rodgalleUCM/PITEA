@@ -7,10 +7,20 @@ class OcultadorAudioNone(OcultadorAudio):
     Se usa únicamente para la desocultación de datos, sin realizar modificaciones en el audio.
 
     Attributes:
-        nombre (str): Nombre del método de ocultación.
+        __nombre (str): Nombre del método de ocultación.
     """
 
-    nombre = "none"
+
+    def __init__(self, ruta_audio):
+        """
+        Inicializa el objeto con un archivo de audio.
+
+        Args:
+            ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
+        """
+        super().__init_(ruta_audio)
+        self.__nombre= "none"
+       
 
     def ocultar(self, datos_imagen):
         """Lanza una excepción, ya que este método no soporta la ocultación de datos.

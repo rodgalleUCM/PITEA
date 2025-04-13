@@ -15,10 +15,11 @@ class CifradorFactory(AbstractFactory):
         lista_cifradores (list): Lista de clases de cifradores disponibles.
     """
 
+
     lista_cifradores = [CifradorAES, CifradorNone]
 
     @staticmethod
-    def creacion(modo_cifrado, clave, ruta):
+    def creacion(modo_cifrado, clave, ruta = None):
         """
         Devuelve el objeto de cifrador correspondiente según el modo de cifrado.
 

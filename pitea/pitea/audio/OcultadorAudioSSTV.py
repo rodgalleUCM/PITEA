@@ -12,19 +12,19 @@ class OcultadorAudioSSTV(OcultadorAudio):
     """Clase que implementa la ocultación y desocultación de datos en audio usando SSTV.
 
     Attributes:
-        nombre (str): Nombre del método de ocultación.
+        __nombre (str): Nombre del método de ocultación.
 
     Methods:
-        guardar(ruta, sstv):
+        __guardar(ruta, sstv):
             Guarda el audio generado por SSTV en un archivo WAV.
 
-        guardar_imagen_redimensionada(imagen, ruta):
+        __guardar_imagen_redimensionada(imagen, ruta):
             Guarda la imagen redimensionada en una ruta específica.
 
-        ocultar(datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
+        _ocultar(datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
             Codifica la imagen en un archivo de audio usando el modo SSTV seleccionado.
 
-        desocultar():
+        _desocultar():
             Abre QSSTV para decodificar la imagen oculta en el archivo de audio.
 
         ocultar_guardar(formato_imagen, ruta_salida):
@@ -34,7 +34,17 @@ class OcultadorAudioSSTV(OcultadorAudio):
             Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda.
     """
 
-    nombre = "sstv"
+
+    def __init__(self, ruta_audio):
+        """
+        Inicializa el objeto con un archivo de audio.
+
+        Args:
+            ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
+        """
+        super().__init_(ruta_audio)
+        self.__nombre= "sstv"
+       
 
     def guardar(self, ruta, sstv):
         """Guarda el audio generado por SSTV en un archivo WAV.
@@ -74,7 +84,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
         sstv = constantes.MODES_SSTV[modo][0](image, samples_per_sec, bits)
         return sstv
 
-    def launch_qsstv(self):
+    def __launch_qsstv(self):
         """Lanza la aplicación externa QSSTV desde un entorno limpio.
 
         Esta función ejecuta QSSTV mediante `subprocess.run()` desde un directorio seguro
@@ -119,14 +129,14 @@ class OcultadorAudioSSTV(OcultadorAudio):
             Exception: Si no se encuentra ninguna imagen decodificada después de ejecutar QSSTV.
         """
 
-        RUTA_AUDIO = Path(f"{self.ruta_audio}").resolve()
+        RUTA_AUDIO = Path(f"{self._ruta_audio}").resolve()
         RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(constantes.RUTA_IMAGEN_DESOCULTACION)).resolve()
 
         while True:
             if not constantes.STREAMING:
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % constantes.FORMATO_IMAGEN_DESOCULTACION}\033[0m")
-            self.launch_qsstv()
+            self.__launch_qsstv()
 
             # Verificar si hay al menos un archivo PNG en la ruta
             ruta_padre = Path(constantes.RUTA_IMAGEN_DESOCULTACION).parent
@@ -151,16 +161,16 @@ class OcultadorAudioSSTV(OcultadorAudio):
 
         # Leer y redimensionar la imagen con Pillow
         image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen,modo)
-        self.guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
+        self.__guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
 
         # Codificar imagen en audio SSTV
-        sstv = self.ocultar(None, modo, image, samples_per_sec, bits)
+        sstv = self._ocultar(None, modo, image, samples_per_sec, bits)
 
         # Guardar el archivo de audio
-        self.guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
+        self.__guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
         self.guardar(ruta_salida, sstv)
 
     def desocultar_guardar(self):
         """Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda."""
-        self.desocultar()
+        self._desocultar()
         return None

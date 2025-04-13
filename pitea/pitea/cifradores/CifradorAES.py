@@ -16,9 +16,20 @@ class CifradorAES(Cifrador):
         nombre (str): El nombre del cifrador, en este caso "aes".
     """
 
-    nombre = "aes"
+    
+    def __init__(self, contraseña, ruta=None):
+        """
+        Inicializa el cifrador con la contraseña y una ruta opcional.
 
-    def trasformar_contrasenia_a_clave(self):
+        Args:
+            contraseña (str): Contraseña del cifrado.
+            ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
+        """
+        super().__init__(contraseña,ruta)
+        self._nombre = "aes"
+
+
+    def __trasformar_contrasenia_a_clave(self):
         """
         Transforma la contraseña en una clave de 16 bytes utilizando sha256.
 
@@ -26,7 +37,7 @@ class CifradorAES(Cifrador):
         Returns:
             bytes: La clave de 16 bytes resultante después de pasar por sha256 y ser truncada.
         """
-        contraseña_bytes = self.contraseña.encode()
+        contraseña_bytes = self._contraseña.encode()
 
         # Crear un hash SHA-256 de la contraseña
         hash_digest = hashlib.sha256(contraseña_bytes).digest()
@@ -36,7 +47,7 @@ class CifradorAES(Cifrador):
 
         return clave
 
-    def cifrar(self, datos):
+    def __cifrar(self, datos):
         """
         Cifra los datos utilizando el algoritmo AES en modo CBC.
 
@@ -51,7 +62,7 @@ class CifradorAES(Cifrador):
         """
         tamano_bloque = AES.block_size
 
-        clave = self.trasformar_contrasenia_a_clave()
+        clave = self.__trasformar_contrasenia_a_clave()
 
         datos_padded = pad(datos, tamano_bloque)  # Asegurarse de que los datos tengan un tamaño múltiplo del tamaño del bloque
         iv = get_random_bytes(tamano_bloque)  # Generar un vector de inicialización aleatorio
@@ -60,7 +71,7 @@ class CifradorAES(Cifrador):
 
         return iv, datos_cifrados
 
-    def descifrar(self, datos):
+    def __descifrar(self, datos):
         """
         Descifra los datos utilizando el algoritmo AES en modo CBC.
 
@@ -78,7 +89,7 @@ class CifradorAES(Cifrador):
         iv = datos[:tamano_bloque]
         datos_cifrados = datos[tamano_bloque::]
 
-        clave = self.trasformar_contrasenia_a_clave()
+        clave = self.__trasformar_contrasenia_a_clave()
 
         # Crear el descifrador y descifrar los datos
         descifrador = AES.new(clave, AES.MODE_CBC, iv)

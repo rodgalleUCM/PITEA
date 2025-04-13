@@ -1,5 +1,4 @@
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-from PIL import Image
 
 
 
@@ -14,15 +13,18 @@ class OcultadorImagenLSB(OcultadorImagen):
         nombre (str): El nombre del tipo de ocultador, en este caso 'lsb'.
     
     Métodos:
-        ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+        _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
             Oculta los datos en la imagen utilizando el algoritmo LSB.
 
-        desocultar(self):
+        _desocultar(self):
             Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
     """
-    nombre = "lsb"
 
-    def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+    def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        super.__init__(ruta_imagen, modo_cifrador, ruta_txt=None)
+        self.__nombre = "lsb"
+
+    def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """
         Oculta los datos en la imagen utilizando el algoritmo LSB.
 
@@ -45,11 +47,11 @@ class OcultadorImagenLSB(OcultadorImagen):
             format(byte, "08b") for byte in datos
         )  # Convertir los datos a binarios del archivo cifrado
 
-        pixeles = self.imagen.load()
-        ancho, alto = self.imagen.size
+        pixeles = self._imagen.load()
+        ancho, alto = self._imagen.size
 
         # Comprobar si tiene canal alfa
-        if self.imagen.mode == "RGBA":
+        if self._imagen.mode == "RGBA":
             for y in range(alto):
                 for x in range(ancho):
                     r, g, b, a = pixeles[x, y]
@@ -93,9 +95,9 @@ class OcultadorImagenLSB(OcultadorImagen):
             if indice_datos >= longitud_mensaje:
                 break
 
-        return self.imagen, self.formato
+        return self._imagen, self._formato
 
-    def desocultar(self):
+    def _desocultar(self):
         """
         Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
 
@@ -108,8 +110,8 @@ class OcultadorImagenLSB(OcultadorImagen):
         Raises:
             ValueError: Si no se puede extraer el tamaño de los datos ocultos.
         """
-        pixeles = self.imagen.load()
-        ancho, alto = self.imagen.size
+        pixeles = self._imagen.load()
+        ancho, alto = self._imagen.size
         datos_binarios = ""
         tamano_datos = 0
 

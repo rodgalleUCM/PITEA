@@ -25,9 +25,13 @@ class OcultadorImagenText(OcultadorImagen):
         desocultar(self):
             Recupera los datos de una imagen utilizando OCR.
     """
-    nombre = "text"
+ 
+    def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        super.__init__(ruta_imagen, modo_cifrador, ruta_txt=None)
+        self.__nombre = "text"
+
     
-    def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+    def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """
         Oculta los datos en una imagen en formato de texto.
 
@@ -47,7 +51,7 @@ class OcultadorImagenText(OcultadorImagen):
             Exception: Si no es posible ajustar los datos en la imagen debido a la falta de espacio.
         """
         # Codificamos los datos en base64 si están cifrados
-        if self.cifrado:
+        if self._cifrado:
             datos = base64.b64encode(datos).decode('utf-8')
         else:
             datos = datos.decode('utf-8')
@@ -115,7 +119,7 @@ class OcultadorImagenText(OcultadorImagen):
 
         return imagen, constantes.FORMATO_IMAGEN_OCULTACION
 
-    def desocultar(self):
+    def _desocultar(self):
         """
         Extrae los datos ocultos de la imagen utilizando OCR (Reconocimiento Óptico de Caracteres).
 
@@ -130,9 +134,9 @@ class OcultadorImagenText(OcultadorImagen):
         # Configurar si se usará la GPU
         gpu = True if constantes.conf['Ajustes_ocultador_imagen_text']["gpu"] == "True" else False
 
-        if self.cifrado:
+        if self._cifrado:
             # Convertir la imagen a un array de NumPy
-            imagen_array = np.array(self.imagen)
+            imagen_array = np.array(self._imagen)
     
             # Crear el lector OCR
             reader = easyocr.Reader(['en'], gpu=gpu)  
@@ -141,14 +145,14 @@ class OcultadorImagenText(OcultadorImagen):
             resultado = reader.readtext(imagen_array, detail=0, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=') 
             texto_extraido = ''.join(resultado)  # Obtener solo el texto
         else:
-            texto_extraido = pytesseract.image_to_string(self.imagen, config='--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+            texto_extraido = pytesseract.image_to_string(self._imagen, config='--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
 
         # Filtrar caracteres válidos en base64
         texto_base64 = ''.join(filter(lambda c: c.isalnum() or c in '+/=', texto_extraido))
 
         # Decodificar el texto base64 a bytes
         try:
-            if self.cifrado:
+            if self._cifrado:
                 datos_decodificados = base64.b64decode(texto_base64)
             else:
                 datos_decodificados = texto_base64.encode()

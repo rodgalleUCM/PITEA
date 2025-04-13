@@ -21,10 +21,10 @@ class OcultadorImagen(ABC):
         __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
             Inicializa el ocultador de imagen con la ruta de la imagen y el modo de cifrado.
         
-        ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
+        _ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
             Método abstracto que debe implementarse en las subclases para ocultar los datos en la imagen.
         
-        desocultar(self):
+        _desocultar(self):
             Método abstracto que debe implementarse en las subclases para extraer los datos ocultos en la imagen.
 
         ocultar_guardar(self, altura_imagen=None, anchura_imagen=None):
@@ -33,13 +33,13 @@ class OcultadorImagen(ABC):
         desocultar_guardar(self):
             Extrae los datos ocultos de la imagen y guarda los datos extraídos en un archivo.
 
-        transformar_imagen(self, imagen):
+        _transformar_imagen(self, imagen):
             Aplica transformaciones a la imagen para ocultar los datos de manera no obvia.
 
-        transformar_imagen_inversa(self, imagen):
+        _transformar_imagen_inversa(self, imagen):
             Restaura la imagen transformada a su estado original para facilitar la desocultación.
     """
-    nombre = ""
+    
     
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
         """
@@ -50,15 +50,20 @@ class OcultadorImagen(ABC):
             modo_cifrador (str): Modo de cifrado para aplicar.
             ruta_txt (str, optional): Ruta a un archivo de texto si se utiliza para ocultar datos en la imagen. Por defecto es None.
         """
+        self.__nombre = ""
         if ruta_imagen:
-            self.formato = ruta_imagen.split(".")[-1]
-            self.imagen = Image.open(ruta_imagen)
+            self._formato = ruta_imagen.split(".")[-1]
+            self._imagen = Image.open(ruta_imagen)
         else:
-            self.ruta_txt = ruta_txt
-        self.cifrado = 1 if modo_cifrador not in ["none"] else 0
+            self._ruta_txt = ruta_txt
+        self._cifrado = 1 if modo_cifrador not in ["none"] else 0
+
+    @property
+    def nombre(self) :
+        return self.__nombre
 
     @abstractmethod
-    def ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
+    def _ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
         """Método abstracto para ocultar los datos en la imagen.
 
         Args:
@@ -73,7 +78,7 @@ class OcultadorImagen(ABC):
         pass
 
     @abstractmethod
-    def desocultar(self):
+    def _desocultar(self):
         """Método abstracto para extraer los datos ocultos de la imagen.
 
         Returns:
@@ -95,12 +100,12 @@ class OcultadorImagen(ABC):
         with open(constantes.RUTA_DATOS_CIFRADO, "rb") as f:
             datos = f.read()
 
-        imagen, formato = self.ocultar(datos, altura_imagen, anchura_imagen)
+        imagen, formato = self._ocultar(datos, altura_imagen, anchura_imagen)
 
         imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR) % formato)
 
         # Ocultar el texto realizando transformaciones con inversa a la imagen
-        imagen = self.transformar_imagen(imagen)
+        imagen = self._transformar_imagen(imagen)
 
         imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato)
 
@@ -116,16 +121,16 @@ class OcultadorImagen(ABC):
         Returns:
             None
         """
-        self.imagen = self.transformar_imagen_inversa(self.imagen)
-        self.imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self.formato)
-        datos_extraidos = self.desocultar()
+        self._imagen = self._transformar_imagen_inversa(self._imagen)
+        self._imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self._formato)
+        datos_extraidos = self._desocultar()
 
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
             f.write(datos_extraidos)
 
         print(f"Datos cifrados guardados en {constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION}")
 
-    def transformar_imagen(self, imagen):
+    def _transformar_imagen(self, imagen):
         """Aplica transformaciones a la imagen para ocultar los datos de manera no obvia.
 
         Args:
@@ -186,7 +191,7 @@ class OcultadorImagen(ABC):
 
         return imagen_modificada_pil
 
-    def transformar_imagen_inversa(self, imagen):
+    def __transformar_imagen_inversa(self, imagen):
         """Restaura la imagen transformada a su estado original para facilitar la desocultación.
 
         Args:

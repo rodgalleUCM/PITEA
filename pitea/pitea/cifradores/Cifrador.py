@@ -16,7 +16,7 @@ class Cifrador(ABC):
         ruta (str): Ruta del archivo donde se guardan los datos cifrados o descifrados.
     """
 
-    nombre = ""
+    
 
     def __init__(self, contraseña, ruta=None):
         """
@@ -26,12 +26,17 @@ class Cifrador(ABC):
             contraseña (str): Contraseña del cifrado.
             ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
         """
-        self.contraseña = contraseña
-        self.df = None
-        self.ruta = ruta
+        self._nombre = ""
+        self._contraseña = contraseña
+        self._df = None
+        self.__ruta = ruta
+
+    @property
+    def nombre(self) :
+        return self.__nombre
 
     @abstractmethod
-    def cifrar(self, secreto, datos):
+    def _cifrar(self, secreto, datos):
         """
         Método abstracto para cifrar los datos.
 
@@ -48,7 +53,7 @@ class Cifrador(ABC):
         pass
 
     @abstractmethod
-    def descifrar(self, datos):
+    def _descifrar(self, datos):
         """
         Método abstracto para descifrar los datos.
 
@@ -76,7 +81,7 @@ class Cifrador(ABC):
         with open(secreto, "rb") as f:
             datos = f.read()
 
-        iv, datos_cifrados = self.cifrar(datos)
+        iv, datos_cifrados = self._cifrar(datos)
 
         with open(constantes.RUTA_DATOS_CIFRADO, "wb") as f:
             f.write(iv + datos_cifrados)  # Escribir el IV al inicio del archivo
@@ -97,7 +102,7 @@ class Cifrador(ABC):
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "rb") as f:
             datos = f.read()
 
-        datos_descifrados = self.descifrar(datos)
+        datos_descifrados = self._descifrar(datos)
 
         # Guardar los datos descifrados en el archivo de salida
         with open(constantes.RUTA_DATOS_LIMPIOS_DESOCULTACION, "wb") as f:

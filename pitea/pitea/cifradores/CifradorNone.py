@@ -13,9 +13,20 @@ class CifradorNone(Cifrador):
         nombre (str): El nombre del cifrador, en este caso "none".
     """
 
-    nombre = "none"
+    
 
-    def cifrar(self, datos):
+    def __init__(self, contraseña, ruta=None):
+        """
+        Inicializa el cifrador con la contraseña y una ruta opcional.
+
+        Args:
+            contraseña (str): Contraseña del cifrado.
+            ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
+        """
+        super().__init__(contraseña,ruta)
+        self._nombre = "none"
+
+    def __cifrar(self, datos):
         """
         Método que "cifra" los datos, pero no realiza ninguna operación de cifrado real.
 
@@ -29,7 +40,7 @@ class CifradorNone(Cifrador):
         """
         return b"", datos
 
-    def descifrar(self, datos):
+    def __descifrar(self, datos):
         """
         Método que "descifra" los datos, pero no realiza ninguna operación de descifrado real.
 
