@@ -28,8 +28,9 @@ class Cifrador(ABC):
         """
         
         self._contraseña = contraseña
-        self.__ruta = ruta
-        
+        self._ruta = ruta
+
+
     @abstractmethod
     def _cifrar(self, secreto, datos):
         """
