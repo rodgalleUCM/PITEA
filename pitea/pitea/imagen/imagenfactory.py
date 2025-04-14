@@ -11,9 +11,6 @@ class OcultadorImagenFactory(AbstractFactory):
     Atributos:
         lista_ocultadores (list): Lista de clases de ocultadores de imagen disponibles.
 
-    Métodos:
-        creacion(modo_ocultacion, ruta_imagen, modo_cifrador, input_text=None):
-            Devuelve el objeto adecuado de OcultadorImagen según el modo de cifrado.
     """
     
     lista_ocultadores = [OcultadorImagenLSB,OcultadorImagenText,OcultadorImagenNone]

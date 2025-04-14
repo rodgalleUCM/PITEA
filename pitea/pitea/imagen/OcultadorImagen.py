@@ -12,32 +12,11 @@ class OcultadorImagen(ABC):
 
     Atributos:
         nombre (str): Nombre del tipo de ocultador de imagen, utilizado para distinguir entre ocultadores en la factoria.
-        formato (str): Formato de la imagen cargada.
-        imagen (PIL.Image): Objeto imagen cargado.
-        cifrado (int): Indicador de si se aplica cifrado (1 si se aplica, 0 si no).
-        ruta_txt (str, optional): Ruta al archivo de texto (si aplica).
+        _formato (str): Formato de la imagen cargada.
+        _imagen (PIL.Image): Objeto imagen cargado.
+        _cifrado (int): Indicador de si se aplica cifrado (1 si se aplica, 0 si no).
+        _ruta_txt (str, optional): Ruta al archivo de texto (si aplica).
     
-    Métodos:
-        __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
-            Inicializa el ocultador de imagen con la ruta de la imagen y el modo de cifrado.
-        
-        _ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
-            Método abstracto que debe implementarse en las subclases para ocultar los datos en la imagen.
-        
-        _desocultar(self):
-            Método abstracto que debe implementarse en las subclases para extraer los datos ocultos en la imagen.
-
-        ocultar_guardar(self, altura_imagen=None, anchura_imagen=None):
-            Oculta los datos en la imagen y guarda la imagen transformada en el formato adecuado.
-
-        desocultar_guardar(self):
-            Extrae los datos ocultos de la imagen y guarda los datos extraídos en un archivo.
-
-        _transformar_imagen(self, imagen):
-            Aplica transformaciones a la imagen para ocultar los datos de manera no obvia.
-
-        _transformar_imagen_inversa(self, imagen):
-            Restaura la imagen transformada a su estado original para facilitar la desocultación.
     """
     
     nombre = ""

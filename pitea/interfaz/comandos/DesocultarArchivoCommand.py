@@ -25,12 +25,7 @@ class DesocultarArchivoCommand(Command):
             Ejecuta el comando, recopilando los datos del usuario y ejecutando el proceso
             de desocultación del archivo.
     """
-    def __init__(self):
-        """
-        Inicializa el comando con una descripción de "Desocultar archivo".
-        Llama al constructor de la clase base `Command` con la descripción.
-        """
-        super().__init__("Desocultar  archivo")
+    descripcion = "Desocultar archivo"
 
     def ejecutar(self):
         """

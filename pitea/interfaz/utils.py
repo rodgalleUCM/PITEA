@@ -14,7 +14,6 @@ from click.testing import CliRunner
 
 archivo_completer = PathCompleter(expanduser=True)
 
-
 def comprobar_directorio(mensaje):
     """
     Solicita una ruta de directorio al usuario y verifica que exista.
@@ -85,22 +84,6 @@ def comprobar_archivo(mensaje):
         if os.path.exists(archivo):
             return archivo
         print(constantes.ROJO + "❌ Error: El archivo no existe. Introduce una ruta válida." + constantes.RESET)
-
-
-def spinner():
-    """
-    Muestra un spinner en consola para indicar que un proceso está en ejecución.
-
-    Este spinner se actualiza en un ciclo, mostrando caracteres de animación (|, /, -, \\) mientras el
-    proceso esté en ejecución.
-
-    El spinner se detiene cuando la variable global `SPINNING` es cambiada a False.
-    """
-    for cursor in itertools.cycle(['|', '/', '-', '\\']):
-        if not constantes.SPINNING:
-            break
-        print(constantes.MORADO + f"\rProcesando... {cursor}" +constantes.RESET, end="", flush=True)
-        time.sleep(0.1)
 
 
 def ejecutar_comando(comando):

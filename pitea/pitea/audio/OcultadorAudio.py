@@ -3,7 +3,6 @@ import wave
 from constantes import constantes
 from pitea.mensajes import print
 
-
 class OcultadorAudio(ABC):
     """
     Clase base abstracta para ocultación de datos en archivos de audio.

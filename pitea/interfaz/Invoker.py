@@ -56,7 +56,7 @@ class Invoker:
 
         Si el nombre del comando no está registrado, se imprime un mensaje de error.
         """
-        if nombre in self.comandos:
+        if nombre in self.__comandos:
             self.__comandos[nombre].ejecutar()
         else:
             print(constantes.ROJO + "Comando no reconocido." + constantes.RESET)

@@ -22,12 +22,7 @@ class OcultarArchivoCommand(Command):
             Ejecuta el comando, recopilando los datos del usuario y ejecutando el proceso
             de ocultación del archivo.
     """
-    def __init__(self):
-        """
-        Inicializa el comando con una descripción de "Ocultar archivo".
-        Llama al constructor de la clase base `Command` con la descripción.
-        """
-        super().__init__("Ocultar  archivo")
+    descripcion = "Ocultar archivo"
 
     def ejecutar(self):
         """

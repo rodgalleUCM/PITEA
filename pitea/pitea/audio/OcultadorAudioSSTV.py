@@ -12,7 +12,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
     """Clase que implementa la ocultación y desocultación de datos en audio usando SSTV.
 
     Attributes:
-        __nombre (str): Nombre del método de ocultación.
+        nombre (str): Nombre del método de ocultación.
 
     Methods:
         __guardar(ruta, sstv):
@@ -70,11 +70,10 @@ class OcultadorAudioSSTV(OcultadorAudio):
         imagen.resize(constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS).save(ruta)
         print(f"Imagen contenedora redimensionada guardada en {ruta}")
 
-    def _ocultar(self, datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
+    def _ocultar(self, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
         """Codifica la imagen en un archivo de audio usando el modo SSTV seleccionado.
 
         Args:
-            datos (bytes): Datos a ocultar (no utilizado en este método).
             modo (str, optional): Modo de codificación SSTV. Default es "MartinM1".
             image (PIL.Image, optional): Imagen a ocultar en el audio SSTV.
             samples_per_sec (int, optional): Frecuencia de muestreo del audio.
@@ -175,4 +174,3 @@ class OcultadorAudioSSTV(OcultadorAudio):
     def desocultar_guardar(self):
         """Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda."""
         self._desocultar()
-        return None

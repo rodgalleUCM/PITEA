@@ -12,8 +12,8 @@ class Cifrador(ABC):
 
     Atributos:
         nombre (str): El nombre del tipo de cifrador.
-        contraseña (str): Contraseña  para el cifrado.
-        ruta (str): Ruta del archivo donde se guardan los datos cifrados o descifrados.
+        _contraseña (str): Contraseña  para el cifrado.
+        _ruta (str): Ruta del archivo donde se guardan los datos cifrados o descifrados.
     """
 
     nombre = ""
@@ -32,7 +32,7 @@ class Cifrador(ABC):
 
 
     @abstractmethod
-    def _cifrar(self, secreto, datos):
+    def _cifrar(self, datos):
         """
         Método abstracto para cifrar los datos.
 
@@ -40,7 +40,6 @@ class Cifrador(ABC):
         con el algoritmo de cifrado que se use.
 
         Args:
-            secreto (str): Contraseña para el cifrado.
             datos (bytes): Datos a cifrar.
 
         Returns:
