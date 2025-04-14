@@ -26,7 +26,7 @@ class Invoker:
         Atributos:
             comandos (dict): Diccionario que almacena los comandos registrados, con el nombre como clave.
         """
-        self.comandos = {}
+        self.__comandos = {}
 
     def obtener_comandos(self):
         """
@@ -35,7 +35,7 @@ class Invoker:
         Returns:
             dict: Diccionario con los comandos registrados, donde las claves son los nombres de los comandos.
         """
-        return self.comandos
+        return self.__comandos
     
     def registrar_comando(self, nombre, comando):
         """
@@ -45,7 +45,7 @@ class Invoker:
             nombre (str): Nombre del comando.
             comando (obj): Objeto del comando que implementa el método `ejecutar`.
         """
-        self.comandos[nombre] = comando
+        self.__comandos[nombre] = comando
     
     def ejecutar_comando(self, nombre):
         """
@@ -57,6 +57,6 @@ class Invoker:
         Si el nombre del comando no está registrado, se imprime un mensaje de error.
         """
         if nombre in self.comandos:
-            self.comandos[nombre].ejecutar()
+            self.__comandos[nombre].ejecutar()
         else:
             print(constantes.ROJO + "Comando no reconocido." + constantes.RESET)

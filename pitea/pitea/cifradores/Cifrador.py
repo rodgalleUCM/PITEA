@@ -28,7 +28,6 @@ class Cifrador(ABC):
         """
         self._nombre = ""
         self._contraseña = contraseña
-        self._df = None
         self.__ruta = ruta
 
     @property
