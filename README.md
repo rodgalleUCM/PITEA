@@ -1,5 +1,9 @@
 # TFG-PITEA
 
+## Licencia
+
+Este proyecto está licenciado bajo los términos de la [GNU GPL v3](LICENSE), © 2025 Alberto Martín Oruña y Rodrigo Gallego Marín.
+
 ## Arbol de directorio provisional de pitea
 
 ```TFG-PITEA/
