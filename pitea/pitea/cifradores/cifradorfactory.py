@@ -40,6 +40,7 @@ class CifradorFactory(AbstractFactory):
         # Iterar sobre los cifradores disponibles en la lista
         for cifrador in CifradorFactory.lista_cifradores:
             # Comparar el nombre del cifrador con el modo de cifrado proporcionado
+            print(cifrador.nombre)
             if cifrador.nombre == modo_cifrado:
                 return cifrador(clave, ruta)
 

@@ -40,7 +40,7 @@ class OcultadorImagen(ABC):
             Restaura la imagen transformada a su estado original para facilitar la desocultación.
     """
     
-    
+    nombre = ""
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
         """
         Inicializa el ocultador de imagen con la ruta de la imagen y el modo de cifrado.
@@ -50,7 +50,7 @@ class OcultadorImagen(ABC):
             modo_cifrador (str): Modo de cifrado para aplicar.
             ruta_txt (str, optional): Ruta a un archivo de texto si se utiliza para ocultar datos en la imagen. Por defecto es None.
         """
-        self.__nombre = ""
+        
         if ruta_imagen:
             self._formato = ruta_imagen.split(".")[-1]
             self._imagen = Image.open(ruta_imagen)
@@ -58,9 +58,6 @@ class OcultadorImagen(ABC):
             self._ruta_txt = ruta_txt
         self._cifrado = 1 if modo_cifrador not in ["none"] else 0
 
-    @property
-    def nombre(self) :
-        return self.__nombre
 
     @abstractmethod
     def _ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
@@ -191,7 +188,7 @@ class OcultadorImagen(ABC):
 
         return imagen_modificada_pil
 
-    def __transformar_imagen_inversa(self, imagen):
+    def _transformar_imagen_inversa(self, imagen):
         """Restaura la imagen transformada a su estado original para facilitar la desocultación.
 
         Args:

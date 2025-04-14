@@ -18,7 +18,7 @@ class OcultadorAudio(ABC):
         desocultar_guardar(self): Extrae datos ocultos y los guarda como imagen.
     """
 
-    
+    nombre= ""
 
     def __init__(self, ruta_audio):
         """
@@ -27,7 +27,7 @@ class OcultadorAudio(ABC):
         Args:
             ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
         """
-        self._nombre= ""
+        
         self._audio = None
         self._formato = None
         self._ruta_audio = ruta_audio
@@ -39,9 +39,7 @@ class OcultadorAudio(ABC):
             except wave.Error as e:
                 raise ValueError(f"Error al abrir el archivo de audio: {e}")
 
-    @property
-    def nombre(self) :
-        return self.__nombre
+
 
     def __guardar(self, ruta, frames):
         """

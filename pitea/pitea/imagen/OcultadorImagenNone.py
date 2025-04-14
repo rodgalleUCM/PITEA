@@ -27,10 +27,11 @@ class OcultadorImagenNone(OcultadorImagen):
             Extrae los datos y los guarda en un archivo para su posterior uso.
     """
 
+    nombre = "none"
 
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
-        super.__init__(ruta_imagen, modo_cifrador, ruta_txt=None)
-        self.__nombre = "none"
+        super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
+        
 
     
     def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):

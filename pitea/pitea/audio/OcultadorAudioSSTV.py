@@ -35,6 +35,8 @@ class OcultadorAudioSSTV(OcultadorAudio):
     """
 
 
+    nombre= "sstv"
+
     def __init__(self, ruta_audio):
         """
         Inicializa el objeto con un archivo de audio.
@@ -42,11 +44,11 @@ class OcultadorAudioSSTV(OcultadorAudio):
         Args:
             ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
         """
-        super().__init_(ruta_audio)
-        self.__nombre= "sstv"
+        super().__init__(ruta_audio)
+        
        
 
-    def guardar(self, ruta, sstv):
+    def __guardar(self, ruta, sstv):
         """Guarda el audio generado por SSTV en un archivo WAV.
 
         Args:
@@ -56,7 +58,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
         sstv.write_wav(ruta)  # Usar el método directo de PySSTV
         print(f"La imagen ha sido ocultada en el archivo de audio: {ruta}")
 
-    def guardar_imagen_redimensionada(self, imagen, ruta,modo):
+    def __guardar_imagen_redimensionada(self, imagen, ruta,modo):
         """Guarda la imagen redimensionada en una ruta específica.
 
         Args:
@@ -68,7 +70,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
         imagen.resize(constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS).save(ruta)
         print(f"Imagen contenedora redimensionada guardada en {ruta}")
 
-    def ocultar(self, datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
+    def _ocultar(self, datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
         """Codifica la imagen en un archivo de audio usando el modo SSTV seleccionado.
 
         Args:
@@ -122,7 +124,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
             os.chdir(original_cwd)
 
 
-    def desocultar(self):
+    def _desocultar(self):
         """Abre QSSTV para decodificar la imagen oculta en el archivo de audio.
 
         Raises:
@@ -160,15 +162,15 @@ class OcultadorAudioSSTV(OcultadorAudio):
         bits = constantes.conf['Ajustes_sstv']["bits"]
 
         # Leer y redimensionar la imagen con Pillow
-        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen,modo)
-        self.__guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
+        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen)
+        self.__guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen, modo)
 
         # Codificar imagen en audio SSTV
         sstv = self._ocultar(None, modo, image, samples_per_sec, bits)
 
         # Guardar el archivo de audio
         self.__guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
-        self.guardar(ruta_salida, sstv)
+        self.__guardar(ruta_salida, sstv)
 
     def desocultar_guardar(self):
         """Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda."""

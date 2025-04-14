@@ -15,7 +15,7 @@ class CifradorAES(Cifrador):
     Atributos:
         nombre (str): El nombre del cifrador, en este caso "aes".
     """
-
+    nombre = "aes"
     
     def __init__(self, contraseña, ruta=None):
         """
@@ -26,7 +26,7 @@ class CifradorAES(Cifrador):
             ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
         """
         super().__init__(contraseña,ruta)
-        self._nombre = "aes"
+        
 
 
     def __trasformar_contrasenia_a_clave(self):
@@ -47,7 +47,7 @@ class CifradorAES(Cifrador):
 
         return clave
 
-    def __cifrar(self, datos):
+    def _cifrar(self, datos):
         """
         Cifra los datos utilizando el algoritmo AES en modo CBC.
 
@@ -71,7 +71,7 @@ class CifradorAES(Cifrador):
 
         return iv, datos_cifrados
 
-    def __descifrar(self, datos):
+    def _descifrar(self, datos):
         """
         Descifra los datos utilizando el algoritmo AES en modo CBC.
 

@@ -19,10 +19,11 @@ class OcultadorImagenLSB(OcultadorImagen):
         _desocultar(self):
             Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
     """
+    nombre = "lsb"
 
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
-        super.__init__(ruta_imagen, modo_cifrador, ruta_txt=None)
-        self.__nombre = "lsb"
+        super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
+        
 
     def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """

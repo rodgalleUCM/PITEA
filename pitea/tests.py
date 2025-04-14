@@ -78,10 +78,10 @@ def  test_transformada():
     ocultador = OcultadorImagenLSB(ruta_imagen_prueba, modo_cifrador="none")
 
     # Transformar la imagen
-    imagen_transformada = ocultador.transformar_imagen(imagen_original)
+    imagen_transformada = ocultador._transformar_imagen(imagen_original)
 
     # Invertir la transformación
-    imagen_revertida = ocultador.transformar_imagen_inversa(imagen_transformada)
+    imagen_revertida = ocultador._transformar_imagen_inversa(imagen_transformada)
 
     # Comparar píxeles para verificar reversibilidad completa
     assert list(imagen_original.getdata()) == list(imagen_revertida.getdata()), " Las transformaciones no son reversibles."

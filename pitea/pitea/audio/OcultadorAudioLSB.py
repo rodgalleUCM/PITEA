@@ -7,9 +7,10 @@ class OcultadorAudioLSB(OcultadorAudio):
     Este método inserta bits de la imagen dentro de los bits menos significativos de las muestras de audio.
 
     Attributes:
-        __nombre (str): Nombre del método de ocultación.
+        nombre (str): Nombre del método de ocultación.
     """
 
+    nombre= "lsb"
 
     def __init__(self, ruta_audio):
         """
@@ -18,8 +19,8 @@ class OcultadorAudioLSB(OcultadorAudio):
         Args:
             ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
         """
-        super().__init_(ruta_audio)
-        self.__nombre= "lsb"
+        super().__init__(ruta_audio)
+        
        
 
 
@@ -42,9 +43,10 @@ class OcultadorAudioLSB(OcultadorAudio):
         tamano_datos = format(len(binarios_imagen), "032b")
         binarios_imagen = tamano_datos + binarios_imagen  # Cabecera + datos
 
-        assert self.audio.getsampwidth() == 2, "El archivo de audio debe ser de 16 bits"
+        assert self._audio.getsampwidth() == 2, "El archivo de audio debe ser de 16 bits"
 
-        frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
+        frames = bytearray(list(self.
+        _audio.readframes(self._audio.getnframes())))
 
         if len(binarios_imagen) > len(frames) * 8:
             raise ValueError("La imagen es demasiado grande para ser ocultada en este archivo de audio.")
@@ -55,7 +57,7 @@ class OcultadorAudioLSB(OcultadorAudio):
                 frames[i] = (frames[i] & 254) | int(binarios_imagen[indice_datos])  # Ocultar el bit menos significativo
                 indice_datos += 1
 
-        self.audio.close()
+        self._audio.close()
 
         return frames
 
@@ -70,8 +72,8 @@ class OcultadorAudioLSB(OcultadorAudio):
         Raises:
             ValueError: Si no se puede extraer correctamente el tamaño de los datos ocultos.
         """
-        frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
-        self.audio.close()
+        frames = bytearray(list(self._audio.readframes(self._audio.getnframes())))
+        self._audio.close()
 
         datos_binarios = ""
         for i in range(len(frames)):
