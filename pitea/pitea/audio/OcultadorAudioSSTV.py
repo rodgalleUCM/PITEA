@@ -165,7 +165,7 @@ class OcultadorAudioSSTV(OcultadorAudio):
         self.__guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen, modo)
 
         # Codificar imagen en audio SSTV
-        sstv = self._ocultar(None, modo, image, samples_per_sec, bits)
+        sstv = self._ocultar(modo, image, samples_per_sec, bits)
 
         # Guardar el archivo de audio
         self.__guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)

@@ -1,6 +1,6 @@
 [persistente]
 contador_cache = 0
-ult_fecha = "14-04-2025_17:06"
+ult_fecha = "15-04-2025_16:31"
 
 [Ajustes_sstv]
 modo_sstv = "MartinM1"
@@ -8,7 +8,7 @@ samples_per_sec = 48000
 bits = 16
 
 [Ajustes_ocultador_imagen_text]
-tamanio_fuente = 10
+tamanio_fuente = 17
 anchura_maxima = 800
-ruta_fuente = "../fuentes/ocraregular.ttf"
+ruta_fuente = "../fuentes/DejaVuSans-Bold.ttf"
 gpu = "True"
