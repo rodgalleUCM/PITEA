@@ -7,23 +7,23 @@ import hashlib
 
 class CifradorAES(Cifrador):
     """
-    Cifrador AES que utiliza el algoritmo de cifrado simétrico AES en modo CBC.
-    
-    Esta clase cifra y descifra datos utilizando una contraseña que se transforma en una clave
-    de 16 bytes, y un vector de inicialización (IV) aleatorio para garantizar la seguridad.
-    
+    Cifrador AES en modo CBC.
+
+    Utiliza SHA-256 para derivar una clave de 16 bytes desde la contraseña,
+    y genera un vector de inicialización (IV) aleatorio para cada cifrado.
+
     Atributos:
-        nombre (str): El nombre del cifrador, en este caso "aes".
+        nombre (str): Identificador del cifrador, "aes".
     """
     nombre = "aes"
     
     def __init__(self, contraseña, ruta=None):
         """
-        Inicializa el cifrador con la contraseña y una ruta opcional.
+        Inicializa el cifrador AES con contraseña y ruta de salida opcional.
 
         Args:
-            contraseña (str): Contraseña del cifrado.
-            ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
+            contraseña (str): Contraseña para derivar la clave AES.
+            ruta (str, opcional): Ruta de archivo para guardar datos descifrados. Default: None.
         """
         super().__init__(contraseña,ruta)
         
@@ -31,11 +31,12 @@ class CifradorAES(Cifrador):
 
     def __trasformar_contrasenia_a_clave(self):
         """
-        Transforma la contraseña en una clave de 16 bytes utilizando sha256.
+        Deriva una clave de 16 bytes desde la contraseña usando SHA-256.
 
-
+        Devuelve los primeros 16 bytes del digest SHA-256 de la contraseña.
+        
         Returns:
-            bytes: La clave de 16 bytes resultante después de pasar por sha256 y ser truncada.
+            bytes: Clave AES de 16 bytes.
         """
         contraseña_bytes = self._contraseña.encode()
 
@@ -49,16 +50,15 @@ class CifradorAES(Cifrador):
 
     def _cifrar(self, datos):
         """
-        Cifra los datos utilizando el algoritmo AES en modo CBC.
+        Cifra datos en modo CBC.
 
-        Este método utiliza una clave generada a partir de la contraseña, un vector de inicialización
-        aleatorio y relleno de datos para garantizar que los datos sean múltiplos del tamaño de bloque.
+        Genera IV aleatorio, aplica PKCS7 padding y cifra con AES.
 
         Args:
-            datos (bytes): Los datos a cifrar.
+            datos (bytes): Datos originales a cifrar.
 
         Returns:
-            tuple: Un tuple que contiene el IV y los datos cifrados.
+            tuple(bytes, bytes): Tupla (IV, datos_cifrados).
         """
         tamano_bloque = AES.block_size
 
@@ -73,16 +73,15 @@ class CifradorAES(Cifrador):
 
     def _descifrar(self, datos):
         """
-        Descifra los datos utilizando el algoritmo AES en modo CBC.
+        Descifra datos en modo CBC.
 
-        Este método toma los datos cifrados y un IV (vector de inicialización) del principio del bloque de datos,
-        luego los descifra utilizando la misma clave generada a partir de la contraseña.
+        Extrae IV del inicio, descifra y remueve padding.
 
         Args:
-            datos (bytes): Los datos cifrados, incluyendo el IV al principio.
+            datos (bytes): IV concatenado con ciphertext.
 
         Returns:
-            bytes: Los datos descifrados y despaddeados.
+            bytes: Datos originales descifrados.
         """
         tamano_bloque = AES.block_size
 

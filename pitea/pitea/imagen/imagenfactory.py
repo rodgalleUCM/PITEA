@@ -6,30 +6,30 @@ from pitea.imagen.OcultadorImagenNone import OcultadorImagenNone
 
 class OcultadorImagenFactory(AbstractFactory):
     """
-    Fábrica para obtener el constructor adecuado de ocultadores de imagen basado en el modo de ocultaci´on
+    Fábrica concreta que devuelve instancias de ocultadores de imagen basados en el modo.
 
     Atributos:
-        lista_ocultadores (list): Lista de clases de ocultadores de imagen disponibles.
-
+        lista_ocultadores (list): Clases derivadas de ocultadores de imagen soportadas.
     """
     
     lista_ocultadores = [OcultadorImagenLSB,OcultadorImagenText,OcultadorImagenNone]
 
     @staticmethod
     def creacion(modo_ocultacion, ruta_imagen,modo_cifrador,input_text= None):
-        """Devuelve el objeto de OcultadorImagen correspondiente según el modo de cifrado.
+        """
+        Crea y retorna una instancia del ocultador de imagen especificado.
 
         Args:
-            modo_ocultacion (str): Nombre del modo de cifrado, determinado por el parseo de argumentos en el script de ejecución.
-            ruta_imagen (str , None): Ruta del archivo de imagen contenedora.
-            modo_cifrador (str): Modo de cifrado que se desea utilizar.
-            input_text (str, optional): Texto a ocultar en la imagen, utilizado en OcultadorImagenNone (por defecto es None).
+            modo_ocultacion (str): Identificador del modo de ocultación ('lsb', 'text', 'none').
+            ruta_imagen (str, optional): Ruta al archivo de imagen contenedora.
+            modo_cifrador (str, optional): Modo de cifrado aplicado antes de ocultar.
+            input_text (str, optional): Texto a ocultar en la imagen para modos de texto.
 
         Returns:
-            OcultadorImagen: Una instancia del ocultador de imagen correspondiente al modo de cifrado.
+            OcultadorImagen: Instancia de la subclase de ocultador adecuada.
 
         Raises:
-            ValueError: Si el modo de cifrado es desconocido.
+            ValueError: Si `modo_ocultacion` no coincide con ningún ocultador registrado.
         """
 
         for ocultador in OcultadorImagenFactory.lista_ocultadores:

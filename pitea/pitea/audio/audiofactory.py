@@ -6,17 +6,10 @@ from pitea.audio.OcultadorAudioNone import OcultadorAudioNone
 
 class OcultadorAudioFactory(AbstractFactory):
     """
-    Fábrica para obtener el constructor adecuado de ocultador de audio según el modo seleccionado.
-
-    Esta fábrica permite crear instancias de diferentes estrategias de ocultación de audio
-    según el método especificado.
+    Fábrica concreta para obtener instancias de ocultadores de audio.
 
     Atributos:
-        lista_ocultadores (list): Lista de clases de ocultadores de audio disponibles.
-
-    Métodos:
-        creacion(modo_ocultacion, ruta_audio):
-            Devuelve una instancia del ocultador de audio correspondiente.
+        lista_ocultadores (list): Clases derivadas de ocultadores de audio soportadas.
     """
 
     lista_ocultadores = [OcultadorAudioLSB, OcultadorAudioSSTV, OcultadorAudioNone]
@@ -24,17 +17,17 @@ class OcultadorAudioFactory(AbstractFactory):
     @staticmethod
     def creacion(modo_ocultacion, ruta_audio):
         """
-        Devuelve el objeto de ocultador de audio correspondiente según el modo seleccionado.
+        Crea y retorna el ocultador de audio correspondiente al modo.
 
         Args:
-            modo_ocultacion (str): Nombre del modo de ocultación de audio.
-            ruta_audio (str): Ruta del archivo de audio sobre el cual se aplicará la ocultación.
+            modo_ocultacion (str): Identificador del método de ocultación ('lsb', 'sstv', 'none').
+            ruta_audio (str): Ruta al archivo de audio contenedor.
 
         Returns:
-            OcultadorAudio: Instancia de la subclase de `OcultadorAudio` correspondiente.
+            OcultadorAudio: Instancia de la clase de ocultación seleccionada.
 
         Raises:
-            ValueError: Si el modo de ocultación especificado no es válido.
+            ValueError: Si `modo_ocultacion` no coincide con ninguna clase registrada.
         """
         for ocultador in OcultadorAudioFactory.lista_ocultadores:
             if ocultador.nombre == modo_ocultacion:

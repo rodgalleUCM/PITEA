@@ -1,3 +1,8 @@
+
+"""
+Módulo utils: Funciones auxiliares para interacción con el usuario y ejecución de comandos.
+Incluye validación de rutas, selección de opciones y ejecución de flujo mediante Click.
+"""
 import itertools
 import os
 import time

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Módulo de pruebas de Pitea: verifica reversibilidad de transformaciones de imagen LSB
+y procesos de ocultación/desocultación cifrados (AES y none) usando LSB.
+"""
 import subprocess 
 import os
 from PIL import Image

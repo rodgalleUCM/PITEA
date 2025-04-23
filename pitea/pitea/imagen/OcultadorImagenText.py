@@ -10,47 +10,48 @@ from pitea.mensajes import print
 
 class OcultadorImagenText(OcultadorImagen):
     """
-    Clase que implementa la ocultación y desocultación de datos en una imagen utilizando texto.
-    
-    Esta clase se utiliza para ocultar datos en una imagen como texto visible y luego recuperar los datos
-    mediante el uso de OCR (Reconocimiento Óptico de Caracteres).
+    Ocultador de imagen que escribe datos como texto en la imagen.
+
+    Convierte bytes de datos a cadena (base64 si estaba cifrado), ajusta líneas
+    y dibuja texto sobre fondo blanco. Usa OCR para recuperar datos en desocultación.
 
     Atributos:
-        nombre (str): El nombre del tipo de ocultador, en este caso 'text'.
-
-    Métodos:
-        ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-            Oculta los datos en una imagen como texto.
-
-        desocultar(self):
-            Recupera los datos de una imagen utilizando OCR.
+        nombre (str): Identificador del modo, "text".
     """
     
     nombre = "text"
 
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        """
+        Inicializa el ocultador de texto con la ruta de imagen y modo de cifrado.
+
+        Args:
+            ruta_imagen (str): Ignorada en este modo, no se usa imagen base.
+            modo_cifrador (str): Indica si datos fueron cifrados ("aes") o no.
+            ruta_txt (str, optional): Ruta de texto de entrada para ocultar.
+        """
         super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
         
 
     
     def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """
-        Oculta los datos en una imagen en formato de texto.
+        Escribe datos como texto en una imagen.
 
-        Si los datos están cifrados, se codifican en base64 antes de ser escritos. Si no están cifrados,
-        se escriben tal cual. El texto se ajusta al tamaño de la imagen, dividiendo las líneas si es necesario.
+        - Codifica en base64 si `self._cifrado`.
+        - Ajusta longitud de línea según configuración.
+        - Dibuja cada línea en fondo blanco.
 
         Args:
-            datos (bytes): Los datos a ocultar en la imagen.
-            altura_imagen (int, optional): La altura de la imagen en píxeles. Si es None, se calcula automáticamente.
-            anchura_imagen (int, optional): La anchura de la imagen en píxeles. Si es None, se usa un valor por defecto.
+            datos (bytes): Datos brutos.
+            altura_imagen (int, optional): Altura deseada; se calcula si None.
+            anchura_imagen (int, optional): Anchura deseada; usa texto config si None.
 
         Returns:
-            imagen (PIL.Image): La imagen con los datos ocultos como texto.
-            str: El formato de la imagen.
+            tuple: (PIL.Image, formato) donde formato es `constantes.FORMATO_IMAGEN_OCULTACION`.
 
         Raises:
-            Exception: Si no es posible ajustar los datos en la imagen debido a la falta de espacio.
+            Exception: Si el texto no cabe en la altura disponible.
         """
         # Codificamos los datos en base64 si están cifrados
         if self._cifrado:
@@ -123,15 +124,17 @@ class OcultadorImagenText(OcultadorImagen):
 
     def _desocultar(self):
         """
-        Extrae los datos ocultos de la imagen utilizando OCR (Reconocimiento Óptico de Caracteres).
+        Recupera datos de la imagen mediante OCR.
 
-        Si los datos están cifrados, los extrae y decodifica de base64. Si no están cifrados, los devuelve tal cual.
+        - Usa EasyOCR con GPU si `gpu` en config.
+        - O, Tesseract si no cifrado.
+        - Filtra caracteres base64 y decodifica.
 
         Returns:
-            bytes: Los datos extraídos de la imagen.
+            bytes: Datos originales.
 
         Raises:
-            ValueError: Si el texto extraído no es una cadena válida de base64.
+            ValueError: Si el texto no es base64 válido.
         """
         # Configurar si se usará la GPU
         gpu = True if constantes.conf['Ajustes_ocultador_imagen_text']["gpu"] == "True" else False

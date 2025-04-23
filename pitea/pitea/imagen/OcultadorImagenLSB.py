@@ -4,45 +4,46 @@ from pitea.imagen.OcultadorImagen import OcultadorImagen
 
 class OcultadorImagenLSB(OcultadorImagen):
     """
-    Implementación del ocultador de imagen utilizando el método LSB (Least Significant Bit).
+    Ocultador de imagen que emplea LSB en componentes RGB.
 
-    Este ocultador utiliza el bit menos significativo de cada componente de color RGB de la imagen
-    para ocultar los datos. La cabecera contiene el tamaño de los datos para su extracción posterior.
+    Este método inserta los bits de datos en el bit menos significativo de cada canal RGB,
+    precedidos por una cabecera de 32 bits que indica el tamaño del mensaje.
 
     Atributos:
-        nombre (str): El nombre del tipo de ocultador, en este caso 'lsb'.
-    
-    Métodos:
-        _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-            Oculta los datos en la imagen utilizando el algoritmo LSB.
-
-        _desocultar(self):
-            Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
+        nombre (str): Identificador del modo, "lsb".
     """
     nombre = "lsb"
 
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        """
+        Inicializa el ocultador LSB con la imagen contenedora y modo de cifrado.
+
+        Args:
+            ruta_imagen (str): Ruta al archivo de imagen donde se ocultarán datos.
+            modo_cifrador (str): Tipo de cifrado aplicado previamente ('aes' o 'none').
+            ruta_txt (str, optional): Ruta a archivo de texto si se emplease (no usado aquí).
+        """
         super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
         
 
     def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
         """
-        Oculta los datos en la imagen utilizando el algoritmo LSB.
+        Inserta datos binarios en la imagen usando LSB.
 
-        Convierte los datos en una secuencia binaria y la oculta en los bits menos significativos 
-        de cada componente de color de la imagen.
+        Convierte el contenido cifrado en una cadena de bits, prepende
+        una cabecera de 32 bits con la longitud, y escribe cada bit en el
+        bit menos significativo de los canales RGB.
 
         Args:
-            datos (bytes): Los datos a ocultar en la imagen.
-            altura_imagen (int, optional): Altura de la imagen (si se requiere). Por defecto es None.
-            anchura_imagen (int, optional): Anchura de la imagen (si se requiere). Por defecto es None.
+            datos (bytes): Datos cifrados a ocultar.
+            altura_imagen (int, optional): Altura deseada; no usado en LSB.
+            anchura_imagen (int, optional): Anchura deseada; no usado en LSB.
 
         Returns:
-            PIL.Image: Imagen con los datos ocultos.
-            str: Formato de la imagen.
-        
+            tuple: (imagen_modificada, formato_str).
+
         Raises:
-            ValueError: Si la imagen no tiene suficiente espacio para almacenar los datos.
+            ValueError: Si la imagen no tiene suficiente capacidad para todos los bits.
         """
         datos_binarios = "".join(
             format(byte, "08b") for byte in datos
@@ -100,16 +101,16 @@ class OcultadorImagenLSB(OcultadorImagen):
 
     def _desocultar(self):
         """
-        Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
+        Extrae datos escondidos en la imagen mediante LSB.
 
-        Lee los bits menos significativos de cada componente de color RGB de la imagen 
-        y reconstruye los datos ocultos, incluyendo la cabecera que contiene el tamaño de los datos.
+        Lee primero la cabecera de 32 bits para saber la longitud,
+        luego recupera esa cantidad de bits y los convierte a bytes.
 
         Returns:
-            bytes: Los datos extraídos de la imagen.
+            bytes: Datos extraídos.
 
         Raises:
-            ValueError: Si no se puede extraer el tamaño de los datos ocultos.
+            ValueError: Si la cabecera no indica ningún dato válido.
         """
         pixeles = self._imagen.load()
         ancho, alto = self._imagen.size

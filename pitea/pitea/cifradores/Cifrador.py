@@ -5,26 +5,25 @@ from pitea.mensajes import print
 
 class Cifrador(ABC):
     """
-    Clase base para los cifradores, que define la interfaz común para cifrar y descifrar datos.
+    Clase abstracta que define la interfaz para cifrado y descifrado de datos.
 
-    Esta clase es abstracta y debe ser extendida por otras clases que implementen los métodos específicos
-    de cifrado y descifrado utilizando diferentes algoritmos.
+    Subclases deben implementar los métodos `_cifrar` y `_descifrar` usando algoritmos específicos.
 
     Atributos:
-        nombre (str): El nombre del tipo de cifrador.
-        _contraseña (str): Contraseña  para el cifrado.
-        _ruta (str): Ruta del archivo donde se guardan los datos cifrados o descifrados.
+        nombre (str): Identificador legible del tipo de cifrador.
+        _contraseña (str): Contraseña usada para el proceso de cifrado/descifrado.
+        _ruta (str or None): Ruta de archivo de salida para datos resultantes.
     """
 
     nombre = ""
 
     def __init__(self, contraseña, ruta=None):
         """
-        Inicializa el cifrador con la contraseña y una ruta opcional.
+        Inicializa el cifrador con credenciales y ruta de destino.
 
         Args:
-            contraseña (str): Contraseña del cifrado.
-            ruta (str, opcional): Ruta del archivo donde se guardan los datos. (default es None)
+            contraseña (str): Contraseña para cifrado/descifrado.
+            ruta (str, opcional): Ruta al archivo donde escribir datos finales.
         """
         
         self._contraseña = contraseña
@@ -34,44 +33,35 @@ class Cifrador(ABC):
     @abstractmethod
     def _cifrar(self, datos):
         """
-        Método abstracto para cifrar los datos.
-
-        Este método debe ser implementado por las subclases para cifrar los datos de acuerdo
-        con el algoritmo de cifrado que se use.
+        Cifra bytes de entrada y retorna IV y ciphertext.
 
         Args:
-            datos (bytes): Datos a cifrar.
+            datos (bytes): Datos sin cifrar.
 
         Returns:
-            tuple: Un tuple con el IV y los datos cifrados.
+            tuple(bytes, bytes): IV (vector de inicialización) y datos cifrados.
         """
         pass
 
     @abstractmethod
     def _descifrar(self, datos):
         """
-        Método abstracto para descifrar los datos.
-
-        Este método debe ser implementado por las subclases para descifrar los datos de acuerdo
-        con el algoritmo de descifrado que se use.
+        Descifra bytes de entrada y retorna datos originales.
 
         Args:
-            datos (bytes): Datos cifrados a descifrar.
+            datos (bytes): Datos cifrados (incluyendo IV si aplica).
 
         Returns:
-            bytes: Los datos descifrados.
+            bytes: Datos ya descifrados.
         """
         pass
 
     def cifrar_guardar(self, secreto):
         """
-        Cifra los datos leídos desde un archivo y guarda el archivo cifrado.
-
-        Este método lee los datos desde el archivo proporcionado, los cifra y guarda el IV y los datos
-        cifrados en un archivo específico.
+        Lee un archivo, cifra su contenido y guarda el resultado en caché.
 
         Args:
-            secreto (str): Ruta del archivo que contiene los datos a cifrar.
+            secreto (str): Ruta al archivo con datos a cifrar.
         """
         with open(secreto, "rb") as f:
             datos = f.read()
@@ -85,14 +75,13 @@ class Cifrador(ABC):
 
     def descifrar_guardar(self):
         """
-        Descifra los datos desde un archivo y guarda el archivo descifrado.
+        Lee datos cifrados de cache, descifra y guarda resultados.
 
-        Este método lee los datos cifrados desde un archivo, los descifra y guarda los datos
-        descifrados tanto en el archivo de salida predeterminado como en la ruta proporcionada en el
-        constructor.
+        Lee de `constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION`, descifra
+        y escribe en dos ubicaciones: la cache limpia y la ruta final.
 
         Raises:
-            ValueError: Si los datos no se pueden descifrar correctamente.
+            ValueError: Si la operación de descifrado falla.
         """
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "rb") as f:
             datos = f.read()

@@ -1,3 +1,9 @@
+"""
+Módulo principal de flujos de trabajo de Pitea.
+Define las funciones `flujo_de_trabajo_ocultar` y `flujo_de_trabajo_desocultar`
+que orquestan los procesos de cifrado/desifrado y ocultación/desocultación
+utilizando fábricas de cifradores, imagen y audio.
+"""
 from pitea.mensajes import MENSAJE_INICIO_FLUJO, print
 from pitea.cifradores.cifradorfactory import CifradorFactory
 from pitea.imagen.imagenfactory import OcultadorImagenFactory
@@ -22,20 +28,23 @@ def flujo_de_trabajo_ocultar(
 ):
 
     """
-    Ejecuta el flujo de trabajo para cifrar y/o posteriormente ocultar datos en imágenes y audio.
+    Ejecuta el flujo de cifrado y ocultación de datos en imagen y audio.
 
     Args:
-        modo_cifrado (str): Método de cifrado utilizado para los datos.
-        modo_cifrado_imagen (str): Método de ocultación utilizado para imágenes.
-        modo_cifrado_audio (str): Método de ocultación utilizado para audio.
-        input (str): Ruta del archivo de datos a ocultar.
-        input_imagen (str): Ruta del archivo de imagen contenedora.
-        input_audio (str): Ruta del archivo de audio contenedor.
-        output (str): Nombre del archivo de salida.
-        contraseña (str): Contraseña utilizada para el cifrado.
+        modo_cifrado (str): Método de cifrado para datos ('aes' o 'none').
+        modo_cifrado_imagen (str): Modo de ocultación en imagen ('lsb' o 'text').
+        modo_cifrado_audio (str): Modo de ocultación en audio ('lsb' o 'sstv').
+        input (str): Ruta al archivo de datos a ocultar.
+        input_imagen (str): Ruta a la imagen contenedora.
+        input_audio (str): Ruta al audio contenedor.
+        output (str): Nombre o ruta base del archivo de salida de audio.
+        contraseña (str): Contraseña para cifrado (si aplica).
 
     Notes:
-        - Crea la estructura de caché necesaria antes de iniciar el proceso.
+        - Construye carpetas de caché antes de iniciar.
+        - Utiliza fábricas (`CifradorFactory`, `OcultadorImagenFactory`,
+          `OcultadorAudioFactory`) para instanciar componentes.
+        - Muestra mensajes condicionados al modo verbose.
     """
 
     try :
@@ -87,21 +96,22 @@ def flujo_de_trabajo_desocultar(
     modo_cifrado, modo_cifrado_imagen, modo_cifrado_audio, input_audio,input_imagen,input_text, output, contraseña,streaming
 ):
     """
-    Ejecuta el flujo de trabajo para desocultar y descifrar datos desde imágenes y/o audio.
+    Ejecuta el flujo de desocultación y descifrado de datos desde imagen o audio.
 
     Args:
-        modo_cifrado (str): Método de cifrado utilizado para los datos ocultos.
-        modo_cifrado_imagen (str): Método de desocultación utilizado para imágenes.
-        modo_cifrado_audio (str): Método de desocultación utilizado para audio.
-        input_audio (str or None): Ruta del archivo de audio contenedor (opcional).
-        input_imagen (str or None): Ruta del archivo de imagen contenedora (opcional).
-        input_text (str or None): Ruta del archivo de texto contenedor (opcional).
-        output (str): Nombre del archivo de salida.
-        contraseña (str): Contraseña utilizada para el descifrado
-        streaming (bool): Flag que dice si se ha activado el modo stremaing en sstv
+        modo_cifrado (str): Método de cifrado usado ('aes' o 'none').
+        modo_cifrado_imagen (str): Modo de desocultación en imagen.
+        modo_cifrado_audio (str): Modo de desocultación en audio.
+        input_audio (str): Ruta al archivo de audio contenedor.
+        input_imagen (str): Ruta al archivo de imagen contenedora.
+        input_text (str): Ruta al archivo de texto contenedor.
+        output (str): Ruta del archivo de salida para datos desocultados.
+        contraseña (str): Contraseña para descifrado (si aplica).
+        streaming (bool): Si el audio SSTV se captura en streaming.
 
     Notes:
-        - Crea la estructura de caché necesaria antes de iniciar el proceso.
+        - Crea estructura de cache para desocultación.
+        - Dependiendo de inputs, elige decodificar audio o usar imagen/texto.
     """
 
     try :

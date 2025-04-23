@@ -6,15 +6,25 @@ from interfaz.MenuPrinter import MenuPrinter
 from constantes import constantes
 
 class Launch :
+    """
+    Punto de entrada de la interfaz de línea de comandos de Pitea.
+
+    Métodos:
+        menu():
+            Muestra el menú principal, registra comandos y ejecuta la selección del usuario.
+    """
     def menu():
         """
-        Función principal que maneja la interacción con el usuario a través del menú.
+        Gestiona el flujo de interacción con el usuario:
 
-        - Crea el objeto `MenuPrinter` para mostrar el menú y la interfaz.
-        - Crea el objeto `Invoker` para gestionar los comandos.
-        - Registra los comandos en el `Invoker`.
-        - Muestra el menú y ejecuta los comandos seleccionados por el usuario.
-        - Si el usuario selecciona una opción inválida o sale, el ciclo termina.
+        1. Instancia `MenuPrinter` para mostrar el menú.
+        2. Instancia `Invoker` para registrar y ejecutar comandos.
+        3. Registra `OcultarArchivoCommand` y `DesocultarArchivoCommand`.
+        4. Entra en un bucle mostrando el menú:
+           - Opción de ocultar o desocultar: ejecuta el comando.
+           - Opción de salir: muestra mensaje y termina.
+           - Opción inválida: imprime error.
+        5. Tras cada ejecución, actualiza el cache de constantes.
         """
         menu_printer = MenuPrinter() #Creamos el printer
         inv = Invoker()              #Creamos el invoker

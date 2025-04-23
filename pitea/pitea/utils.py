@@ -1,3 +1,8 @@
+"""
+Módulo de configuración y utilidades de caché de Pitea.
+Proporciona funciones para crear directorios de caché, cargar y actualizar
+configuración en formato TOML, y validar la existencia de archivos.
+"""
 import tomllib
 import click
 import tomli_w
@@ -9,12 +14,12 @@ def crear_cache(lista):
     Crea los directorios de caché especificados en la lista.
 
     Args:
-        lista (list of Path): Lista de objetos `Path` que representan los directorios a crear.
+        lista (list of pathlib.Path): Lista de objetos Path que representan
+        directorios que deben existir.
 
     Notes:
-        - Si el directorio ya existe, no se genera un error.
+        - Si un directorio ya existe, no se genera error.
         - Se crean todos los directorios padres si no existen.
-
     """
 
     for dir in lista:
@@ -26,11 +31,12 @@ def cargar_configuracion(archivo_conf):
     Carga la configuración desde un archivo TOML.
 
     Args:
-        archivo_conf (str): Ruta del archivo de configuración en formato TOML.
+        archivo_conf (str or Path): Ruta al archivo TOML de configuración.
 
     Returns:
-        dict or None: Un diccionario con el contenido del archivo de configuración si se carga correctamente.
-                    Retorna None en caso de error.
+        dict: Contenido del archivo TOML como diccionario.
+        None: Si ocurre un error en la lectura.
+
     """
 
     try:

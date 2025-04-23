@@ -2,42 +2,45 @@ from pitea.audio.OcultadorAudio import OcultadorAudio
 
 
 class OcultadorAudioNone(OcultadorAudio):
-    """Clase de ocultación de audio que no implementa la ocultación de datos.
+    """
+    Ocultador de audio nulo que no inserta datos.
 
-    Se usa únicamente para la desocultación de datos, sin realizar modificaciones en el audio.
+    Útil para desocultar datos de audio sin alteración.
 
-    Attributes:
-        nombre (str): Nombre del método de ocultación.
+    Atributos:
+        nombre (str): Identificador del modo, "none".
     """
 
     nombre= "none"
 
     def __init__(self, ruta_audio):
         """
-        Inicializa el objeto con un archivo de audio.
+        Inicializa el ocultador nulo con ruta al archivo de audio.
 
         Args:
-            ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
+            ruta_audio (str): Ruta al archivo WAV para desocultación.
+
+        Raises:
+            ValueError: Si no se puede abrir el archivo de audio.
         """
         super().__init_(ruta_audio)
         
        
 
     def _ocultar(self, datos_imagen):
-        """Lanza una excepción, ya que este método no soporta la ocultación de datos.
-
-        Args:
-            datos_imagen (bytes): Datos de la imagen a ocultar.
+        """
+        No implementado para modo 'none'.
 
         Raises:
-            Exception: Indica que este ocultador solo sirve para desocultar.
+            NotImplementedError: Siempre, ya que no se oculta en este modo.
         """
         raise Exception("El ocultador de audio none es solo para desocultar")
 
     def _desocultar(self):
-        """Devuelve `None` ya que no se realiza ninguna operación de desocultación.
+        """
+        Devuelve None, pues no hay lógica de extracción de datos en modo nulo.
 
         Returns:
-            None: No se extraen datos ya que este ocultador no implementa funcionalidad.
+            None
         """
         return None

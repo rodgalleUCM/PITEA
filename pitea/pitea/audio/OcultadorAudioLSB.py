@@ -2,22 +2,27 @@ from pitea.audio.OcultadorAudio import OcultadorAudio
 
 
 class OcultadorAudioLSB(OcultadorAudio):
-    """Clase que implementa la ocultación de datos en archivos de audio utilizando el método LSB (Least Significant Bit).
+    """
+    Ocultador de audio que utiliza LSB (Least Significant Bit).
 
-    Este método inserta bits de la imagen dentro de los bits menos significativos de las muestras de audio.
+    Inserta bits de datos de la imagen en cada byte de los frames de audio,
+    precedidos por una cabecera de 32 bits que indica la longitud de los datos.
 
-    Attributes:
-        nombre (str): Nombre del método de ocultación.
+    Atributos:
+        nombre (str): Identificador del modo, "lsb".
     """
 
     nombre= "lsb"
 
     def __init__(self, ruta_audio):
         """
-        Inicializa el objeto con un archivo de audio.
+        Inicializa el LSB en audio WAV.
 
         Args:
-            ruta_audio (str): Ruta del archivo de audio en el que se ocultarán/extrarán datos.
+            ruta_audio (str): Ruta al archivo WAV contenedor.
+
+        Raises:
+            ValueError: Si el archivo no es de 16 bits o no se puede abrir.
         """
         super().__init__(ruta_audio)
         
@@ -25,17 +30,18 @@ class OcultadorAudioLSB(OcultadorAudio):
 
 
     def _ocultar(self, datos_imagen):
-        """Oculta los datos de una imagen dentro de un archivo de audio utilizando el método LSB.
+        """
+        Inserta datos binarios en los frames de audio.
 
         Args:
-            datos_imagen (bytes): Datos binarios de la imagen a ocultar.
+            datos_imagen (bytes): Datos de la imagen a ocultar.
 
         Returns:
-            bytearray: Frames del audio con los datos ocultos.
+            bytearray: Frames con bits embebidos en LSB.
 
         Raises:
-            ValueError: Si la imagen es demasiado grande para ser almacenada en el audio.
-            AssertionError: Si el audio no tiene una resolución de 16 bits.
+            AssertionError: Si el audio no es de 16 bits por muestra.
+            ValueError: Si la imagen excede la capacidad de audio.
         """
         binarios_imagen = "".join(format(byte, "08b") for byte in datos_imagen)
 
@@ -62,15 +68,16 @@ class OcultadorAudioLSB(OcultadorAudio):
         return frames
 
     def _desocultar(self):
-        """Extrae los datos ocultos del archivo de audio utilizando el método LSB.
+        """
+        Recupera datos embebidos de los frames de audio.
 
-        Este método lee los bits menos significativos de los frames de audio y reconstruye los datos ocultos (en este caso, los datos de la imagen).
+        Devuelve los bytes de imagen extraídos.
 
         Returns:
-            bytes: Datos extraídos del archivo de audio.
+            bytes: Datos de la imagen oculta.
 
         Raises:
-            ValueError: Si no se puede extraer correctamente el tamaño de los datos ocultos.
+            ValueError: Si la cabecera indica longitud cero o inválida.
         """
         frames = bytearray(list(self._audio.readframes(self._audio.getnframes())))
         self._audio.close()

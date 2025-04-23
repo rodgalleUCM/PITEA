@@ -4,9 +4,18 @@ from datetime import datetime
 from pitea.utils import actualizar_conf
 from pysstv.color import MartinM1, Robot36, ScottieS1
 
-
 class Constantes:
+    """
+    Clase que centraliza todas las rutas, opciones y formatos constantes
+    de la aplicación, así como la gestión del cache basado en fecha y contador.
+    """
     def __init__(self):
+        """
+        Inicializa rutas de programa, archivo de configuración y cache.
+        Define formatos de imagen/audio, colores ANSI, modos SSTV y opciones disponibles.
+
+        Carga la configuración inicial llamando a actualizar_cache().
+        """
         self._RUTA_PROGRAMA = Path(__file__).resolve().parent / "pitea"
         self._ARCHIVO_CONFIG = self._RUTA_PROGRAMA / "configuracion.toml"
         self._RUTA_CACHE_GENERAL = self._RUTA_PROGRAMA.parent / "cache"
@@ -53,6 +62,18 @@ class Constantes:
         self._OPCIONES_VERBOSE = ["s", "n"]
 
     def __getattr__(self, name):
+        """
+        Permite el acceso dinámico a atributos privados definidos en __init__.
+
+        Args:
+            name (str): Nombre del atributo sin el prefijo '_'.
+
+        Returns:
+            Cualquier: Valor del atributo si existe.
+
+        Raises:
+            AttributeError: Si el atributo no está definido.
+        """
         # Check if the attribute exists
         if f"_{name}" in self.__dict__:
             return self.__dict__[f"_{name}"]
@@ -61,6 +82,13 @@ class Constantes:
 
 
     def actualizar_cache(self):
+        """
+        Gestiona la creación de directorios de cache basados en fecha y un contador interno.
+        Actualiza el archivo de configuración con la nueva fecha y contador.
+
+        Returns:
+            dict: Configuración persistente actualizada.
+        """
         conf = cargar_configuracion(self._ARCHIVO_CONFIG)
         fecha_hora_actual = datetime.now()
         formato = fecha_hora_actual.strftime("%d-%m-%Y_%H:%M")

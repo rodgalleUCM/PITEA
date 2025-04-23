@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Módulo CLI de Pitea: Provee comandos de ocultación y desocultación via Click.
+Contiene las funciones `ocultar` y `desocultar` que configuran y lanzan el flujo de trabajo.
+"""
 import click
 from constantes import constantes
 from pitea.main import flujo_de_trabajo_ocultar, flujo_de_trabajo_desocultar
@@ -10,7 +14,6 @@ from pitea.utils import comprobar_existencia_archivo
 def main():
     """Herramienta para la ocultacion y desocultacion de datos en imagen y audio."""
     pass
-
 
 @main.command()
 @click.option(
