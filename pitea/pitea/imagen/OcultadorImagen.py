@@ -8,99 +8,89 @@ from pitea.mensajes import print
 
 class OcultadorImagen(ABC):
     """
-    Clase abstracta para los ocultadores de imagen que proporcionan métodos para ocultar y desocultar datos en imágenes.
+    Interfaz base para ocultadores de imagen en Pitea.
+
+    Subclases deben implementar `_ocultar` y `_desocultar` para aplicar y extraer
+    datos binarios en las imágenes.
 
     Atributos:
-        nombre (str): Nombre del tipo de ocultador de imagen, utilizado para distinguir entre ocultadores en la factoria.
-        formato (str): Formato de la imagen cargada.
-        imagen (PIL.Image): Objeto imagen cargado.
-        cifrado (int): Indicador de si se aplica cifrado (1 si se aplica, 0 si no).
-        ruta_txt (str, optional): Ruta al archivo de texto (si aplica).
-    
-    Métodos:
-        __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
-            Inicializa el ocultador de imagen con la ruta de la imagen y el modo de cifrado.
-        
-        ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
-            Método abstracto que debe implementarse en las subclases para ocultar los datos en la imagen.
-        
-        desocultar(self):
-            Método abstracto que debe implementarse en las subclases para extraer los datos ocultos en la imagen.
-
-        ocultar_guardar(self, altura_imagen=None, anchura_imagen=None):
-            Oculta los datos en la imagen y guarda la imagen transformada en el formato adecuado.
-
-        desocultar_guardar(self):
-            Extrae los datos ocultos de la imagen y guarda los datos extraídos en un archivo.
-
-        transformar_imagen(self, imagen):
-            Aplica transformaciones a la imagen para ocultar los datos de manera no obvia.
-
-        transformar_imagen_inversa(self, imagen):
-            Restaura la imagen transformada a su estado original para facilitar la desocultación.
+        nombre (str): Identificador del modo de ocultación ('lsb', 'text', 'none').
+        _formato (str): Extensión/formato de la imagen (png, jpg, etc.).
+        _imagen (PIL.Image.Image): Instancia de imagen cargada.
+        _cifrado (int): Flag (1 o 0) indicando si se aplicó cifrado previo.
+        _ruta_txt (str or None): Ruta a archivo de texto si se emplea ocultación por texto.
     """
-    nombre = ""
     
+    nombre = ""
     def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
         """
-        Inicializa el ocultador de imagen con la ruta de la imagen y el modo de cifrado.
+        Inicializa el ocultador de imagen.
 
         Args:
-            ruta_imagen (str): Ruta del archivo de imagen que contiene los datos.
-            modo_cifrador (str): Modo de cifrado para aplicar.
-            ruta_txt (str, optional): Ruta a un archivo de texto si se utiliza para ocultar datos en la imagen. Por defecto es None.
+            ruta_imagen (str): Ruta al archivo de imagen contenedora.
+            modo_cifrador (str): Identificador de cifrado aplicado antes de ocultar.
+            ruta_txt (str, optional): Ruta a archivo de texto si aplica.
         """
+        
         if ruta_imagen:
-            self.formato = ruta_imagen.split(".")[-1]
-            self.imagen = Image.open(ruta_imagen)
+            self._formato = ruta_imagen.split(".")[-1]
+            self._imagen = Image.open(ruta_imagen)
         else:
-            self.ruta_txt = ruta_txt
-        self.cifrado = 1 if modo_cifrador not in ["none"] else 0
+            self._ruta_txt = ruta_txt
+        self._cifrado = 1 if modo_cifrador not in ["none"] else 0
+
 
     @abstractmethod
-    def ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
-        """Método abstracto para ocultar los datos en la imagen.
+    def _ocultar(self, datos_imagen, altura_imagen=None, anchura_imagen=None):
+        """
+        Cifra o inserta datos binarios en la imagen.
 
         Args:
-            datos_imagen (bytes): Datos que se desean ocultar en la imagen.
-            altura_imagen (int, optional): Altura de la imagen modificada (si es necesario). Por defecto es None.
-            anchura_imagen (int, optional): Anchura de la imagen modificada (si es necesario). Por defecto es None.
+            datos_imagen (bytes): Bytes a ocultar (p.ej. cifrados).
+            altura_imagen (int, optional): Nueva altura si requiere resize.
+            anchura_imagen (int, optional): Nueva anchura si requiere resize.
 
         Returns:
-            PIL.Image: Imagen con los datos ocultos.
-            str: Formato de la imagen.
+            tuple: (imagen_contenedora, formato_str).
         """
         pass
 
     @abstractmethod
-    def desocultar(self):
-        """Método abstracto para extraer los datos ocultos de la imagen.
+    def _desocultar(self):
+        """
+        Extrae y retorna datos ocultos de la imagen.
 
         Returns:
-            bytes: Datos extraídos de la imagen.
+            bytes: Contenido binario ocultado.
         """
         pass
 
     def ocultar_guardar(self, altura_imagen=None, anchura_imagen=None):
-        """Oculta los datos en la imagen y guarda la imagen transformada.
+        """
+        Gestiona la lectura de datos cifrados, la ocultación y guarda la imagen resultante.
+
+        1. Lee bytes cifrados desde cache.
+        2. Invoca `_ocultar` para embed.
+        3. Guarda imagen sin transformar.
+        4. Aplica transformaciones inversibles (_transformar_imagen).
+        5. Guarda imagen final.
 
         Args:
-            altura_imagen (int, optional): Altura de la imagen modificada. Por defecto es None.
-            anchura_imagen (int, optional): Anchura de la imagen modificada. Por defecto es None.
+            altura_imagen (int, optional): Altura para ocultación SSTV.
+            anchura_imagen (int, optional): Anchura para ocultación SSTV.
 
         Returns:
-            PIL.Image: Imagen con los datos ocultos.
-            str: Formato de la imagen.
+            tuple: (imagen_transformada, formato_str).
         """
         with open(constantes.RUTA_DATOS_CIFRADO, "rb") as f:
             datos = f.read()
 
-        imagen, formato = self.ocultar(datos, altura_imagen, anchura_imagen)
+        imagen, formato = self._ocultar(datos, altura_imagen, anchura_imagen)
 
         imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_SIN_TRANSFORMAR) % formato)
 
         # Ocultar el texto realizando transformaciones con inversa a la imagen
-        imagen = self.transformar_imagen(imagen)
+        imagen = self._transformar_imagen(imagen)
 
         imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato)
 
@@ -111,31 +101,58 @@ class OcultadorImagen(ABC):
         return imagen, formato
 
     def desocultar_guardar(self):
-        """Extrae los datos ocultos de la imagen y guarda los datos extraídos.
-
-        Returns:
-            None
         """
-        self.imagen = self.transformar_imagen_inversa(self.imagen)
-        self.imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self.formato)
-        datos_extraidos = self.desocultar()
+        Gestiona la inversión de transformaciones y la extracción de datos.
+
+        1. Invierte transformaciones (_transformar_imagen_inversa).
+        2. Guarda imagen destransformada.
+        3. Extrae bytes ocultos con `_desocultar`.
+        4. Guarda bytes cifrados en cache.
+        """
+        self._imagen = self._transformar_imagen_inversa(self._imagen)
+        self._imagen.save(str(constantes.RUTA_IMAGEN_CONTENEDORA_DESOCULTACION_DESTRANSFORMADA) % self._formato)
+        datos_extraidos = self._desocultar()
 
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
             f.write(datos_extraidos)
 
         print(f"Datos cifrados guardados en {constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION}")
 
-    def transformar_imagen(self, imagen):
-        """Aplica transformaciones a la imagen para ocultar los datos de manera no obvia.
-
-        Args:
-            imagen (PIL.Image): Imagen que será transformada.
-
-        Returns:
-            PIL.Image: Imagen transformada con los datos ocultos.
+    def _transformar_imagen(self, imagen):
         """
+        Aplica una transformación visual al cuadrante de la imagen para ocultación reforzada.
+
+        - Divide la imagen en 4 subimágenes.
+        - Invierte colores de cada cuadrante.
+        - Reorganiza los cuadrantes de forma invertida.
+        """
+
         imagen = imagen.convert("RGB")
-        
+
+        pixeles = imagen.load()
+        ancho, alto = imagen.size
+
+        if ancho % 2 == 1 or alto % 2 == 1:
+            ancho_or = ancho
+            alt_or= alto
+            if ancho % 2 == 1:
+                ancho += 1
+            if alto % 2 == 1:
+                alto += 1
+            # Creamos una nueva imagen con anchura par
+            imagen_auxiliar= Image.new("RGB", (ancho, alto), (0, 0, 0))
+            pixeles_aux = imagen_auxiliar.load()
+
+            # Copiamos los píxeles originales en la nueva imagen, como usamos en el ancho y alto de la imagen original , la liena nueva se mantiene
+            for y in range(alt_or):
+                for x in range(ancho_or):
+                        pixeles_aux[x, y] = pixeles[x, y]
+            
+            # Actualizar la imagen original y volvemos a cargar los pixeles
+            imagen = imagen_auxiliar
+            pixeles = imagen.load()  
+
+      
         imagen_np = np.array(imagen)
         h, w = imagen_np.shape[:2]
         h1, w1 = h // 2, w // 2  # Punto medio para dividir en 4 partes
@@ -161,14 +178,13 @@ class OcultadorImagen(ABC):
 
         return imagen_modificada_pil
 
-    def transformar_imagen_inversa(self, imagen):
-        """Restaura la imagen transformada a su estado original para facilitar la desocultación.
+    def _transformar_imagen_inversa(self, imagen):
+        """
+        Revierte la transformación aplicada en `_transformar_imagen`.
 
-        Args:
-            imagen (PIL.Image): Imagen que será restaurada.
-
-        Returns:
-            PIL.Image: Imagen restaurada a su estado original.
+        - Divide según tamaño inversamente.
+        - Invierte colores nuevamente.
+        - Reubica cuadrantes a su disposición original.
         """
         imagen = imagen.convert("RGB")
 

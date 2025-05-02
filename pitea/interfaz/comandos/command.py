@@ -17,15 +17,7 @@ class Command(ABC):
             Método abstracto que debe ser implementado en las subclases para definir la acción
             que ejecutará el comando.
     """
-    def __init__(self,descripcion):
-        """
-        Inicializa un comando con su descripción.
-
-        Args:
-            descripcion (str): Descripción del comando que será utilizada para mostrar
-                                información sobre lo que hace el comando.
-        """
-        self.descripcion = descripcion
+    descripcion = ""
 
     @abstractmethod
     def ejecutar(self):

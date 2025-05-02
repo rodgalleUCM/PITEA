@@ -1,72 +1,67 @@
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-from PIL import Image
 
 
 
 class OcultadorImagenLSB(OcultadorImagen):
     """
-    Implementación del ocultador de imagen utilizando el método LSB (Least Significant Bit).
+    Ocultador de imagen que emplea LSB en componentes RGB.
 
-    Este ocultador utiliza el bit menos significativo de cada componente de color RGB de la imagen
-    para ocultar los datos. La cabecera contiene el tamaño de los datos para su extracción posterior.
+    Este método inserta los bits de datos en el bit menos significativo de cada canal RGB,
+    precedidos por una cabecera de 32 bits que indica el tamaño del mensaje.
 
     Atributos:
-        nombre (str): El nombre del tipo de ocultador, en este caso 'lsb'.
-    
-    Métodos:
-        ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-            Oculta los datos en la imagen utilizando el algoritmo LSB.
-
-        desocultar(self):
-            Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
+        nombre (str): Identificador del modo, "lsb".
     """
     nombre = "lsb"
 
-    def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+    def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
         """
-        Oculta los datos en la imagen utilizando el algoritmo LSB.
-
-        Convierte los datos en una secuencia binaria y la oculta en los bits menos significativos 
-        de cada componente de color de la imagen.
+        Inicializa el ocultador LSB con la imagen contenedora y modo de cifrado.
 
         Args:
-            datos (bytes): Los datos a ocultar en la imagen.
-            altura_imagen (int, optional): Altura de la imagen (si se requiere). Por defecto es None.
-            anchura_imagen (int, optional): Anchura de la imagen (si se requiere). Por defecto es None.
+            ruta_imagen (str): Ruta al archivo de imagen donde se ocultarán datos.
+            modo_cifrador (str): Tipo de cifrado aplicado previamente ('aes' o 'none').
+            ruta_txt (str, optional): Ruta a archivo de texto si se emplease (no usado aquí).
+        """
+        super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
+        
+
+    def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+        """
+        Inserta datos binarios en la imagen usando LSB.
+
+        Convierte el contenido cifrado en una cadena de bits, prepende
+        una cabecera de 32 bits con la longitud, y escribe cada bit en el
+        bit menos significativo de los canales RGB.
+
+        Args:
+            datos (bytes): Datos cifrados a ocultar.
+            altura_imagen (int, optional): Altura deseada; no usado en LSB.
+            anchura_imagen (int, optional): Anchura deseada; no usado en LSB.
 
         Returns:
-            PIL.Image: Imagen con los datos ocultos.
-            str: Formato de la imagen.
-        
+            tuple: (imagen_modificada, formato_str).
+
         Raises:
-            ValueError: Si la imagen no tiene suficiente espacio para almacenar los datos.
+            ValueError: Si la imagen no tiene suficiente capacidad para todos los bits.
         """
         datos_binarios = "".join(
             format(byte, "08b") for byte in datos
         )  # Convertir los datos a binarios del archivo cifrado
 
-        pixeles = self.imagen.load()
-        ancho, alto = self.imagen.size
+        pixeles = self._imagen.load()
+        ancho, alto = self._imagen.size
 
-        if ancho % 2 == 1 or alto % 2 == 1:
-            ancho_or = ancho
-            alt_or= alto
-            if ancho % 2 == 1:
-                ancho += 1
-            if alto % 2 == 1:
-                alto += 1
-            # Creamos una nueva imagen con anchura par
-            imagen_auxiliar= Image.new("RGB", (ancho, alto), (0, 0, 0))
-            pixeles_aux = imagen_auxiliar.load()
+        # Comprobar si tiene canal alfa
+        if self._imagen.mode == "RGBA":
+            for y in range(alto):
+                for x in range(ancho):
+                    r, g, b, a = pixeles[x, y]
+                    if a == 0:
+                        # Poner píxel completamente transparente en negro
+                        pixeles[x, y] = (0, 0, 0, 255)
 
-            # Copiamos los píxeles originales en la nueva imagen, como usamos en el ancho y alto de la imagen original , la liena nueva se mantiene
-            for y in range(alt_or):
-                for x in range(ancho_or):
-                        pixeles_aux[x, y] = pixeles[x, y]
-            
-            # Actualizar la imagen original y volvemos a cargar los pixeles
-            self.imagen = imagen_auxiliar
-            pixeles = self.imagen.load()  
+        
 
         # Añadir una cabecera con el tamaño de los datos (32 bits)
         tamano_datos_binarios = format(len(datos_binarios), "032b")
@@ -102,23 +97,23 @@ class OcultadorImagenLSB(OcultadorImagen):
             if indice_datos >= longitud_mensaje:
                 break
 
-        return self.imagen, self.formato
+        return self._imagen, self._formato
 
-    def desocultar(self):
+    def _desocultar(self):
         """
-        Extrae los datos ocultos de la imagen utilizando el algoritmo LSB.
+        Extrae datos escondidos en la imagen mediante LSB.
 
-        Lee los bits menos significativos de cada componente de color RGB de la imagen 
-        y reconstruye los datos ocultos, incluyendo la cabecera que contiene el tamaño de los datos.
+        Lee primero la cabecera de 32 bits para saber la longitud,
+        luego recupera esa cantidad de bits y los convierte a bytes.
 
         Returns:
-            bytes: Los datos extraídos de la imagen.
+            bytes: Datos extraídos.
 
         Raises:
-            ValueError: Si no se puede extraer el tamaño de los datos ocultos.
+            ValueError: Si la cabecera no indica ningún dato válido.
         """
-        pixeles = self.imagen.load()
-        ancho, alto = self.imagen.size
+        pixeles = self._imagen.load()
+        ancho, alto = self._imagen.size
         datos_binarios = ""
         tamano_datos = 0
 

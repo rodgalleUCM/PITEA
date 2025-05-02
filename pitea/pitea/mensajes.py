@@ -1,3 +1,6 @@
+"""
+Módulo de mensajes de Pitea: Strings estáticos y función de impresión condicional para verbose.
+"""
 from constantes import constantes
 import builtins
 

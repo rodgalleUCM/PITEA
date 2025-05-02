@@ -7,74 +7,69 @@ from pitea.mensajes import print
 
 class OcultadorImagenNone(OcultadorImagen):
     """
-    Implementación de un ocultador de imagen que no realiza ninguna ocultación de datos en la imagen,
-    sino que solo permite la desocultación de datos almacenados en un archivo de texto.
+    Ocultador de imagen nulo que no inserta datos en la imagen.
 
-    Este ocultador se utiliza para la desocultación de datos que han sido previamente guardados en un
-    archivo de texto (en formato base64 si está cifrado).
+    Utilizado exclusivamente para desocultar datos previamente guardados
+    en un archivo de texto (`ruta_txt`).
 
     Atributos:
-        nombre (str): El nombre del tipo de ocultador, en este caso 'none'.
-    
-    Métodos:
-        ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-            Lanza una excepción indicando que el ocultador 'none' no puede realizar ocultación.
-        
-        desocultar(self):
-            Extrae y descompone los datos del archivo de texto, devolviendo los datos desocultados.
-        
-        desocultar_guardar(self):
-            Extrae los datos y los guarda en un archivo para su posterior uso.
+        nombre (str): Identificador del modo, "none".
     """
-    nombre = "none"
-    
-    def ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
-        """
-        Lanza una excepción indicando que el ocultador 'none' no puede realizar ocultación.
 
-        Este método no es válido en el modo 'none', ya que no se realiza ninguna ocultación de datos.
+    nombre = "none"
+
+    def __init__(self, ruta_imagen, modo_cifrador, ruta_txt=None):
+        """
+        Inicializa el ocultador nulo.
 
         Args:
-            datos (bytes): Los datos que se intentarían ocultar (no se usan en este método).
-            altura_imagen (int, optional): Altura de la imagen (si se requiere). Por defecto es None.
-            anchura_imagen (int, optional): Anchura de la imagen (si se requiere). Por defecto es None.
+            ruta_imagen (str, optional): Ignorada en este modo.
+            modo_cifrador (str): Indica si los datos están cifrados.
+            ruta_txt (str): Ruta al archivo de texto con datos ocultados.
+        """
+        super().__init__(ruta_imagen, modo_cifrador, ruta_txt)
+        
+
+    
+    def _ocultar(self, datos, altura_imagen=None, anchura_imagen=None):
+        """
+        No implementado para modo 'none'.
 
         Raises:
-            Exception: Siempre lanza una excepción, indicando que el modo 'none' no es válido para ocultación.
+            NotImplementedError: Siempre, ya que no se oculta en este modo.
         """
         raise Exception("El modo Ocultador de imagen None no es valido para ocultacion, solo para desocultacion")
 
-    def desocultar(self):
+    def _desocultar(self):
         """
-        Extrae y descompone los datos de un archivo de texto.
+        Extrae datos desde archivo de texto.
 
-        Si los datos están cifrados (indicado por el atributo `cifrado`), los datos se decodifican de base64.
-        Si no están cifrados, se devuelven tal como están.
+        Si `self._cifrado` es True, decodifica base64;
+        de lo contrario, retorna bytes sin cambios.
 
         Returns:
-            str or bytes: Los datos extraídos del archivo, ya sean decodificados o no.
-        
+            bytes: Datos extraídos.
+
         Raises:
-            FileNotFoundError: Si el archivo de texto no se encuentra en la ruta indicada.
+            FileNotFoundError: Si `self._ruta_txt` no apunta a un archivo existente.
         """
-        with open(self.ruta_txt, 'rb') as f:
+        with open(self._ruta_txt, 'rb') as f:
             datos = f.read()
         
-        if self.cifrado:
+        if self._cifrado:
             return base64.b64decode(datos)
         else:
             return datos
 
     def desocultar_guardar(self):
         """
-        Extrae los datos utilizando el método `desocultar()` y los guarda en un archivo.
+        Gestiona la extracción y almacenamiento de los datos desocultados.
 
-        Los datos extraídos se escriben en un archivo para su posterior uso.
-
-        Returns:
-            None
+        1. Llama a `_desocultar`.
+        2. Escribe los bytes resultantes en el archivo de cache de desocultación.
+        3. Muestra un mensaje en verbose.
         """
-        datos_extraidos = self.desocultar()
+        datos_extraidos = self._desocultar()
 
         with open(constantes.RUTA_DATOS_CIFRADOS_DESOCULTACION, "wb") as f:
             f.write(datos_extraidos)

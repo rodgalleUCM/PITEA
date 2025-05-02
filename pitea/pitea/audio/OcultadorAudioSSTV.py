@@ -2,7 +2,6 @@ from constantes import constantes
 import subprocess
 from pitea.audio.OcultadorAudio import OcultadorAudio
 from PIL import Image
-from pitea.utils import cargar_configuracion
 from pathlib import Path
 from pitea.mensajes import print
 import builtins
@@ -10,89 +9,78 @@ import os
 
 
 class OcultadorAudioSSTV(OcultadorAudio):
-    """Clase que implementa la ocultación y desocultación de datos en audio usando SSTV.
+    """
+    Ocultador de audio usando SSTV (Slow Scan Television).
 
-    Attributes:
-        nombre (str): Nombre del método de ocultación.
+    Codifica una imagen en un archivo de audio WAV usando un modo SSTV específico,
+    y permite la desocultación mediante QSSTV en un entorno limpio.
 
-    Methods:
-        guardar(ruta, sstv):
-            Guarda el audio generado por SSTV en un archivo WAV.
-
-        guardar_imagen_redimensionada(imagen, ruta):
-            Guarda la imagen redimensionada en una ruta específica.
-
-        ocultar(datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
-            Codifica la imagen en un archivo de audio usando el modo SSTV seleccionado.
-
-        desocultar():
-            Abre QSSTV para decodificar la imagen oculta en el archivo de audio.
-
-        ocultar_guardar(formato_imagen, ruta_salida):
-            Codifica una imagen en audio SSTV y la guarda en un archivo.
-
-        desocultar_guardar():
-            Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda.
+    Atributos:
+        nombre (str): Identificador del modo, "sstv".
     """
 
-    nombre = "sstv"
+    nombre= "sstv"
 
-    def guardar(self, ruta, sstv):
-        """Guarda el audio generado por SSTV en un archivo WAV.
+    def __init__(self, ruta_audio):
+        """
+        Inicializa el ocultador SSTV con el archivo de audio contenedor.
 
         Args:
-            ruta (str): Ruta donde se guardará el archivo de audio.
-            sstv (PySSTV): Objeto de codificación SSTV que genera el audio.
+            ruta_audio (str): Ruta al archivo WAV que servirá de contenedor SSTV.
+
+        Raises:
+            ValueError: Si no se puede abrir el archivo de audio.
+        """
+        super().__init__(ruta_audio)
+        
+       
+
+    def __guardar(self, ruta, sstv):
+        """
+        Escribe el buffer SSTV en un archivo WAV.
+
+        Args:
+            ruta (str): Archivo de salida para audio SSTV.
+            sstv (PySSTV): Instancia de codificador SSTV con método write_wav().
         """
         sstv.write_wav(ruta)  # Usar el método directo de PySSTV
         print(f"La imagen ha sido ocultada en el archivo de audio: {ruta}")
 
-    def guardar_imagen_redimensionada(self, imagen, ruta):
-        """Guarda la imagen redimensionada en una ruta específica.
+    def __guardar_imagen_redimensionada(self, imagen, ruta,modo):
+        """
+        Redimensiona y guarda la imagen de entrada según las dimensiones requeridas por el modo SSTV.
 
         Args:
-            imagen (PIL.Image): Imagen redimensionada.
-            ruta (str): Ruta donde se guardará la imagen.
+            imagen (PIL.Image.Image): Imagen original a ocultar.
+            ruta (str): Ruta donde se guardará la imagen redimensionada.
+            modo (str): Identificador del modo SSTV (p.ej. 'MartinM1').
         """
-        imagen.save(ruta)
+
+        imagen.resize(constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS).save(ruta)
         print(f"Imagen contenedora redimensionada guardada en {ruta}")
 
-    def ocultar(self, datos, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
-        """Codifica la imagen en un archivo de audio usando el modo SSTV seleccionado.
+    def _ocultar(self, modo="MartinM1", image=None, samples_per_sec=None, bits=None):
+        """
+        Configura y devuelve el codificador SSTV para generar audio.
 
         Args:
-            datos (bytes): Datos a ocultar (no utilizado en este método).
-            modo (str, optional): Modo de codificación SSTV. Default es "MartinM1".
-            image (PIL.Image, optional): Imagen a ocultar en el audio SSTV.
-            samples_per_sec (int, optional): Frecuencia de muestreo del audio.
-            bits (int, optional): Resolución de bits del audio.
+            modo (str): Modo de codificación SSTV definido en la configuración.
+            image (PIL.Image.Image): Imagen a codificar.
+            samples_per_sec (int): Frecuencia de muestreo para WAV.
+            bits (int): Profundidad de bits del audio.
 
         Returns:
-            PySSTV: Objeto de codificación SSTV.
+            PySSTV: Instancia preparada para escribir audio SSTV.
         """
         sstv = constantes.MODES_SSTV[modo][0](image, samples_per_sec, bits)
         return sstv
 
-    def launch_qsstv(self):
-        """Lanza la aplicación externa QSSTV desde un entorno limpio.
+    def __launch_qsstv(self):
+        """
+        Lanza QSSTV en un entorno con variables de entorno limpias para evitar errores de Qt.
 
-        Esta función ejecuta QSSTV mediante `subprocess.run()` desde un directorio seguro
-        (`$HOME`) y con un entorno de ejecución depurado, eliminando variables de entorno
-        que pueden interferir con bibliotecas Qt, como ocurre con entornos virtuales
-        de Python que utilizan OpenCV o PyQt.
-
-        Esto evita errores comunes de Qt como:
-            - "Could not load the Qt platform plugin 'xcb'"
-            - "QObject::moveToThread: Current thread is not the object's thread"
-
-        Las variables de entorno eliminadas son:
-            - QT_QPA_PLATFORM_PLUGIN_PATH
-            - QT_QPA_PLATFORM
-            - LD_LIBRARY_PATH
-            - OPENCV_UI_BACKEND
-
-        Returns:
-            None
+        Elimina temporalmente variables como `QT_QPA_PLATFORM_PLUGIN_PATH` y similares,
+        cambia al directorio home, invoca `qsstv`, y restaura el cwd.
         """
 
         # Crear entorno limpio
@@ -111,21 +99,25 @@ class OcultadorAudioSSTV(OcultadorAudio):
             os.chdir(original_cwd)
 
 
-    def desocultar(self):
-        """Abre QSSTV para decodificar la imagen oculta en el archivo de audio.
+    def _desocultar(self):
+        """
+        Instruye al usuario para usar QSSTV y espera hasta que la imagen SSTV sea exportada.
+
+        Genera indicaciones con rutas absolutas y verifica la presencia de al menos
+        un archivo PNG en la carpeta de desocultación.
 
         Raises:
-            Exception: Si no se encuentra ninguna imagen decodificada después de ejecutar QSSTV.
+            Exception: Si no se genera ninguna imagen tras varias ejecuciones.
         """
 
-        RUTA_AUDIO = Path(f"{self.ruta_audio}").resolve()
+        RUTA_AUDIO = Path(f"{self._ruta_audio}").resolve()
         RUTA_IMAGEN_DESOCULTACION_absoluta = (Path.cwd() / Path(constantes.RUTA_IMAGEN_DESOCULTACION)).resolve()
 
         while True:
             if not constantes.STREAMING:
                 builtins.print(f"Una vez abierto QSSTV, elija el audio con ruta \033[1;33m{RUTA_AUDIO}\033[0m")
             builtins.print(f"Asegúrese de guardar la imagen como \033[1;33m{str(RUTA_IMAGEN_DESOCULTACION_absoluta) % constantes.FORMATO_IMAGEN_DESOCULTACION}\033[0m")
-            self.launch_qsstv()
+            self.__launch_qsstv()
 
             # Verificar si hay al menos un archivo PNG en la ruta
             ruta_padre = Path(constantes.RUTA_IMAGEN_DESOCULTACION).parent
@@ -137,33 +129,34 @@ class OcultadorAudioSSTV(OcultadorAudio):
                 print(f"\033[91mNo hay ningún archivo 'png' en el directorio especificado: {ruta_padre} \033[0m")
 
     def ocultar_guardar(self, formato_imagen, ruta_salida):
-        """Codifica una imagen en audio SSTV y la guarda en un archivo.
+        """
+        Realiza el flujo completo de ocultación SSTV:
+        1. Redimensiona la imagen.
+        2. Genera audio SSTV.
+        3. Guarda en rutas por defecto y personalizada.
 
         Args:
-            formato_imagen (str): Formato de la imagen a ocultar.
-            ruta_salida (str): Ruta donde se guardará el audio generado.
+            formato_imagen (str): Extensión de la imagen a ocultar.
+            ruta_salida (str): Ruta para el archivo de audio generado.
         """
         # Cargar configuración de SSTV desde archivo
-        conf = cargar_configuracion(constantes.ARCHIVO_CONFIG)
-        modo = conf['Ajustes_sstv']["modo_sstv"]
-        samples_per_sec = conf['Ajustes_sstv']["samples_per_sec"]
-        bits = conf['Ajustes_sstv']["bits"]
+        modo = constantes.conf['Ajustes_sstv']["modo_sstv"]
+        samples_per_sec = constantes.conf['Ajustes_sstv']["samples_per_sec"]
+        bits = constantes.conf['Ajustes_sstv']["bits"]
 
         # Leer y redimensionar la imagen con Pillow
-        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen).resize(
-            constantes.MODES_SSTV[modo][1], Image.Resampling.LANCZOS
-        )
-
-        self.guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen)
+        image = Image.open(str(constantes.RUTA_IMAGEN_CONTENEDORA) % formato_imagen)
+        self.__guardar_imagen_redimensionada(image, str(constantes.RUTA_IMAGEN_CONTENEDORA_REDIMENSIONADA) % formato_imagen, modo)
 
         # Codificar imagen en audio SSTV
-        sstv = self.ocultar(None, modo, image, samples_per_sec, bits)
+        sstv = self._ocultar(modo, image, samples_per_sec, bits)
 
         # Guardar el archivo de audio
-        self.guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
-        self.guardar(ruta_salida, sstv)
+        self.__guardar(str(constantes.RUTA_AUDIO_CONTENEDOR) % constantes.FORMATO_AUDIO_OCULTACION, sstv)
+        self.__guardar(ruta_salida, sstv)
 
     def desocultar_guardar(self):
-        """Ejecuta la desocultación de la imagen desde el archivo de audio SSTV y la guarda."""
-        self.desocultar()
-        return None
+        """
+        Ejecuta el proceso de desocultación SSTV usando QSSTV y bloquea hasta obtener la imagen.
+        """
+        self._desocultar()

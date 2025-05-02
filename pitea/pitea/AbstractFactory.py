@@ -1,11 +1,12 @@
 from abc import ABC
 class AbstractFactory(ABC):
     """
-    Fábrica abstracta para obtener el constructor adecuado de ocultadores de datos basado en el modo de cifrado.
+    Fábrica abstracta que delega la creación de objetos de ocultación o cifrado
+    basándose en el modo especificado.
 
-    Methods:
-        creacion(modo_cifrado):
-            Devuelve el objeto correspondiente según el modo de cifrado.
+    Métodos estáticos:
+        creacion(modo_cifrado: str) -> object:
+            Retorna una instancia del constructor apropiado para el modo dado.
     """
 
     @staticmethod
@@ -17,8 +18,5 @@ class AbstractFactory(ABC):
 
         Returns:
             Object: Una instancia del objeto construido
-
-        Raises:
-            ValueError: Si el modo de cifrado es desconocido.
         """
         pass

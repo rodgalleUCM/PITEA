@@ -3,42 +3,47 @@ from pitea.cifradores.Cifrador import Cifrador
 
 class CifradorNone(Cifrador):
     """
-    Clase que implementa un cifrador sin cifrado real.
+    Cifrador nulo que no modifica los datos.
 
-    Esta clase es útil para cuando no se desea realizar ningún tipo de cifrado o descifrado,
-    pero se mantiene la interfaz para que el proceso sea compatible con otros sistemas que esperan
-    un cifrador.
+    Mantiene la misma interfaz que otros cifradores para compatibilidad,
+    pero `_cifrar` y `_descifrar` retornan los datos inalterados.
 
     Atributos:
-        nombre (str): El nombre del cifrador, en este caso "none".
+        nombre (str): Identificador del cifrador, "none".
     """
 
     nombre = "none"
 
-    def cifrar(self, datos):
+    def __init__(self, contraseña, ruta=None):
         """
-        Método que "cifra" los datos, pero no realiza ninguna operación de cifrado real.
-
-        En lugar de cifrar los datos, simplemente devuelve los datos sin cambios.
+        Inicializa el cifrador nulo con contraseña y ruta opcional.
 
         Args:
-            datos (bytes): Los datos a cifrar.
+            contraseña (str): Contraseña (no utilizada en este cifrador).
+            ruta (str, opcional): Ruta de salida para datos, si aplica.
+        """
+        super().__init__(contraseña,ruta)
+
+    def _cifrar(self, datos):
+        """
+        Simula el cifrado sin modificar los datos.
+
+        Args:
+            datos (bytes): Datos originales.
 
         Returns:
-            tuple: Un tuple vacío seguido de los datos sin cambios.
+            tuple(bytes, bytes): Tupla con IV vacío y datos originales.
         """
         return b"", datos
 
-    def descifrar(self, datos):
+    def _descifrar(self, datos):
         """
-        Método que "descifra" los datos, pero no realiza ninguna operación de descifrado real.
-
-        En lugar de descifrar los datos, simplemente devuelve los datos sin cambios.
+        Simula el descifrado sin modificar los datos.
 
         Args:
-            datos (bytes): Los datos a descifrar.
+            datos (bytes): Datos cifrados.
 
         Returns:
-            bytes: Los datos sin cambios.
+            bytes: Los mismos datos recibidos.
         """
         return datos
