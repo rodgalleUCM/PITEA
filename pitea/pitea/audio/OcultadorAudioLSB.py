@@ -35,7 +35,7 @@ class OcultadorAudioLSB(OcultadorAudio):
 
         frames = bytearray(list(self.audio.readframes(self.audio.getnframes())))
 
-        if len(binarios_imagen) > len(frames) * 8:
+        if len(binarios_imagen) > len(frames):
             raise ValueError("La imagen es demasiado grande para ser ocultada en este archivo de audio.")
 
         indice_datos = 0
