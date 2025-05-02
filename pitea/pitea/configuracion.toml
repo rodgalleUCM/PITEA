@@ -1,20 +1,14 @@
-# Define parámetros de cache, SSTV y ocultación de texto en imagen.
-
 [persistente]
 contador_cache = 0
-ult_fecha = "15-04-2025_16:31"
+ult_fecha = "02-05-2025_15:21"
 
 [Ajustes_sstv]
-# Modo SSTV por defecto: opciones -> "MartinM1", "Robot36", "ScottieS1"
 modo_sstv = "MartinM1"
-# Frecuencia de muestreo de audio en Hz para SSTV
 samples_per_sec = 48000
-# Profundidad de bits para el audio SSTV
 bits = 16
 
 [Ajustes_ocultador_imagen_text]
 tamanio_fuente = 17
 anchura_maxima = 800
 ruta_fuente = "../fuentes/DejaVuSans-Bold.ttf"
-# Indica si se debe usar GPU para el renderizado ("True" o "False")
 gpu = "True"

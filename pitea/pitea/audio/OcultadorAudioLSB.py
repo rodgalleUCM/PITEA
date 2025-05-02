@@ -1,4 +1,5 @@
 from pitea.audio.OcultadorAudio import OcultadorAudio
+from constantes import constantes
 
 
 class OcultadorAudioLSB(OcultadorAudio):
@@ -46,7 +47,7 @@ class OcultadorAudioLSB(OcultadorAudio):
         binarios_imagen = "".join(format(byte, "08b") for byte in datos_imagen)
 
         # Añadir una cabecera con el tamaño de los datos (32 bits)
-        tamano_datos = format(len(binarios_imagen), "032b")
+        tamano_datos = format(len(binarios_imagen), "0"+str(constantes._TAMAÑO_CABECERA_LSB)+"b")
         binarios_imagen = tamano_datos + binarios_imagen  # Cabecera + datos
 
         assert self._audio.getsampwidth() == 2, "El archivo de audio debe ser de 16 bits"
@@ -85,9 +86,9 @@ class OcultadorAudioLSB(OcultadorAudio):
         datos_binarios = ""
         for i in range(len(frames)):
             datos_binarios += str(frames[i] & 1)  # Extraer el bit menos significativo
-            if len(datos_binarios) >= 32:
-                tamano_datos = int(datos_binarios[:32], 2)  # Leer el tamaño de los datos
-                datos_binarios = datos_binarios[32:]  # Eliminar la cabecera
+            if len(datos_binarios) >= constantes._TAMAÑO_CABECERA_LSB:
+                tamano_datos = int(datos_binarios[:constantes._TAMAÑO_CABECERA_LSB], 2)  # Leer el tamaño de los datos
+                datos_binarios = datos_binarios[constantes._TAMAÑO_CABECERA_LSB:]  # Eliminar la cabecera
                 break
 
         # Verificar que la cabecera tenga el tamaño correcto
@@ -96,10 +97,10 @@ class OcultadorAudioLSB(OcultadorAudio):
 
         for i in range(len(frames)):
             datos_binarios += str(frames[i] & 1)  # Extraer el bit menos significativo
-            if len(datos_binarios) >= tamano_datos + 32:
+            if len(datos_binarios) >= tamano_datos + constantes._TAMAÑO_CABECERA_LSB:
                 break
 
-        datos_binarios = datos_binarios[32:]
+        datos_binarios = datos_binarios[constantes._TAMAÑO_CABECERA_LSB:]
 
         datos_extraidos = int(datos_binarios, 2).to_bytes(tamano_datos // 8, byteorder="big")
 

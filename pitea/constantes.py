@@ -35,6 +35,8 @@ class Constantes:
             "Robot36": (Robot36, (320, 240)),
             "ScottieS1": (ScottieS1, (320, 256)),
         }
+
+        self._TAMAÑO_CABECERA_LSB = 32
         
         self._SCRIPT_PATH = "script_ejecucion.py"
         self._RESET = "\033[0m"

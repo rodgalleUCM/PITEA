@@ -1,5 +1,5 @@
 from pitea.imagen.OcultadorImagen import OcultadorImagen
-
+from constantes import constantes
 
 
 class OcultadorImagenLSB(OcultadorImagen):
@@ -64,7 +64,7 @@ class OcultadorImagenLSB(OcultadorImagen):
         
 
         # Añadir una cabecera con el tamaño de los datos (32 bits)
-        tamano_datos_binarios = format(len(datos_binarios), "032b")
+        tamano_datos_binarios = format(len(datos_binarios),  "0"+str(constantes._TAMAÑO_CABECERA_LSB)+"b")
 
         # Cabecera + Datos
         mensaje = tamano_datos_binarios + datos_binarios
@@ -124,11 +124,11 @@ class OcultadorImagenLSB(OcultadorImagen):
                     datos_binarios += str(
                         pixel[canal] & 1
                     )  # Extraer el bit menos significativo
-                    if len(datos_binarios) >= 32:
+                    if len(datos_binarios) >= constantes._TAMAÑO_CABECERA_LSB:
                         tamano_datos = int(
-                            datos_binarios[:32], 2
+                            datos_binarios[:constantes._TAMAÑO_CABECERA_LSB], 2
                         )  # Leer el tamaño de los datos
-                        datos_binarios = datos_binarios[32:]  # Eliminar la cabecera
+                        datos_binarios = datos_binarios[constantes._TAMAÑO_CABECERA_LSB:]  # Eliminar la cabecera
 
                         # Si el tamaño de los datos es mayor que 0, seguimos extrayendo los datos
                         if tamano_datos > 0:
@@ -141,21 +141,21 @@ class OcultadorImagenLSB(OcultadorImagen):
         if tamano_datos == 0:
             raise ValueError("No se pudo extraer el tamaño de los datos ocultos.")
 
-        while len(datos_binarios) < tamano_datos + 32:
+        while len(datos_binarios) < tamano_datos + constantes._TAMAÑO_CABECERA_LSB:
             for y in range(alto):
                 for x in range(ancho):
                     pixel = list(pixeles[x, y])
                     for canal in range(3):
                         datos_binarios += str(pixel[canal] & 1)
-                        if len(datos_binarios) >= tamano_datos + 32:
+                        if len(datos_binarios) >= tamano_datos + constantes._TAMAÑO_CABECERA_LSB:
                             break
-                    if len(datos_binarios) >= tamano_datos + 32:
+                    if len(datos_binarios) >= tamano_datos + constantes._TAMAÑO_CABECERA_LSB:
                         break
-                if len(datos_binarios) >= tamano_datos + 32:
+                if len(datos_binarios) >= tamano_datos + constantes._TAMAÑO_CABECERA_LSB:
                     break
 
         # Convertir los datos binarios en bytes
-        datos_binarios = datos_binarios[32:]  # Eliminar la cabecera
+        datos_binarios = datos_binarios[constantes._TAMAÑO_CABECERA_LSB:]  # Eliminar la cabecera
         datos_extraidos = int(datos_binarios, 2).to_bytes(
             tamano_datos // 8, byteorder="big"
         )

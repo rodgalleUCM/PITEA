@@ -319,9 +319,9 @@ def run_tests():
         test_ocultar_desocultar_aes_lsb_lsb()
         print("🧪 Prueba de ocultar y desocultar con cifrado None y LSB")
         test_ocultar_desocultar_none_lsb_lsb()
-        print("🧪 Prueba transformada de imagenes")
-        test_ocultar_desocultar_aes_lsb_lsb_imagen_impar()
         print("🧪 Prueba de ocultar y desocultar con cifrado AES y LSB, imagenes con dimesiones impares")
+        test_ocultar_desocultar_aes_lsb_lsb_imagen_impar()
+        print("🧪 Prueba transformada de imagenes")
         test_transformada()
         
 
