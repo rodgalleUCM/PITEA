@@ -1,13 +1,11 @@
 # TFG-PITEA
 
-## Licencia
+## License
 
-Este proyecto está licenciado bajo los términos de la [GNU GPL v3](LICENSE), © 2025 Alberto Martín Oruña y Rodrigo Gallego Marín.
+This project is licensed under the terms of the [GNU GPL v3](LICENSE), © 2025 Alberto Martín Oruña and Rodrigo Gallego Marín.
 
-## 📦 Instalación
-Consulta la [Guía de instalación](./docs/INSTALL.md).
+## 📦 Installation
+See the [Installation Guide](./docs/INSTALL.md).
 
-## 🚀 Uso
-Consulta la [Guía de uso](./docs/USAGE.md).
-
-
+## 🚀 Usage
+See the [Usage Guide](./docs/USAGE.md).
